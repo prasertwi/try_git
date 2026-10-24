@@ -409,8 +409,10 @@ def build(gate, imgs, args):
         street_lamp("lamp_%d" % x, x, -(half + 0.9), mats, -1)
 
     # cars at the capture point / leaving
-    car("car_in", bx0 - 5 - 2.25, L["inY"], 0, car_paint("paint_in", (0.75, 0.76, 0.78)), mats["plate_in"], mats)
-    car("car_out", L["outX"] + 7 + 2.25, L["outY"], math.pi, car_paint("paint_out", (0.25, 0.02, 0.03)), mats["plate_out"], mats)
+    paints = {"G1": ((0.75, 0.76, 0.78), (0.25, 0.02, 0.03)), "G2": ((0.75, 0.76, 0.78), (0.25, 0.02, 0.03)),
+              "G3": ((0.02, 0.02, 0.025), (0.55, 0.56, 0.6))}[gate]
+    car("car_in", bx0 - 5 - 2.25, L["inY"], 0, car_paint("paint_in", paints[0]), mats["plate_in"], mats)
+    car("car_out", L["outX"] + 7 + 2.25, L["outY"], math.pi, car_paint("paint_out", paints[1]), mats["plate_out"], mats)
 
     # lighting: golden-hour physical sky + warm sun
     world = bpy.data.worlds.new("sky"); sc.world = world; wn = world.node_tree.nodes; wl = world.node_tree.links
@@ -458,6 +460,9 @@ def build(gate, imgs, args):
             cam.data.dof.use_dof = True; cam.data.dof.aperture_fstop = fstop
             cam.data.dof.focus_distance = (focus - cam.location).length
         cam.name = "cam_" + shot; sc.camera = cam
+        for o in bpy.data.objects:  # the ceremonial ribbon would block the plate in the LPR camera view
+            if o.name.startswith("ribbon") or (o.type == "MESH" and o.data.materials and o.data.materials[0].name in ("gold", "ribbon")):
+                o.hide_render = (shot == "lpr")
         sc.render.filepath = os.path.join(args.out, "%s_%s.png" % (gate, shot))
         bpy.ops.render.render(write_still=True)
         print("rendered", gate, shot, flush=True)
