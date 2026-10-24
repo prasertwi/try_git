@@ -4,18 +4,19 @@
 (function(){
   // Base images: VAS-117 mockups made on Street View by the field session (G1 Sep 2018, G2/G3 Nov 2020).
   const SITES = {
-    G1: { img:'field/G1_vas117.png', w:1234, h:784, title:'G1 ประตูหน้า ถนนคู่ขนานทางหลวง 304', items:[
-      { t:'lpr', x:352, y:470, h:55, s:1.3, face:-1, label:'LPR ขาเข้า (ข้างซุ้มป้อม)', lx:120, ly:640 },
-      { t:'chk', x:300, y:330, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (เสาซุ้ม)', lx:80, ly:300 },
-      { t:'sign', x:1120, y:640, w:150, h:72, label:'' } ] },
+    G1: { img:'field/G1_vas117.png', w:1559, h:784, title:'G1 ประตูหน้า ซุ้มหอนาฬิกา ถนนคู่ขนานทางหลวง 304', items:[
+      { t:'lpr', x:470, y:452, h:45, s:1.0, face:-1, label:'LPR ขาเข้า (เลนซ้าย)', lx:300, ly:560 },
+      { t:'lpr', x:790, y:448, h:42, s:.95, face:1, label:'LPR ขาออก (เลนขวา)', lx:820, ly:560 },
+      { t:'chk', x:540, y:330, h:0, s:1.0, face:-1, label:'กล้องเช็ครถ (เสาซุ้มกลาง)', lx:300, ly:250 },
+      { t:'sign', x:1180, y:610, w:150, h:72, label:'' } ] },
     G2: { img:'field/G2_vas117.png', w:1559, h:784, title:'G2 สี่แยกกลาง ฝั่งใต้ซอย 4 (มีป้อมยาม)', items:[
-      { t:'lpr', x:378, y:600, h:70, s:1.3, face:-1, label:'LPR ขาเข้า', lx:380, ly:690 },
+      { t:'lpr', x:385, y:605, h:70, s:1.3, face:-1, label:'LPR ขาเข้า', lx:390, ly:690 },
       { t:'lpr', x:1030, y:560, h:60, s:1.1, face:1, label:'LPR ขาออก', lx:1050, ly:650 },
       { t:'chk', x:1150, y:400, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (ผนังป้อม)', lx:1060, ly:300 },
       { t:'sign', x:1480, y:690, w:150, h:72, label:'' } ] },
     G3: { img:'field/G3_vas117.png', w:1559, h:784, title:'G3 สี่แยกกลาง ฝั่งเหนือซอย 4 (ไม่มีป้อม)', items:[
-      { t:'lpr', x:305, y:590, h:65, s:1.2, face:-1, label:'LPR ขาเข้า', lx:300, ly:680 },
-      { t:'lpr', x:1250, y:690, h:75, s:1.3, face:1, label:'LPR ขาออก', lx:1240, ly:540 },
+      { t:'lpr', x:330, y:585, h:65, s:1.2, face:-1, label:'LPR ขาเข้า', lx:330, ly:680 },
+      { t:'lpr', x:1270, y:720, h:85, s:1.3, face:1, label:'LPR ขาออก', lx:1260, ly:560 },
       { t:'chk', x:518, y:300, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (เสาไฟเดิม)', lx:560, ly:270 },
       { t:'sign', x:1420, y:600, w:150, h:72, label:'' } ] }
   };
