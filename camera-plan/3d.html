@@ -148,8 +148,9 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
     else { box(3,2.6,2.4,0xe9e4da,2.2,1.3,L.house-1.2,grp); box(3.4,.15,2.8,0x7b6f62,2.2,2.68,L.house-1.2,grp); box(.5,.7,.25,0x0d6b5c,4.2,.8,L.house+.4,grp); }
     const sign = new THREE.Group(); sign.position.set(-9,0,-R-2); grp.add(sign);
     box(.1,2.4,.1,0x7a8386,-1.1,1.2,0,sign); box(.1,2.4,.1,0x7a8386,1.1,1.2,0,sign);
-    const sb = new THREE.Mesh(new THREE.BoxGeometry(2.6,1.1,.08), [M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),
-      new THREE.MeshStandardMaterial({ map: texText(512,216,(c,w,h)=>{ c.fillStyle='#0d6b5c'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.textAlign='center'; c.font='bold 64px sans-serif'; c.fillText('ป้ายบริษัท',w/2,96); c.font='38px sans-serif'; c.fillText('ระบบไม้กั้น + LPR',w/2,160); }) }), M(0x0d6b5c)]);
+    const sb = new THREE.Mesh(new THREE.BoxGeometry(2.6,1.1,.08), [M(0x283891),M(0x283891),M(0x283891),M(0x283891),
+      new THREE.MeshStandardMaterial({ map: texText(512,216,(c,w,h)=>{ c.fillStyle='#283891'; c.fillRect(0,0,w,h); c.fillStyle='#ED1C24'; c.fillRect(0,h-34,w,34);
+        c.fillStyle='#fff'; c.textAlign='center'; c.font='bold 96px sans-serif'; c.fillText('VAS',w/2,104); c.font='36px sans-serif'; c.fillText('ระบบไม้กั้น + กล้องอ่านทะเบียน',w/2,156); }) }), M(0x283891)]);
     sb.position.set(0,2.6,0); sign.add(sb); sign.rotation.y = -(Math.PI - Math.PI/2.6);
     const V = a => new THREE.Vector3(a[0],a[1],a[2]);
     posLprIn = V(L.lprIn); const pChkIn=V(L.chkIn), pLprOut=V(L.lprOut), pChkOut=V(L.chkOut);

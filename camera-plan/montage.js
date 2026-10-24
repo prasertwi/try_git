@@ -21,10 +21,10 @@
       <text x="0" y="-84" font-size="7" font-weight="700" text-anchor="middle" fill="#1f63c4" paint-order="stroke" stroke="#fff" stroke-width="2.5" font-family="IBM Plex Sans Thai,sans-serif">เช็ครถ</text></g>`,
     sign: (s, t) => `<g transform="scale(${s})">
       <rect x="-2" y="-40" width="4" height="40" fill="#6b7477"/><rect x="28" y="-40" width="4" height="40" fill="#6b7477"/>
-      <rect x="-10" y="-70" width="52" height="32" rx="3" fill="#0d6b5c" stroke="#fff" stroke-width="1.5"/>
+      <rect x="-10" y="-70" width="52" height="32" rx="3" fill="#283891" stroke="#fff" stroke-width="1.5"/><rect x="-10" y="-44" width="52" height="6" fill="#ED1C24"/>
       ${t.logo ? `<image href="${t.logo}" x="-7" y="-67" width="46" height="26" preserveAspectRatio="xMidYMid meet"/>` :
-      `<text x="16" y="-57" font-size="7" font-weight="700" text-anchor="middle" fill="#fff" font-family="Bai Jamjuree,sans-serif">${t.l1||'ป้ายบริษัท'}</text>
-       <text x="16" y="-46" font-size="5.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans Thai,sans-serif">${t.l2||'ระบบไม้กั้น + LPR'}</text>`}</g>`
+      `<text x="16" y="-57" font-size="7" font-weight="700" text-anchor="middle" fill="#fff" font-family="Bai Jamjuree,sans-serif">${t.l1||'VAS'}</text>
+       <text x="16" y="-46" font-size="5.5" text-anchor="middle" fill="#fff" font-family="IBM Plex Sans Thai,sans-serif">${t.l2||'ไม้กั้น + กล้องอ่านทะเบียน'}</text>`}</g>`
   };
   function mount(el, opt) {
     // opt: { key, img, w, h, items:[{t:'cab'|'lpr'|'chk'|'sign', x, y, s}], sign:{l1,l2,logo} }
