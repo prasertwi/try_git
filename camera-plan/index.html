@@ -6,7 +6,7 @@
 /* Layout: site-survey sheet — summary strip, calibration, plan with overlay, schedule table, BOM */
 :root{
   --bg:#f3f5f4; --panel:#ffffff; --ink:#18221f; --muted:#5b6964; --line:#d5ddda;
-  --accent:#0d6b5c; --fibre:#7a3fb8;
+  --accent:#0d6b5c; --fibre:#7a3fb8; --pub:#2e9b2e;
   --lpr:#c8322b; --wall:#c07a00; --road:#1f63c4; --dome:#1d8a4a; --warn:#b3261e;
   --f-display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai",system-ui,sans-serif;
@@ -14,10 +14,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
-  --accent:#4cc3ad; --fibre:#b98af0; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
-  --accent:#4cc3ad; --fibre:#b98af0; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
 .wrap{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
 h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.25}
@@ -66,7 +66,7 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 2</div>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 3</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
     <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ประมาณ 14.878° N, 102.061° E) ·
       <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
@@ -106,6 +106,7 @@ tfoot td{font-weight:600}
       <span><i class="sq" style="background:var(--accent)"></i>NVR / ตู้ / กล่อง PoE</span>
       <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone</span>
       <span><i class="ln" style="background:var(--ink)"></i>UTP กล้องที่เลือก</span>
+      <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนสาธารณะ (แบ่งหมู่บ้าน)</span>
     </div>
     <div class="mapbox"><div class="map">
       <img src="plan.jpg" alt="ผังหมู่บ้าน">
@@ -148,7 +149,8 @@ tfoot td{font-weight:600}
     <ul class="plain">
       <li>แนว Fiber สีม่วงในผังวิ่งตามถนน ต้องยืนยันว่ามีเสาไฟฟ้า/เสาไฟถนนตลอดแนว ระยะห่างเสาปกติ 30–40 ม. ถ้าช่วงไหนไม่มีเสา ต้องปักเสาเพิ่มหรือเดินท่อร้อยสายใต้ดิน (HDPE)</li>
       <li>เสาของ กฟภ. ต้องขออนุญาตพาดสายสื่อสาร และต้องอยู่ระดับใต้สายไฟแรงต่ำ ห่างอย่างน้อย 1 ม. ถ้าเป็นเสาไฟถนนของหมู่บ้าน ขออนุญาตนิติ</li>
-      <li>การข้ามถนนสาธารณะ (เส้นที่แบ่งหมู่บ้าน 2 ส่วน) ต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และต้องขออนุญาตหน่วยงานเจ้าของถนน</li>
+      <li><b>ถนนสาธารณะแนวเหนือ–ใต้ (เส้นเขียว)</b> ผ่านประตูตะวันออกและข้างนิติ แบ่งแปลง 297–351, 387–391, 397–451 ไว้อีกฝั่ง กล้องที่ติดฝั่งนั้นหรือบนแนวถนนนี้ (ดูป้ายสีเขียวในตาราง) ต้องพาดสายข้ามหรือเกาะเสาของถนนสาธารณะ</li>
+      <li>ข้ามถนนสาธารณะต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และขออนุญาตหน่วยงานเจ้าของถนน (อบต./เทศบาล) และ กฟภ. ถ้าใช้เสาของ กฟภ. ควรรวมจุดข้ามไว้จุดเดียวหน้านิติ แล้วเดินตามเสาฝั่งตะวันออก</li>
       <li>ใช้สาย Fiber แบบมีลวดสลิงในตัว (Figure-8 / ADSS) สำหรับพาดเสา และเผื่อม้วนสายสำรอง 10–20 ม. ที่ทุกกล่องพักสาย</li>
       <li>กล้องทุกตัวในแบบนี้ติดบนเสาหรือกำแพงริมถนน เพื่อเข้าถึงซ่อมบำรุงได้ และเดินสายไม่ต้องผ่านพื้นที่หลังบ้าน</li>
     </ul>
@@ -191,6 +193,7 @@ tfoot td{font-weight:600}
 <script>
 (function(){
   const P = window.CamPlan;
+  const SIDE = { W:'', E:'<br><span class="pill" style="background:var(--pub)">ข้ามถนนสาธารณะ</span>', R:'<br><span class="pill" style="background:var(--pub)">ติดบนถนนสาธารณะ</span>' };
   const COLORS = { LPR:'var(--lpr)', WALL:'var(--wall)', ROAD:'var(--road)', DOME:'var(--dome)' };
   const EW_PX = P.REF.ew.b[0]-P.REF.ew.a[0], NS_PX = P.REF.ns.b[1]-P.REF.ns.a[1];
   const ew = document.getElementById('ew'), ns = document.getElementById('ns');
@@ -210,15 +213,16 @@ tfoot td{font-weight:600}
     document.getElementById('tiles').innerHTML = [
       [c.length,'กล้องทั้งหมด'], [n('LPR')+' / '+n('ROAD'),'LPR / ถนน'], [n('WALL')+' / '+n('DOME'),'กำแพง / สวน'],
       [f0(R.fibreCable)+' ม.','สาย Fiber (รวมเผื่อ)'], [f0(utp)+' ม.','สาย UTP Cat6 รวม'], [R.hubs.length-1,'ตู้/กล่อง PoE นอกนิติ'],
-      [bad ? bad+' จุด' : 'ผ่านทุกจุด', 'UTP ≤ 90 ม.']
+      [bad ? bad+' จุด' : 'ผ่านทุกจุด', 'UTP ≤ 90 ม.'],
+      [c.filter(x=>x.side!=='W').length+' กล้อง / '+R.hubs.filter(h=>h.side!=='W').length+' กล่อง', 'อยู่บน/ข้ามถนนสาธารณะ']
     ].map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join('');
     const hubName = {}; R.hubs.forEach(h=>hubName[h.id]=h.name);
     document.getElementById('rows').innerHTML = c.map(x=>`<tr data-id="${x.id}"${sel===x.id?' class="sel"':''}>
       <td class="n">${x.id}</td><td>${x.name}</td><td><span class="pill" style="background:${COLORS[x.type]}">${P.T[x.type]}</span></td>
       <td class="n">${f0(x.nvrDist)}</td><td>${x.hub} · ${hubName[x.hub]}</td><td class="n">${x.cable}</td>
-      <td>${x.ok?'<span class="ok">ผ่าน</span>':'<span class="bad">เกิน 90 ม.</span>'}</td></tr>`).join('');
+      <td>${x.ok?'<span class="ok">ผ่าน</span>':'<span class="bad">เกิน 90 ม.</span>'}${SIDE[x.side]}</td></tr>`).join('');
     document.getElementById('foot').innerHTML = `<td></td><td>รวม</td><td></td><td class="n">${f0(c.reduce((s,x)=>s+x.nvrDist,0))}</td><td></td><td class="n">${f0(utp)}</td><td></td>`;
-    document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
+    document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}${h.side==='W'?'':SIDE[h.side]}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
       + `<tr><td></td><td><b>Fiber backbone รวม (แนวถนนไม่ซ้ำ +10% +20 ม./จุด)</b></td><td></td><td class="n"><b>${f0(R.fibreCable)}</b></td></tr>`;
     const ST = storage();
     const boxes = R.hubs.length-2, utpBoxes = Math.ceil(utp*1.1/305);
@@ -252,7 +256,7 @@ tfoot td{font-weight:600}
     return { days, cfg, n: best ? best.n : '–' };
   }
   function draw(){
-    const svg = document.getElementById('svg'); let s = '';
+    const svg = document.getElementById('svg'); let s = `<polyline points="${pts(P.PUBLIC_ROAD)}" fill="none" stroke="var(--pub)" stroke-width="9" stroke-opacity=".45" stroke-linecap="round" stroke-linejoin="round"/>`;
     R.fibrePaths.forEach(p => s += `<polyline points="${pts(p)}" fill="none" stroke="var(--fibre)" stroke-width="3" stroke-opacity=".7" stroke-linejoin="round"/>`);
     if (sel){ const x = R.cams.find(c=>c.id===sel); s += `<polyline points="${pts(x.path)}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 3"/>`; }
     R.hubs.forEach(h => s += `<rect x="${h.xy[0]-6}" y="${h.xy[1]-6}" width="12" height="12" rx="2" fill="var(--accent)" stroke="var(--panel)" stroke-width="1.5"><title>${h.id} ${h.name}</title></rect>`);

@@ -2,6 +2,11 @@
 // Coordinates are pixels on plan.jpg (1264x757). Scale is set by two measured distances.
 (function (root) {
   const NVR = { x: 1027, y: 385 };
+  // Public road (green line from the owner) running north-south through the east part
+  const PUBLIC_ROAD = [[1100,108],[1115,150],[1110,190],[1080,240],[1062,300],[1056,345],[1048,420],[1043,500],[1038,575]];
+  function roadX(y){ const R=PUBLIC_ROAD; if (y<=R[0][1]) return R[0][0]; for (let i=1;i<R.length;i++) if (y<=R[i][1]) { const t=(y-R[i-1][1])/(R[i][1]-R[i-1][1]); return R[i-1][0]+t*(R[i][0]-R[i-1][0]); } return R[R.length-1][0]; }
+  // 'W' = NVR side, 'E' = across the public road, 'R' = on the public road itself
+  const side = (x,y) => { const dx = x-roadX(y); return Math.abs(dx)<=9 ? 'R' : dx>0 ? 'E' : 'W'; };
   // Road nodes (centre line of roads as read from the plan)
   const N = {
     W0:[78,368], W1:[210,368], P1:[305,367], W2:[415,366], W3:[540,361], W4:[652,358], W5:[800,356], W6:[885,358],
@@ -96,19 +101,19 @@
     const cams = CAMS.map(c => { let bh=null;
       HUBS.forEach(h => { const r=route(h.node,c); if (!bh || r<bh.r) bh={h,r}; });
       const path=pathTo(bh.h.node, att[c.id].node).map(k=>nodes[k]); path.push([c.x,c.y]); const cb=cable(bh.r);
-      return Object.assign({}, c, { nvrDist: route('J2',c), hub:bh.h.id, route:bh.r, cable:cb, ok:cb<=opt.utpMax, path }); });
+      return Object.assign({}, c, { side: side(c.x,c.y), nvrDist: route('J2',c), hub:bh.h.id, route:bh.r, cable:cb, ok:cb<=opt.utpMax, path }); });
     HUBS.forEach(h => { if (!h.name) h.name='กล่อง Fiber+PoE ที่เสากล้อง #'+cams.filter(c=>c.hub===h.id).map(c=>c.id).join(', #'); });
     // 3) fibre backbone: union of roads on shortest paths NVR -> each cabinet
     const used={}; let fibreRoute=0; const fibrePaths=[];
     HUBS.slice(1).forEach(h => { const p=pathTo('J2',h.node); fibrePaths.push(p.map(k=>nodes[k]));
       for (let i=1;i<p.length;i++){ const k=[p[i-1],p[i]].sort().join('|'); if(!used[k]){used[k]=1; fibreRoute+=d(nodes[p[i-1]],nodes[p[i]]);} } });
     const hubs = HUBS.map(h => ({ id:h.id, name:h.name, node:h.node, xy:nodes[h.node], dist:sp('J2').dist[h.node],
-      fibre: h.node==='J2' ? 0 : Math.ceil(sp('J2').dist[h.node]*(1+opt.slack)+20), cams:cams.filter(c=>c.hub===h.id).length }));
+      side: side(nodes[h.node][0],nodes[h.node][1]), fibre: h.node==='J2' ? 0 : Math.ceil(sp('J2').dist[h.node]*(1+opt.slack)+20), cams:cams.filter(c=>c.hub===h.id).length }));
     return { cams, hubs, fibrePaths, fibreRoute, fibreCable: Math.ceil(fibreRoute*(1+opt.slack)+20*(HUBS.length-1)) };
   }
   // default scale: plot ~16 m frontage (~22 px) x ~20 m depth (~15 px); calibrate with Google Earth
   const REF = { ew:{a:N.W0,b:N.G,label:'ถนนเมน: ประตูหลัก → ประตูตะวันออก'}, ns:{a:[1045,357],b:[1045,585],label:'ถนนเมนหน้านิติ → กำแพงใต้สุด (โซนใต้)'} };
   const DEFAULT = { sx:0.73, sy:1.33 };
-  root.CamPlan = { N, E, FIXED_HUBS, CAMS, T, NVR, REF, DEFAULT, compute };
+  root.CamPlan = { PUBLIC_ROAD, side, N, E, FIXED_HUBS, CAMS, T, NVR, REF, DEFAULT, compute };
   if (typeof module !== 'undefined') module.exports = root.CamPlan;
 })(typeof window !== 'undefined' ? window : globalThis);
