@@ -8,9 +8,9 @@
   // G1 path: office -> main road -> west gate (same road nodes as the 30-camera plan)
   const pathG1 = [OFF, P.N.J2, P.N.C0, P.N.W6, P.N.W5, P.N.W4, P.N.W3, P.N.W2, P.N.P1, P.N.W1, P.N.W0];
   const GATES = [
-    { id:'G1', name:'ประตูหน้า (ทางเข้าหลัก)', x:72, y:368, path:pathG1, media:'fibre' },
-    { id:'G2', name:'ไม้กั้นหลัง ฝั่งเหนือ (ถนนเมนชนถนนสาธารณะ)', x:1050, y:352, path:[OFF, P.N.J2, [1050,357]], media:'utp' },
-    { id:'G3', name:'ไม้กั้นหลัง ฝั่งใต้ (ทางเข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
+    { id:'G1', name:'ประตูหน้า (ต้นซอย 4 ฝั่งตะวันตก)', x:72, y:352, path:pathG1, media:'fibre' },
+    { id:'G2', name:'ไม้กั้นหลัง ฝั่งเหนือของซอย 4', x:1060, y:340, path:[OFF, P.N.J2, P.N.G, [1060,340]], media:'utp' },
+    { id:'G3', name:'ไม้กั้นหลัง ฝั่งใต้ของซอย 4 (เข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
   ];
   const ROLE = {
     LPRI:{ t:'LPR ขาเข้า', m:'เสาเตี้ยเกาะกลาง สูง 1.2–1.5 ม. จับป้ายที่ 4–6 ม.', len:10, lpr:1 },

@@ -2,11 +2,11 @@
 // Coordinates are pixels on plan.jpg (1264x757). Scale is set by two measured distances.
 (function (root) {
   const NVR = { x: 1027, y: 385 };
-  // Public road (green line from the owner) running north-south through the east part
-  const PUBLIC_ROAD = [[1100,108],[1115,150],[1110,190],[1080,240],[1062,300],[1056,345],[1048,420],[1043,500],[1038,575]];
-  function roadX(y){ const R=PUBLIC_ROAD; if (y<=R[0][1]) return R[0][0]; for (let i=1;i<R.length;i++) if (y<=R[i][1]) { const t=(y-R[i-1][1])/(R[i][1]-R[i-1][1]); return R[i-1][0]+t*(R[i][0]-R[i-1][0]); } return R[R.length-1][0]; }
-  // 'W' = NVR side, 'E' = across the public road, 'R' = on the public road itself
-  const side = (x,y) => { const dx = x-roadX(y); return Math.abs(dx)<=9 ? 'R' : dx>0 ? 'E' : 'W'; };
+  // Public road: ถนนหัก ซอย 4 runs along the main horizontal road and continues east to Hwy 304
+  const PUBLIC_ROAD = [[30,371],[78,368],[210,368],[415,366],[540,361],[652,358],[800,356],[885,358],[1058,357],[1150,357],[1262,354]];
+  function roadY(x){ const R=PUBLIC_ROAD; if (x<=R[0][0]) return R[0][1]; for (let i=1;i<R.length;i++) if (x<=R[i][0]) { const t=(x-R[i-1][0])/(R[i][0]-R[i-1][0]); return R[i-1][1]+t*(R[i][1]-R[i-1][1]); } return R[R.length-1][1]; }
+  // 'W' = NVR side (south of ซอย 4), 'E' = across the public road (north side), 'R' = on the public road itself
+  const side = (x,y) => { const dy = y-roadY(x); return Math.abs(dy)<=9 ? 'R' : dy>0 ? 'W' : 'E'; };
   // Road nodes (centre line of roads as read from the plan)
   const N = {
     W0:[78,368], W1:[210,368], P1:[305,367], W2:[415,366], W3:[540,361], W4:[652,358], W5:[800,356], W6:[885,358],
@@ -112,8 +112,8 @@
     return { cams, hubs, fibrePaths, fibreRoute, fibreCable: Math.ceil(fibreRoute*(1+opt.slack)+20*(HUBS.length-1)) };
   }
   // default scale: plot ~16 m frontage (~22 px) x ~20 m depth (~15 px); calibrate with Google Earth
-  const REF = { ew:{a:N.W0,b:N.G,label:'ถนนเมน: ประตูหลัก → ประตูตะวันออก'}, ns:{a:[1045,357],b:[1045,585],label:'ถนนเมนหน้านิติ → กำแพงใต้สุด (โซนใต้)'} };
-  const DEFAULT = { sx:0.73, sy:1.33 };
+  const REF = { ew:{a:N.W0,b:N.G,label:'ซอย 4: ประตูหลัก → ประตูตะวันออก'}, ns:{a:[1045,357],b:[1045,585],label:'ถนนเมนหน้านิติ → กำแพงใต้สุด (โซนใต้)'} };
+  const DEFAULT = { sx:0.80, sy:1.33 }; // sx from Google Maps: village ~0.9–1.0 km east–west
   root.CamPlan = { PUBLIC_ROAD, side, N, E, FIXED_HUBS, CAMS, T, NVR, REF, DEFAULT, compute };
   if (typeof module !== 'undefined') module.exports = root.CamPlan;
 })(typeof window !== 'undefined' ? window : globalThis);

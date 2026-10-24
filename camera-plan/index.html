@@ -78,9 +78,9 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 4</div>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 5</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
-    <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ประมาณ 14.878° N, 102.061° E) ·
+    <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ต้นซอย 4 ฝั่งตะวันตก ≈ 14.8833, 102.0604) ·
       <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
       ศูนย์ควบคุมและ NVR อยู่ที่สำนักงานนิติ (จุดสีฟ้าในผัง)</p>
   </header>
@@ -99,7 +99,7 @@ tfoot td{font-weight:600}
         <li>ระหว่างวัด ให้ซูมดูเสาไฟ (จุดเงาเล็กๆ ริมถนน) แล้ววัดแนวสายตามเสาจริง ใช้ Street View ยืนยันตำแหน่งเสาได้</li>
       </ol>
       <div class="row">
-        <label for="ew">① ถนนเมน: ประตูหลัก (แดงซ้าย) → ประตูตะวันออก (แดงขวา) เมตร
+        <label for="ew">① ซอย 4: ประตูหลัก (แดงซ้าย) → ประตูตะวันออก (แดงขวา) เมตร
           <input id="ew" type="number" min="100" max="3000" step="1"></label>
         <label for="ns">② ถนนหน้านิติ → กำแพงใต้สุด (แปลง 443–451) เมตร
           <input id="ns" type="number" min="50" max="1500" step="1"></label>
@@ -122,7 +122,7 @@ tfoot td{font-weight:600}
       <span><i class="sq" style="background:var(--lpr);width:5px"></i>ประตู</span>
       <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone (เส้นประ)</span>
       <span><i class="ln" style="background:var(--ink)"></i>UTP กล้องที่เลือก</span>
-      <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนสาธารณะ (แบ่งหมู่บ้าน)</span>
+      <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนหัก ซอย 4 (ถนนสาธารณะ แบ่งหมู่บ้าน)</span>
     </div>
     <div class="mapbox" id="box-new"><svg id="vmap" class="vmap" viewBox="20 80 1235 535" aria-label="ผังหมู่บ้านวาดใหม่พร้อมตำแหน่งกล้อง"></svg></div>
     <div class="mapbox" id="box-photo" hidden><div class="map">
@@ -169,8 +169,9 @@ tfoot td{font-weight:600}
     <ul class="plain">
       <li>แนว Fiber สีม่วงในผังวิ่งตามถนน ต้องยืนยันว่ามีเสาไฟฟ้า/เสาไฟถนนตลอดแนว ระยะห่างเสาปกติ 30–40 ม. ถ้าช่วงไหนไม่มีเสา ต้องปักเสาเพิ่มหรือเดินท่อร้อยสายใต้ดิน (HDPE)</li>
       <li>เสาของ กฟภ. ต้องขออนุญาตพาดสายสื่อสาร และต้องอยู่ระดับใต้สายไฟแรงต่ำ ห่างอย่างน้อย 1 ม. ถ้าเป็นเสาไฟถนนของหมู่บ้าน ขออนุญาตนิติ</li>
-      <li><b>ถนนสาธารณะแนวเหนือ–ใต้ (เส้นเขียว)</b> ผ่านประตูตะวันออกและข้างนิติ แบ่งแปลง 297–351, 387–391, 397–451 ไว้อีกฝั่ง กล้องที่ติดฝั่งนั้นหรือบนแนวถนนนี้ (ดูป้ายสีเขียวในตาราง) ต้องพาดสายข้ามหรือเกาะเสาของถนนสาธารณะ</li>
-      <li>ข้ามถนนสาธารณะต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และขออนุญาตหน่วยงานเจ้าของถนน (อบต./เทศบาล) และ กฟภ. ถ้าใช้เสาของ กฟภ. ควรรวมจุดข้ามไว้จุดเดียวหน้านิติ แล้วเดินตามเสาฝั่งตะวันออก</li>
+      <li><b>ถนนหัก ซอย 4 (ถนนสาธารณะ)</b> คือถนนเมนแนวนอนในผัง วิ่งตะวันตก→ตะวันออกผ่ากลางหมู่บ้าน ยาวราว 1.2 กม. ไปบรรจบทางหลวง 304 มีกำแพงหมู่บ้านทั้งสองฝั่ง นิติอยู่ฝั่งใต้ กล้องฝั่งเหนือทั้งหมดต้องข้ามซอยนี้ (ดูป้ายสีเขียวในตาราง)</li>
+      <li><b>จาก Street View (ม.ค. 2025)</b> ซอย 4 เป็นถนนคอนกรีตกว้างราว 4 ม. มีเสาคอนกรีตแบบ กฟภ. ฝั่งเหนือช่วงตะวันออก ห่างกันราว 40 ม. และเสาไฟถนนช่วงกลางหมู่บ้าน ถนนในหมู่บ้านไม่มี Street View ต้องสำรวจหน้างาน</li>
+      <li>ข้ามถนนสาธารณะต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และขออนุญาตหน่วยงานเจ้าของถนน (อบต./เทศบาล) และ กฟภ. ถ้าใช้เสาของ กฟภ. ควรข้ามซอย 4 จุดเดียวหน้านิติ แล้วเดิน Fiber ตามแนวเสาฝั่งเหนือของซอยไปทางตะวันตก</li>
       <li>ใช้สาย Fiber แบบมีลวดสลิงในตัว (Figure-8 / ADSS) สำหรับพาดเสา และเผื่อม้วนสายสำรอง 10–20 ม. ที่ทุกกล่องพักสาย</li>
       <li>กล้องทุกตัวในแบบนี้ติดบนเสาหรือกำแพงริมถนน เพื่อเข้าถึงซ่อมบำรุงได้ และเดินสายไม่ต้องผ่านพื้นที่หลังบ้าน</li>
     </ul>
@@ -219,7 +220,7 @@ tfoot td{font-weight:600}
 <script>
 (function(){
   const P = window.CamPlan;
-  const SIDE = { W:'', E:'<br><span class="pill" style="background:var(--pub)">ข้ามถนนสาธารณะ</span>', R:'<br><span class="pill" style="background:var(--pub)">ติดบนถนนสาธารณะ</span>' };
+  const SIDE = { W:'', E:'<br><span class="pill" style="background:var(--pub)">ข้ามซอย 4</span>', R:'<br><span class="pill" style="background:var(--pub)">ติดบนซอย 4</span>' };
   const COLORS = { LPR:'var(--lpr)', WALL:'var(--wall)', ROAD:'var(--road)', DOME:'var(--dome)' };
   const EW_PX = P.REF.ew.b[0]-P.REF.ew.a[0], NS_PX = P.REF.ns.b[1]-P.REF.ns.a[1];
   const ew = document.getElementById('ew'), ns = document.getElementById('ns');

@@ -18,7 +18,7 @@
     'M893 406 L930 406 L990 440 L1037 440 L1037 462 L985 462 L925 428 L893 428z'
   ];
   const GREEN = [[810,286,88,60,'สโมสร / สวน'],[54,266,50,118,'']];
-  const GATES = [{x:70,y:368,label:'ประตูหลัก',ang:90},{x:1060,y:352,label:'ประตูตะวันออก',ang:0}];
+  const GATES = [{x:72,y:352,label:'ประตูหลัก',ang:90},{x:1060,y:352,label:'ประตูตะวันออก',ang:0}];
   // camera heading in degrees (0 = right/east on plan, 90 = down/south)
   const HEAD = {1:180,2:180,3:200,4:0,5:0,6:0,7:180,8:180,9:330,10:180,11:180,12:270,13:0,14:0,15:270,16:0,17:90,
     18:0,19:180,20:270,21:300,22:90,23:330,24:90,25:270,26:270,27:270,28:270,29:180,30:270};
@@ -36,8 +36,9 @@
     // roads
     P.E.forEach(e => { const [a,b]=e.split('-'); s += `<line x1="${P.N[a][0]}" y1="${P.N[a][1]}" x2="${P.N[b][0]}" y2="${P.N[b][1]}" stroke="var(--m-road)" stroke-width="9" stroke-linecap="round"/>`; });
     s += `<polyline points="${pp(P.PUBLIC_ROAD)}" fill="none" stroke="var(--pub)" stroke-width="13" stroke-opacity=".55" stroke-linecap="round" stroke-linejoin="round"/>`;
-    s += `<text class="m-lbl m-pub" x="1036" y="604" text-anchor="end">ถนนสาธารณะ ↗</text>`;
-    s += `<text class="m-lbl" x="290" y="384" text-anchor="middle">ถนนเมน →</text>`;
+    s += `<text class="m-lbl m-pub" x="560" y="384" text-anchor="middle">ถนนหัก ซอย 4 (ถนนสาธารณะ)</text><text class="m-lbl m-pub" x="1252" y="348" text-anchor="end">→ ทางหลวง 304</text>`;
+    s += `<g transform="translate(1200 560) rotate(-10)"><path d="M0 -22 L7 4 L0 -2 L-7 4Z" fill="var(--ink)"/><text y="18" text-anchor="middle" class="m-gate" style="fill:var(--ink)">N</text></g>`;
+    s += ``;
     WATER.forEach(d => s += `<path d="${d}" fill="var(--m-water)"/>`);
     BLOCKS.forEach(b => s += `<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" rx="4" fill="url(#plots)" stroke="var(--m-plotline)" stroke-width=".8"/><text x="${b[0]+b[2]/2}" y="${b[1]+b[3]/2+3}" class="m-blk" text-anchor="middle">${b[4]}</text>`);
     return s;
