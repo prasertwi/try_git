@@ -1,0 +1,31 @@
+<title>Blender ไม้กั้น 3 จุด</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
+<style>
+/* Layout: one row per gate — overview render + LPR camera view side by side */
+:root{--bg:#f3f5f4;--panel:#fff;--ink:#18221f;--muted:#5b6964;--line:#d5ddda;--accent:#283891;--f-d:"Bai Jamjuree","IBM Plex Sans Thai",sans-serif;--f-b:"IBM Plex Sans Thai",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111816;--panel:#18211e;--ink:#e4ece9;--muted:#9aaaa4;--line:#2c3833;--accent:#8fa0ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111816;--panel:#18211e;--ink:#e4ece9;--muted:#9aaaa4;--line:#2c3833;--accent:#8fa0ff;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-b);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1,h2{font-family:var(--f-d);margin:0;text-wrap:balance}h1{font-size:1.6rem}h2{font-size:1.15rem}
+.sub{color:var(--muted);margin:4px 0 0;max-width:72ch}
+.row{display:grid;grid-template-columns:2fr 1fr;gap:12px}@media(max-width:700px){.row{grid-template-columns:1fr}}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;min-width:0}
+figure img{display:block;width:100%;height:auto}
+figcaption{padding:6px 10px;font-size:.85rem;color:var(--muted)}
+code{font-size:.85rem}
+</style>
+<div class="wrap">
+  <header>
+    <h1>โมเดล Blender จุดไม้กั้น G1–G3</h1>
+    <p class="sub">เรนเดอร์จาก Blender 5.1 (Cycles) ด้วยสคริปต์ <code>camera-plan/blender/build_gates.py</code> ตามแบบที่ออกไว้ ภาพขวาคือมุมจากกล้อง LPR ขาเข้า (มุมเลนส์ 30°) ขณะรถอยู่ที่จุดจับป้าย ไฟล์ .blend อยู่ในโฟลเดอร์เดียวกันใน repo เปิดแก้ใน Blender ได้</p>
+  </header>
+  <section><h2>G1 ประตูหน้า: ป้อมกลางถนน ไม้กั้นติดป้อม (ถนน 10.0 ม. · แขน 3.60 ม. ×2)</h2>
+    <div class="row"><figure><img src="renders/G1_overview.png" alt="G1 ภาพรวม"><figcaption>ภาพรวม</figcaption></figure><figure><img src="renders/G1_lpr_view.png" alt="G1 มุมกล้อง LPR"><figcaption>มุมกล้อง LPR ขาเข้า</figcaption></figure></div></section>
+  <section><h2>G2 ด้านหลัง ฝั่งใต้ซอย 4: ไม้กั้นริมถนน ตู้แนวเดียวกัน (ถนน 7.0 ม. · แขน 3.70 ม. ×2)</h2>
+    <div class="row"><figure><img src="renders/G2_overview.png" alt="G2 ภาพรวม"><figcaption>ภาพรวม</figcaption></figure><figure><img src="renders/G2_lpr_view.png" alt="G2 มุมกล้อง LPR"><figcaption>มุมกล้อง LPR ขาเข้า</figcaption></figure></div></section>
+  <section><h2>G3 ด้านหลัง ฝั่งเหนือซอย 4: ไม้กั้นริมถนน ตู้แนวเดียวกัน (ถนน 7.0 ม. · แขน 3.70 ม. ×2)</h2>
+    <div class="row"><figure><img src="renders/G3_overview.png" alt="G3 ภาพรวม"><figcaption>ภาพรวม</figcaption></figure><figure><img src="renders/G3_lpr_view.png" alt="G3 มุมกล้อง LPR"><figcaption>มุมกล้อง LPR ขาเข้า</figcaption></figure></div></section>
+  <p class="sub">ขนาดเป็นค่าประมาณ (แก้ได้ที่ DIM ในสคริปต์) ตู้ VAS117 และป้ายเป็นสัดส่วนประมาณจนกว่าจะได้สเปกจริง</p>
+</div>
