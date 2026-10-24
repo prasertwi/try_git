@@ -8,7 +8,7 @@
   // G1 path: office -> main road -> west gate (same road nodes as the 30-camera plan)
   const pathG1 = [OFF, P.N.J2, P.N.C0, P.N.W6, P.N.W5, P.N.W4, P.N.W3, P.N.W2, P.N.P1, P.N.W1, P.N.W0];
   const GATES = [
-    { id:'G1', name:'ประตูหน้า (ป้อมกลางถนน)', x:72, y:352, path:pathG1, media:'fibre' },
+    { id:'G1', name:'ประตูหน้า (ซุ้มหอนาฬิกา ถนนคู่ขนานทางหลวง 304)', x:72, y:352, path:pathG1, media:'fibre' },
     { id:'G2', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งใต้ของซอย 4', x:1060, y:340, path:[OFF, P.N.J2, P.N.G, [1060,340]], media:'utp' },
     { id:'G3', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งเหนือของซอย 4 (เข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
   ];

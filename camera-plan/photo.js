@@ -2,22 +2,22 @@
 // Street View captures (Jan 2025). Coordinates are image pixels (1559×784), placed on the existing equipment.
 // Photos are loaded from field/ which is published only with the private page (not in the public repo).
 (function(){
-  const W = 1559, H = 784;
+  // Base images: VAS-117 mockups made on Street View by the field session (G1 Sep 2018, G2/G3 Nov 2020).
   const SITES = {
-    G2: { img:'field/G2.png', title:'G2 · สี่แยกกลาง ฝั่งใต้ซอย 4 (มีป้อมยาม)', items:[
-      { t:'cab', x:121, y:665, w:88, h:108, arm:250, label:'VAS117 ขาเข้า (แทนตู้เดิม)', lx:170, ly:700 },
-      { t:'cab', x:915, y:560, w:34, h:70, arm:290, label:'VAS117 ขาออก (แทนตู้เดิม)', lx:960, ly:590 },
-      { t:'lpr', x:215, y:572, h:70, s:1.3, face:1, label:'LPR ขาเข้า', lx:240, ly:470 },
-      { t:'lpr', x:870, y:548, h:42, s:.8, face:-1, label:'LPR ขาออก', lx:720, ly:470 },
-      { t:'chk', x:1060, y:430, h:0, s:.9, face:-1, label:'กล้องเช็ครถ (ผนังป้อม)', lx:1080, ly:330 },
-      { t:'sign', x:1478, y:650, w:150, h:72, label:'' } ] },
-    G3: { img:'field/G3.png', title:'G3 · สี่แยกกลาง ฝั่งเหนือซอย 4 (ไม่มีป้อม)', items:[
-      { t:'cab', x:33, y:680, w:70, h:125, arm:300, label:'VAS117 ขาเข้า (แทนตู้เดิม)', lx:80, ly:735 },
-      { t:'cab', x:1083, y:688, w:66, h:130, arm:300, label:'VAS117 ขาออก (แทนตู้เดิม)', lx:1130, ly:735 },
-      { t:'lpr', x:150, y:600, h:80, s:1.4, face:1, label:'LPR ขาเข้า', lx:170, ly:470 },
-      { t:'lpr', x:1190, y:650, h:85, s:1.4, face:-1, label:'LPR ขาออก', lx:1210, ly:520 },
-      { t:'chk', x:410, y:330, h:0, s:1.0, face:1, label:'กล้องเช็ครถ (เสาไฟเดิม)', lx:430, ly:300 },
-      { t:'sign', x:250, y:520, w:150, h:72, label:'' } ] }
+    G1: { img:'field/G1_vas117.png', w:1234, h:784, title:'G1 ประตูหน้า ถนนคู่ขนานทางหลวง 304', items:[
+      { t:'lpr', x:352, y:470, h:55, s:1.3, face:-1, label:'LPR ขาเข้า (ข้างซุ้มป้อม)', lx:120, ly:640 },
+      { t:'chk', x:300, y:330, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (เสาซุ้ม)', lx:80, ly:300 },
+      { t:'sign', x:1120, y:640, w:150, h:72, label:'' } ] },
+    G2: { img:'field/G2_vas117.png', w:1559, h:784, title:'G2 สี่แยกกลาง ฝั่งใต้ซอย 4 (มีป้อมยาม)', items:[
+      { t:'lpr', x:378, y:600, h:70, s:1.3, face:-1, label:'LPR ขาเข้า', lx:380, ly:690 },
+      { t:'lpr', x:1030, y:560, h:60, s:1.1, face:1, label:'LPR ขาออก', lx:1050, ly:650 },
+      { t:'chk', x:1150, y:400, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (ผนังป้อม)', lx:1060, ly:300 },
+      { t:'sign', x:1480, y:690, w:150, h:72, label:'' } ] },
+    G3: { img:'field/G3_vas117.png', w:1559, h:784, title:'G3 สี่แยกกลาง ฝั่งเหนือซอย 4 (ไม่มีป้อม)', items:[
+      { t:'lpr', x:305, y:590, h:65, s:1.2, face:-1, label:'LPR ขาเข้า', lx:300, ly:680 },
+      { t:'lpr', x:1250, y:690, h:75, s:1.3, face:1, label:'LPR ขาออก', lx:1240, ly:540 },
+      { t:'chk', x:518, y:300, h:0, s:1.1, face:-1, label:'กล้องเช็ครถ (เสาไฟเดิม)', lx:560, ly:270 },
+      { t:'sign', x:1420, y:600, w:150, h:72, label:'' } ] }
   };
   const cab = it => {
     const x0 = it.x - it.w/2, top = it.y - it.h;
@@ -46,8 +46,9 @@
   function draw(id, key){
     const S = SITES[key], el = document.getElementById(id); if (!el) return;
     const show = document.getElementById(id+'-ov') ? document.getElementById(id+'-ov').checked : true;
-    el.innerHTML = `<image href="${S.img}" x="0" y="0" width="${W}" height="${H}"/>` + (show ? S.items.map(it => ({cab,lpr,chk,sign})[it.t](it)).join('') + S.items.map(label).join('') : '');
+    el.setAttribute('viewBox','0 0 '+S.w+' '+S.h);
+    el.innerHTML = `<image href="${S.img}" x="0" y="0" width="${S.w}" height="${S.h}"/>` + (show ? S.items.map(it => ({cab,lpr,chk,sign})[it.t](it)).join('') + S.items.map(label).join('') : '');
   }
   window.PhotoOverlay = { draw, SITES };
-  ['G2','G3'].forEach(k => { const id='photo'+k; draw(id,k); const cb=document.getElementById(id+'-ov'); if (cb) cb.addEventListener('change',()=>draw(id,k)); });
+  ['G1','G2','G3'].forEach(k => { const id='photo'+k; draw(id,k); const cb=document.getElementById(id+'-ov'); if (cb) cb.addEventListener('change',()=>draw(id,k)); });
 })();
