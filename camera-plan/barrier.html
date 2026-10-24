@@ -1,0 +1,166 @@
+<title>LPR ไม้กั้น 3 จุด แลนด์แอนด์เฮ้าส์พาร์ค</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: site-survey sheet — summary strip, calibration, plan with overlay, schedule table, BOM */
+:root{
+  --bg:#f3f5f4; --panel:#ffffff; --ink:#18221f; --muted:#5b6964; --line:#d5ddda;
+  --accent:#0d6b5c; --fibre:#7a3fb8; --pub:#2e9b2e;
+  --m-site:#eef2ef; --m-wall:#3d4a45; --m-road:#ffffff; --m-block:#dfe6e2; --m-plotline:#b9c5bf; --m-water:#9cc6dd; --m-green:#cfe5c8;
+  --lpr:#c8322b; --wall:#c07a00; --road:#1f63c4; --dome:#1d8a4a; --warn:#b3261e;
+  --f-display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --m-site:#1c2623; --m-wall:#9fb0a9; --m-road:#2f3c37; --m-block:#26322e; --m-plotline:#3c4a45; --m-water:#24506a; --m-green:#244131; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --m-site:#1c2623; --m-wall:#9fb0a9; --m-road:#2f3c37; --m-block:#26322e; --m-plotline:#3c4a45; --m-water:#24506a; --m-green:#244131; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.25}
+h1{font-size:1.75rem} h2{font-size:1.2rem}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sub{color:var(--muted);margin:4px 0 0;max-width:70ch}
+a{color:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.tile b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.tile span{color:var(--muted);font-size:.85rem}
+section{display:grid;gap:12px;min-width:0}
+.calib{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:12px}
+.calib .row{display:flex;flex-wrap:wrap;gap:14px}
+.calib label{display:grid;gap:4px;font-size:.88rem;color:var(--muted);flex:1 1 240px}
+.calib input,.calib select{font:500 1rem var(--f-mono);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+.calib input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:500 .88rem var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--panel);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+.note{font-size:.85rem;color:var(--muted)}
+.mapbox{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.map{position:relative;width:100%;min-width:900px}
+.map img{display:block;width:100%;max-width:none;opacity:.55;filter:grayscale(1) contrast(1.15)}
+:root[data-theme="dark"] .map img{filter:grayscale(1) invert(.88) contrast(1.1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .map img{filter:grayscale(1) invert(.88) contrast(1.1)}}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.cam circle{stroke:var(--panel);stroke-width:1.5;cursor:pointer}
+.cam text{font:600 9px var(--f-mono);fill:#fff;pointer-events:none}
+.vmap{display:block;width:100%;min-width:900px;height:auto;background:var(--panel)}
+.m-lbl{font:600 9px var(--f-body);fill:var(--muted)} .m-pub{fill:var(--pub);font-size:10px}
+.m-blk{font:500 7.5px var(--f-mono);fill:var(--muted)} .m-gate{font:700 10px var(--f-display);fill:var(--lpr)}
+.m-node{font:700 7px var(--f-mono);fill:var(--panel)} .m-num{font:700 8px var(--f-mono);fill:#fff}
+.vmap .cam{cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;color:var(--accent)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--panel)}
+.quote input{font:500 .85rem var(--f-mono);width:7.5em;padding:4px 6px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);text-align:right}
+.quote td.m{font-size:.8rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend i.sq{border-radius:2px} .legend i.ln{height:3px;width:18px;border-radius:0;vertical-align:3px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:720px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.78rem;letter-spacing:.03em;background:var(--bg);position:sticky;top:0}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+tr.sel td{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+tbody tr{cursor:pointer}
+.pill{display:inline-block;font-size:.75rem;padding:1px 8px;border-radius:99px;color:#fff;white-space:nowrap}
+.ok{color:var(--accent);font-weight:600} .bad{color:var(--warn);font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.two>section{min-width:0}
+ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:75ch}
+tfoot td{font-weight:600}
+.lane{display:block;width:100%;min-width:640px;height:auto;background:var(--panel)}
+.m-gate{paint-order:stroke;stroke:var(--panel);stroke-width:3px}
+.l-lbl{paint-order:stroke;stroke:var(--panel);stroke-width:3px;font:600 11px var(--f-body);fill:var(--ink)} .l-dim{font:500 10px var(--f-mono);fill:var(--muted)} .l-cam{font:700 10px var(--f-mono);fill:#fff}
+.gatecard{display:grid;gap:6px}
+.chk{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">งานที่ 2 · ระบบอ่านป้ายทะเบียน + กล้องเช็ครถ ที่ไม้กั้น 3 จุด · ฉบับร่าง 1</div>
+    <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
+    <p class="sub">งานนี้แยกจากงานกล้อง CCTV 30 จุด ใช้ใบเสนอราคาแยก กล้องในงานนี้ใช้รหัส B1–B12 เพื่อไม่ปนกับกล้อง 1–30 ·
+      ศูนย์บันทึกอยู่ที่สำนักงานนิติ</p>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section>
+    <h2>ตำแหน่งไม้กั้น 3 จุด</h2>
+    <div class="legend">
+      <span><i class="sq" style="background:var(--lpr)"></i>จุดไม้กั้น G1–G3</span>
+      <span><i class="sq" style="background:var(--accent)"></i>นิติ (NVR งานนี้)</span>
+      <span><i class="ln" style="background:var(--fibre)"></i>Uplink Fiber</span>
+      <span><i class="ln" style="background:var(--road)"></i>Uplink UTP</span>
+      <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนสาธารณะ</span>
+    </div>
+    <div class="mapbox"><svg id="locmap" class="vmap" viewBox="20 80 1235 535" aria-label="ตำแหน่งไม้กั้น"></svg></div>
+    <p class="note">ตำแหน่ง G2 และ G3 ตีความจากผัง: ไม้กั้นด้านหลังตรงที่ถนนหมู่บ้านชนถนนสาธารณะ ฝั่งเหนือ (ประตูตะวันออก) และฝั่งใต้ (ทางเข้าโซนนิติ) ถ้าตำแหน่งจริงต่างไป แจ้งเพื่อย้ายได้</p>
+  </section>
+
+  <section>
+    <h2>ผังมาตรฐานจุดไม้กั้น (ใช้กับทั้ง 3 จุด)</h2>
+    <div class="mapbox"><svg id="lane" class="lane" viewBox="0 0 660 300" aria-label="ผังเลนและตำแหน่งกล้องที่ไม้กั้น"></svg></div>
+    <ul class="plain">
+      <li><b>กล้อง LPR</b> ติดเสาเตี้ยที่เกาะกลาง สูง 1.2–1.5 ม. เล็งป้ายหน้ารถที่ระยะ 4–6 ม. ก่อนถึงไม้กั้น มุมเอียงแนวนอนไม่เกิน 30° ป้ายต้องกว้างอย่างน้อย 130 พิกเซลในภาพ</li>
+      <li><b>กล้องเช็ครถ</b> ติดฝั่งคนขับ (รถไทยพวงมาลัยขวา) สูง 2.5–3 ม. เลนส์ซูม 2.7–13.5 มม. เห็นหน้ารถ คนขับ และป้ายในภาพเดียว ระยะ 5–8 ม.</li>
+      <li>LPR สั่งเปิดไม้กั้นผ่าน relay/Wiegand เมื่อตรงกับทะเบียนลูกบ้าน (whitelist) รถแขกให้ รปภ. กดเปิดและระบบบันทึกภาพเข้า–ออกคู่กัน</li>
+      <li>ไฟส่องป้ายกลางคืน: ใช้ IR/ไฟเสริมในตัวกล้อง LPR ไม่ต้องติดไฟแยก ถ้าแสงรถสวนแรงให้ตั้ง WDR/HLC</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>รายการกล้องงานไม้กั้น</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>รหัส</th><th>จุด</th><th>หน้าที่</th><th>การติดตั้ง</th><th style="text-align:right">UTP (ม.)</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>การเชื่อมต่อแต่ละจุด</h2>
+    <div class="calib">
+      <p class="note" style="margin:0">แต่ละจุดมีตู้กันน้ำ + PoE switch 8 พอร์ต จ่ายไฟกล้อง 4 ตัวและต่อชุดควบคุมไม้กั้น แล้วส่งสัญญาณกลับนิติ ระยะตั้งต้นประมาณจากผัง แก้ได้หลังวัดจริง</p>
+      <div class="row">
+        <label for="up1">G1 ประตูหน้า → นิติ (Fiber, ม.)<input id="up1" type="number" min="0" step="1"></label>
+        <label for="up2">G2 หลังฝั่งเหนือ → นิติ (ม.)<input id="up2" type="number" min="0" step="1"></label>
+        <label for="up3">G3 หลังฝั่งใต้ → นิติ (ม.)<input id="up3" type="number" min="0" step="1"></label>
+      </div>
+      <label class="chk" for="share"><input id="share" type="checkbox" style="width:auto"> ใช้ core สำรองใน Fiber ของงาน 30 จุด สำหรับ G1 (ไม่ต้องลากสายใหม่ ถ้าทำงาน 30 จุดพร้อมกัน)</label>
+      <div class="tiles" id="links"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>พื้นที่บันทึก</h2>
+    <div class="calib">
+      <div class="row">
+        <label for="brand">ยี่ห้อ<select id="brand"><option value="dahua">Dahua (Smart H.265+)</option><option value="unv">Uniview / UNV (Ultra 265)</option></select></label>
+        <label for="days">จำนวนวันที่เก็บ<select id="days"><option value="30">30 วัน</option><option value="60">60 วัน</option></select></label>
+        <label for="codec">บิตเรตกล้องเช็ครถ<select id="codec"><option value="3">H.265 – 3 Mbps</option><option value="2">H.265 – 2 Mbps</option><option value="1.5" id="opt-smart">Smart codec – ~1.5 Mbps</option></select></label>
+      </div>
+      <div class="tiles" id="stor"></div>
+      <p class="note" style="margin:0">กล้อง LPR คิด 4 Mbps ตลอด เพื่อให้ภาพป้ายชัด · เผื่อพื้นที่ 10% · ภาพ snapshot ป้ายทะเบียนเก็บแยกในโปรแกรม LPR ใช้พื้นที่น้อยมาก</p>
+    </div>
+  </section>
+
+  <section>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+      <h2>ใบประมาณราคา งานไม้กั้น 3 จุด</h2><button id="preset" class="ghost">คืนราคาตั้งต้น</button>
+    </div>
+    <div class="tbl quote"><table>
+      <thead><tr><th>รายการ</th><th>รุ่น / สเปก</th><th style="text-align:right">จำนวน</th><th style="text-align:right">ราคา/หน่วย (บาท)</th><th style="text-align:right">รวม (บาท)</th></tr></thead>
+      <tbody id="bom"></tbody><tfoot id="qfoot"></tfoot>
+    </table></div>
+    <p class="note">ไม่รวมตัวไม้กั้นและงานโยธา (ฐานไม้กั้น/ลูปตรวจจับรถ) · ราคาตั้งต้นเป็นประมาณการ แก้ได้ทุกรายการ · รุ่นต้องยืนยันกับตัวแทนจำหน่าย</p>
+  </section>
+</div>
+
+<script src="plan.js"></script>
+<script src="sitemap.js"></script>
+<script src="barrier.js"></script>

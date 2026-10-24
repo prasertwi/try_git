@@ -24,8 +24,8 @@
     18:0,19:180,20:270,21:300,22:90,23:330,24:90,25:270,26:270,27:270,28:270,29:180,30:270};
   const FOV = { LPR:[30,22], WALL:[36,50], ROAD:[90,28], DOME:[100,18] }; // [deg, metres]
 
-  function render(R, P, opt) {
-    const sx = opt.sx, sy = opt.sy, sel = opt.sel; let s = '';
+  function base(P) {
+    let s = '';
     const pp = p => p.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
     s += `<defs>
       <pattern id="plots" width="11" height="8" patternUnits="userSpaceOnUse"><rect width="11" height="8" fill="var(--m-block)"/><path d="M11 0V8M0 8H11" stroke="var(--m-plotline)" stroke-width=".6"/></pattern>
@@ -40,6 +40,11 @@
     s += `<text class="m-lbl" x="290" y="384" text-anchor="middle">ถนนเมน →</text>`;
     WATER.forEach(d => s += `<path d="${d}" fill="var(--m-water)"/>`);
     BLOCKS.forEach(b => s += `<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" rx="4" fill="url(#plots)" stroke="var(--m-plotline)" stroke-width=".8"/><text x="${b[0]+b[2]/2}" y="${b[1]+b[3]/2+3}" class="m-blk" text-anchor="middle">${b[4]}</text>`);
+    return s;
+  }
+  function render(R, P, opt) {
+    const sx = opt.sx, sy = opt.sy, sel = opt.sel; let s = base(P);
+    const pp = p => p.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
     // fibre backbone + selected UTP
     R.fibrePaths.forEach(p => s += `<polyline points="${pp(p)}" fill="none" stroke="var(--fibre)" stroke-width="2.6" stroke-dasharray="7 4" stroke-linejoin="round"/>`);
     if (sel) { const x = R.cams.find(c=>c.id===sel); s += `<polyline points="${pp(x.path)}" fill="none" stroke="var(--ink)" stroke-width="3"/>`; }
@@ -65,5 +70,5 @@
         <title>#${c.id} ${c.name} · UTP ${c.cable} ม.</title></g>`; });
     return s;
   }
-  root.SiteMap = { render, HEAD, FOV };
+  root.SiteMap = { base, render, HEAD, FOV, GATES };
 })(typeof window !== 'undefined' ? window : globalThis);
