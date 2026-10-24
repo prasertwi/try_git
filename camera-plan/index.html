@@ -78,19 +78,20 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 5</div>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 6 · แก้ตามผลตรวจ Codex</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
-    <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ต้นซอย 4 ฝั่งตะวันตก ≈ 14.8833, 102.0604) ·
+    <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ต้นซอย 4 ฝั่งตะวันตก ≈ 14.8833, 102.0604 · สี่แยกกลางหมู่บ้าน ≈ 14.8825, 102.0629) ·
       <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
       ศูนย์ควบคุมและ NVR อยู่ที่สำนักงานนิติ (จุดสีฟ้าในผัง)</p>
+    <p class="sub"><b>ทิศ:</b> ผังโครงการวางกลับหัวเทียบทิศจริง (หมุน ~180°) ด้านซ้ายของผัง = ทิศตะวันออก (ทางไปทางหลวง 304) ด้านบนของผัง = ทิศใต้ ชื่อตำแหน่งกล้องในตารางใช้ทิศจริงแล้ว</p>
   </header>
 
   <div class="tiles" id="tiles"></div>
 
   <section>
-    <h2>ปรับมาตราส่วนจาก Google Earth</h2>
+    <h2>มาตราส่วนจาก Google Maps</h2>
     <div class="calib">
-      <p class="note" style="margin:0">ผังที่ได้รับเป็นภาพถ่าย ไม่มีมาตราส่วน ค่าตั้งต้นประมาณจากขนาดแปลงบ้านเดี่ยว (หน้ากว้าง ~16 ม. ลึก ~20 ม.)
+      <p class="note" style="margin:0">ผังที่ได้รับเป็นภาพถ่าย ไม่มีมาตราส่วน ค่าตั้งต้นตั้งจาก Google Maps ดาวเทียม (หมู่บ้านยาว ~0.94 กม. ส่วนกว้างสุด ~460 ม.)
         วัด 2 ระยะด้านล่างใน Google Maps แล้วใส่ค่า ระยะสายทุกจุดจะคำนวณใหม่ทันที</p>
       <ol class="note" style="margin:0;padding-left:1.3em">
         <li><b>Chrome บนคอม:</b> เปิด <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">Google Maps</a> → กด “เลเยอร์” มุมซ้ายล่าง → “ดาวเทียม”</li>
@@ -99,9 +100,9 @@ tfoot td{font-weight:600}
         <li>ระหว่างวัด ให้ซูมดูเสาไฟ (จุดเงาเล็กๆ ริมถนน) แล้ววัดแนวสายตามเสาจริง ใช้ Street View ยืนยันตำแหน่งเสาได้</li>
       </ol>
       <div class="row">
-        <label for="ew">① ซอย 4: ประตูหลัก (แดงซ้าย) → ประตูตะวันออก (แดงขวา) เมตร
+        <label for="ew">① ซอย 4: ประตูหลัก (แดงซ้าย) → ประตูสี่แยกกลาง (แดงขวา) เมตร
           <input id="ew" type="number" min="100" max="3000" step="1"></label>
-        <label for="ns">② ถนนหน้านิติ → กำแพงใต้สุด (แปลง 443–451) เมตร
+        <label for="ns">② ซอย 4 หน้านิติ → กำแพงสุดโซนนิติ (แปลง 443–451) เมตร
           <input id="ns" type="number" min="50" max="1500" step="1"></label>
       </div>
       <div class="row" style="gap:8px"><button id="apply">คำนวณใหม่</button><button id="reset" class="ghost">กลับค่าตั้งต้น</button></div>
@@ -123,6 +124,9 @@ tfoot td{font-weight:600}
       <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone (เส้นประ)</span>
       <span><i class="ln" style="background:var(--ink)"></i>UTP กล้องที่เลือก</span>
       <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนหัก ซอย 4 (ถนนสาธารณะ แบ่งหมู่บ้าน)</span>
+      <span><i style="background:var(--panel);border:2px solid var(--ink);width:7px;height:7px"></i>เสา กฟภ. ซอย 4 (Street View ~40 ม.)</span>
+      <span><i style="background:var(--wall);width:7px;height:7px"></i>เสาไฟถนนหมู่บ้าน (ตำแหน่งประมาณ รอยืนยัน)</span>
+      <label class="chk" for="showpoles"><input id="showpoles" type="checkbox" checked style="width:auto"> แสดงเสาไฟ</label>
     </div>
     <div class="mapbox" id="box-new"><svg id="vmap" class="vmap" viewBox="20 80 1235 535" aria-label="ผังหมู่บ้านวาดใหม่พร้อมตำแหน่งกล้อง"></svg></div>
     <div class="mapbox" id="box-photo" hidden><div class="map">
@@ -159,8 +163,9 @@ tfoot td{font-weight:600}
       </div>
       <div class="tiles" id="stor"></div>
       <p class="note" style="margin:0" id="codecnote"></p>
-      <p class="note" style="margin:0">สูตร: Mbps × 86,400 วินาที ÷ 8 = GB/วัน/กล้อง · กล้อง LPR คิด 4 Mbps (ต้องการภาพป้ายคมชัด) · เผื่อพื้นที่ 10% · 
-        H.265+ ประหยัดได้มากเฉพาะฉากนิ่ง ช่วงกลางคืน/ฝน/ต้นไม้ไหวบิตเรตจะสูงขึ้น ถ้าต้องการรับประกัน 60 วัน แนะนำคิดที่ H.265 ปกติ</p>
+      <p class="note" style="margin:0">สูตร: Mbps × 86,400 วินาที ÷ 8 = MB/วัน/กล้อง · กล้อง LPR คิด 4 Mbps (ต้องการภาพป้ายคมชัด) · เผื่อพื้นที่ 10% · 
+        H.265+ ประหยัดได้มากเฉพาะฉากนิ่ง ช่วงกลางคืน/ฝน/ต้นไม้ไหวบิตเรตจะสูงขึ้น ถ้าต้องการรับประกัน 60 วัน แนะนำคิดที่ H.265 ปกติ · บิตเรตทุกค่าเป็นค่าเฉลี่ยโดยประมาณ ไม่ใช่ค่ารับประกัน ควรตั้ง bitrate cap ในกล้องและวัดค่าจริงหลังติดตั้ง</p>
+      <label class="chk" for="raid"><input id="raid" type="checkbox" style="width:auto"> ทำ RAID 5 (เสีย HDD 1 ลูกเป็น parity ข้อมูลไม่หายเมื่อ HDD เสีย 1 ลูก)</label>
     </div>
   </section>
 
@@ -169,10 +174,10 @@ tfoot td{font-weight:600}
     <ul class="plain">
       <li>แนว Fiber สีม่วงในผังวิ่งตามถนน ต้องยืนยันว่ามีเสาไฟฟ้า/เสาไฟถนนตลอดแนว ระยะห่างเสาปกติ 30–40 ม. ถ้าช่วงไหนไม่มีเสา ต้องปักเสาเพิ่มหรือเดินท่อร้อยสายใต้ดิน (HDPE)</li>
       <li>เสาของ กฟภ. ต้องขออนุญาตพาดสายสื่อสาร และต้องอยู่ระดับใต้สายไฟแรงต่ำ ห่างอย่างน้อย 1 ม. ถ้าเป็นเสาไฟถนนของหมู่บ้าน ขออนุญาตนิติ</li>
-      <li><b>ถนนหัก ซอย 4 (ถนนสาธารณะ)</b> คือถนนเมนแนวนอนในผัง วิ่งตะวันตก→ตะวันออกผ่ากลางหมู่บ้าน ยาวราว 1.2 กม. ไปบรรจบทางหลวง 304 มีกำแพงหมู่บ้านทั้งสองฝั่ง นิติอยู่ฝั่งใต้ กล้องฝั่งเหนือทั้งหมดต้องข้ามซอยนี้ (ดูป้ายสีเขียวในตาราง)</li>
-      <li><b>จาก Street View (ม.ค. 2025)</b> ซอย 4 เป็นถนนคอนกรีตกว้างราว 4 ม. มีเสาคอนกรีตแบบ กฟภ. ฝั่งเหนือช่วงตะวันออก ห่างกันราว 40 ม. และเสาไฟถนนช่วงกลางหมู่บ้าน ถนนในหมู่บ้านไม่มี Street View ต้องสำรวจหน้างาน</li>
-      <li>ข้ามถนนสาธารณะต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และขออนุญาตหน่วยงานเจ้าของถนน (อบต./เทศบาล) และ กฟภ. ถ้าใช้เสาของ กฟภ. ควรข้ามซอย 4 จุดเดียวหน้านิติ แล้วเดิน Fiber ตามแนวเสาฝั่งเหนือของซอยไปทางตะวันตก</li>
-      <li>ใช้สาย Fiber แบบมีลวดสลิงในตัว (Figure-8 / ADSS) สำหรับพาดเสา และเผื่อม้วนสายสำรอง 10–20 ม. ที่ทุกกล่องพักสาย</li>
+      <li><b>ถนนหัก ซอย 4 (ถนนสาธารณะ)</b> คือถนนเมนแนวนอนในผัง วิ่งตะวันตก→ตะวันออกผ่ากลางหมู่บ้าน ยาวราว 1.2 กม. ไปบรรจบทางหลวง 304 มีกำแพงหมู่บ้านทั้งสองฝั่ง นิติอยู่ฝั่งเหนือของซอย (ทิศจริง) กล้องฝั่งตรงข้ามต้องข้ามซอยนี้ (ดูป้ายสีเขียวในตาราง)</li>
+      <li><b>จาก Street View (ม.ค. 2025)</b> ซอย 4 เป็นถนนคอนกรีตกว้างราว 4 ม. มีเสาคอนกรีตแบบ กฟภ. ฝั่งเหนือ (ฝั่งเดียวกับนิติ) ช่วงตะวันออก ห่างกันราว 40 ม. และเสาไฟถนนช่วงกลางหมู่บ้าน · จุดเสาในผังเป็นตำแหน่งประมาณ (S# = เสา กฟภ. ซอย 4, L# = เสาไฟหมู่บ้าน) ใช้เดินเช็คกับของจริงแล้วแก้ตำแหน่ง ถนนในหมู่บ้านไม่มี Street View ต้องสำรวจหน้างาน</li>
+      <li>ข้ามถนนสาธารณะต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และขออนุญาตหน่วยงานเจ้าของถนน (อบต./เทศบาล) และ กฟภ. ถ้าใช้เสาของ กฟภ. เดิน Fiber ตามแนวเสา กฟภ. ฝั่งเดียวกับนิติ แล้วข้ามซอยเฉพาะจุดแยกที่ต้องไปอีกฝั่ง (จำนวนจุดข้ามคำนวณในใบประมาณราคา) จุดข้ามใช้เสาสูง 8–9 ม. ไม่ใช่เสากล้อง 3–4 ม.</li>
+      <li>ใช้สาย Fiber พาดเสาแบบ Figure-8 (มีลวดสลิงเหล็ก) หรือ ADSS (ไม่มีโลหะ รับแรงตัวเอง) ช่วงที่ลิงก์ใช้ร่วมกันหลายโหนดต้องใช้สายหลาย core ตามตาราง และเผื่อม้วนสายสำรอง 10–20 ม. ที่ทุกกล่องพักสาย</li>
       <li>กล้องทุกตัวในแบบนี้ติดบนเสาหรือกำแพงริมถนน เพื่อเข้าถึงซ่อมบำรุงได้ และเดินสายไม่ต้องผ่านพื้นที่หลังบ้าน</li>
     </ul>
   </section>
@@ -181,7 +186,7 @@ tfoot td{font-weight:600}
     <section>
       <h2>จุดจ่ายสัญญาณ (Fiber → PoE)</h2>
       <div class="tbl"><table style="min-width:420px">
-        <thead><tr><th>จุด</th><th>รายละเอียด</th><th style="text-align:right">กล้อง</th><th style="text-align:right">Fiber จากนิติ (ม.)</th></tr></thead>
+        <thead><tr><th>จุด</th><th>รายละเอียด</th><th style="text-align:right">กล้อง / พอร์ต</th><th style="text-align:right">ระยะลิงก์จากนิติ (ม.)</th></tr></thead>
         <tbody id="hubs"></tbody>
       </table></div>
     </section>
@@ -204,11 +209,11 @@ tfoot td{font-weight:600}
     <ul class="plain">
       <li><b>ประตูทั้ง 2 จุด (จุดแดง)</b> ติดกล้อง LPR อ่านป้ายทะเบียนขาเข้า/ออก + กล้องมุมกว้างส่องถนนหน้าประตู (เสาสูง 2.5–3 ม. มุมเอียงไม่เกิน 30°)</li>
       <li><b>ถนนเมน</b> ติดทุกแยกหลักตลอดแนว เพื่อติดตามรถตั้งแต่ประตูถึงซอย ถนนเมนวิ่งชิดกำแพงด้านใต้ จึงครอบคลุมกำแพงช่วงนั้นด้วย</li>
-      <li><b>ริมกำแพง</b> 13 ตัว ติดที่ปลายถนน/ถนนที่ชนกำแพง ใช้ Bullet IR 50 ม. ยิงขนานแนวกำแพง ครอบคลุมด้านเหนือ ตะวันออก ตะวันตก และใต้</li>
+      <li><b>ริมกำแพง</b> 13 ตัว ติดที่ปลายถนน/ถนนที่ชนกำแพง ใช้ Bullet IR ยิงขนานแนวกำแพง ระยะ IR 50–60 ม. ใช้ "ตรวจจับ" คน/รถได้ แต่ "ระบุตัวบุคคล" ได้ในระยะ ~6–20 ม. เท่านั้น บางช่วงกำแพงยาวยังมีช่องว่างระหว่างกล้อง (เช่น #6–#8) ถ้าต้องการปิดทุกช่วงต้องเพิ่มกล้อง</li>
       <li><b>ทุกจุดอยู่ริมถนน</b> (ห่างแนวถนนไม่เกิน ~10 ม.) ติดบนเสาไฟหรือเสากล้อง ไม่ต้องเข้าพื้นที่หลังบ้าน</li>
       <li><b>สวน/บึง/สโมสร</b> ใช้ Turret ภาพสีกลางคืน สำหรับพื้นที่ส่วนกลางที่มีคนใช้</li>
-      <li><b>ระบบสาย</b> ระยะเกิน 90 ม. ใช้ UTP ตรงไม่ได้ จึงเดิน Fiber จากห้องนิติไปตามแนวถนน แล้วใช้กล่อง Fiber+PoE (1 SFP + 2–4 PoE) ที่เสาใกล้กล้อง</li>
-      <li><b>ไฟเลี้ยง</b> กล่องที่เสาใช้ไฟจากเสาไฟถนนของหมู่บ้าน (ขออนุญาตนิติ) หรือเดินสายไฟ VCT แยก</li>
+      <li><b>ระบบสาย</b> ระยะเกิน 90 ม. ใช้ UTP ตรงไม่ได้ จึงเดิน Fiber จากห้องนิติไปตามแนวถนน แล้วใช้กล่อง Fiber+PoE ที่เสาใกล้กล้อง แต่ละโหนดเป็นลิงก์ Fiber ตรงถึงนิติ (BiDi SFP 1 core ต่อโหนด) ขนาด switch ตามจำนวนกล้อง พอร์ต PoE+ (802.3at)</li>
+      <li><b>ไฟเลี้ยง</b> ทุกโหนดต้องมีไฟ 24 ชม. (ห้ามต่อจากวงจรไฟถนนที่ตัดตอนกลางวัน) ใช้ไฟจากตู้ไฟส่วนกลางของนิติหรือขอมิเตอร์ย่อย พร้อมเบรกเกอร์และกันฟ้าผ่า มีอยู่ในใบประมาณราคา</li>
     </ul>
     <p class="note">ข้อจำกัด: ระยะทั้งหมดอ่านจากภาพผังและปรับด้วยมาตราส่วน 2 ค่า คลาดเคลื่อนได้ ±10–15% ควรเดินสำรวจหน้างานก่อนสั่งของ
       และเผื่อสายเพิ่ม 10% · จุดกล้องริมกำแพงหลังบ้านต้องตรวจทางเดินสายจริง (ร่องระหว่างแปลง/ทางเดินหลังกำแพง)</p>
@@ -233,13 +238,14 @@ tfoot td{font-weight:600}
   const pts = p => p.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
 
   function run(){
-    const sx = (+ew.value||defEW)/EW_PX, sy = (+ns.value||defNS)/NS_PX;
+    if (!(+ew.value>=100)) ew.value = defEW; if (!(+ns.value>=50)) ns.value = defNS;
+    const sx = (+ew.value)/EW_PX, sy = (+ns.value)/NS_PX;
     R = P.compute(sx, sy);
     const c = R.cams, n = t => c.filter(x=>x.type===t).length;
     const utp = c.reduce((s,x)=>s+x.cable,0), bad = c.filter(x=>!x.ok).length;
     document.getElementById('tiles').innerHTML = [
       [c.length,'กล้องทั้งหมด'], [n('LPR')+' / '+n('ROAD'),'LPR / ถนน'], [n('WALL')+' / '+n('DOME'),'กำแพง / สวน'],
-      [f0(R.fibreCable)+' ม.','สาย Fiber (รวมเผื่อ)'], [f0(utp)+' ม.','สาย UTP Cat6 รวม'], [R.hubs.length-1,'ตู้/กล่อง PoE นอกนิติ'],
+      [f0(Object.values(R.byCore).reduce((a,b)=>a+b,0))+' ม.','สาย Fiber (รวมเผื่อ)'], [f0(utp)+' ม.','สาย UTP Cat6 รวม'], [R.hubs.length-1,'ตู้/กล่อง PoE นอกนิติ'],
       [bad ? bad+' จุด' : 'ผ่านทุกจุด', 'UTP ≤ 90 ม.'],
       [c.filter(x=>x.side!=='W').length+' กล้อง / '+R.hubs.filter(h=>h.side!=='W').length+' กล่อง', 'อยู่บน/ข้ามถนนสาธารณะ']
     ].map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join('');
@@ -249,63 +255,72 @@ tfoot td{font-weight:600}
       <td class="n">${f0(x.nvrDist)}</td><td>${x.hub} · ${hubName[x.hub]}</td><td class="n">${x.cable}</td>
       <td>${x.ok?'<span class="ok">ผ่าน</span>':'<span class="bad">เกิน 90 ม.</span>'}${SIDE[x.side]}</td></tr>`).join('');
     document.getElementById('foot').innerHTML = `<td></td><td>รวม</td><td></td><td class="n">${f0(c.reduce((s,x)=>s+x.nvrDist,0))}</td><td></td><td class="n">${f0(utp)}</td><td></td>`;
-    document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}${h.side==='W'?'':SIDE[h.side]}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
-      + `<tr><td></td><td><b>Fiber backbone รวม (แนวถนนไม่ซ้ำ +10% +20 ม./จุด)</b></td><td></td><td class="n"><b>${f0(R.fibreCable)}</b></td></tr>`;
+    document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}${h.side==='W'?'':SIDE[h.side]}</td><td class="n">${h.cams} / ${h.ports}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
+      + `<tr><td></td><td><b>สาย Fiber ตามแนวถนน (ไม่นับซ้ำ +10%)</b> · 4C ${f0(R.byCore[4]||0)} / 12C ${f0(R.byCore[12]||0)} / 24C ${f0(R.byCore[24]||0)} ม. · จุดแยก ${R.splices} · ข้ามซอย ${R.crossings}</td><td></td><td class="n"><b>${f0(Object.values(R.byCore).reduce((a,b)=>a+b,0))}</b></td></tr>`;
     const ST = storage();
     quote(c, n, utp, ST);
     draw();
   }
 
   const MODELS = {
-    dahua:{ LPR:'Dahua ITC413-PW4D (ANPR 4MP)', ROAD:'Dahua IPC-HFW2441S-S (WizSense 4MP Bullet)', WALL:'Dahua IPC-HFW2441T-ZS (4MP Varifocal IR 60 ม.)',
+    dahua:{ maxHdd:16, LPR:'Dahua ITC413-PW4D-IZ1 (ANPR 4MP, 3–8 ม., PoE+)', ROAD:'Dahua IPC-HFW2441S-S (WizSense 4MP Bullet)', WALL:'Dahua IPC-HFW2441T-ZS (4MP Varifocal IR 60 ม.)',
       DOME:'Dahua IPC-HDW2449T-S-IL (4MP Smart Dual Light ภาพสี)', NVR:'Dahua NVR5832-EI (32CH, 8 SATA, AI)', codec:'Smart H.265+' },
-    unv:{ LPR:'Uniview LPR 4MP (ซีรีส์ LPR/ANPR)', ROAD:'Uniview IPC2124LE-ADF28KM-G (4MP Bullet)', WALL:'Uniview 4MP Varifocal Bullet IR 50 ม. (ซีรีส์ IPC2324)',
-      DOME:'Uniview ColorHunter 4MP Turret (ภาพสีกลางคืน)', NVR:'Uniview NVR308-32X (32CH, 8 SATA)', codec:'Ultra 265' }
+    unv:{ maxHdd:10, LPR:'Uniview LPR 4MP (ซีรีส์ LPR/ANPR — ระบุรุ่นกับตัวแทน)', ROAD:'Uniview IPC2124LE-ADF28KM-G (4MP Bullet)', WALL:'Uniview 4MP Varifocal Bullet IR 50 ม. (ซีรีส์ IPC2324 — ระบุรุ่นกับตัวแทน)',
+      DOME:'Uniview ColorHunter 4MP Turret (ระบุรุ่นกับตัวแทน)', NVR:'Uniview NVR308-32X (32CH, 8 SATA)', codec:'Ultra 265' }
   };
-  const PRICE0 = { LPR:12000, ROAD:2200, WALL:3900, DOME:2800, NVR:18000, HDD:0, CORE:9500, RACK:14000, GATE:4500, BOX:3800, SFP:1200, FIB:9, UTP:3800, POLE:3500, RJ:15, LAB:1500, SPL:800, COM:15000 };
+  const PRICE0 = { LPR:12000, ROAD:2200, WALL:3900, DOME:2800, NVR:18000, HDD6:5600, HDD8:7200, HDD10:9200, HDD12:10500, HDD16:14500, CORE:28000, RACK:14000, GATE:4500,
+    BOX2:3800, BOX4:5200, BOX8:7900, PWR:4500, SFP:1400, F4:9, F12:16, F24:24, CLO:1800, ODF:3500, XING:9500, UTP:3800, POLE:3500, RJ:15, LAB:1500, SPL:800, COM:15000 };
   let PRICE = Object.assign({}, PRICE0);
   try { Object.assign(PRICE, JSON.parse(localStorage.getItem('camprice')||'{}')); } catch(e) {}
   function quote(c, n, utp, ST){
     const M = MODELS[document.getElementById('brand').value];
-    const hddPrice = { 6:5600, 8:7200, 10:9200, 12:10500, 16:14500 }[ST.sz] || 9000;
-    if (!PRICE.HDD_user) PRICE.HDD = hddPrice;
-    const boxes = R.hubs.length-2, links = R.hubs.length-1, utpBoxes = Math.ceil(utp*1.1/305);
+    const links = R.links, utpBoxes = Math.ceil(utp*1.1/305), remote = R.hubs.filter(h=>h.node!=='OF' && h.node!=='W0');
+    const nb = k => remote.filter(h=>h.ports===k).length;
     const rows = [
       ['LPR','กล้องอ่านป้ายทะเบียน (ประตู)', M.LPR, n('LPR')], ['ROAD','กล้อง Bullet ถนน/แยก', M.ROAD, n('ROAD')],
       ['WALL','กล้อง Bullet IR ริมกำแพง', M.WALL, n('WALL')], ['DOME','กล้อง Turret ภาพสี สวน/บึง/นิติ', M.DOME, n('DOME')],
       ['NVR','เครื่องบันทึก NVR', M.NVR+' · '+M.codec, 1],
-      ['HDD','HDD Surveillance '+ST.sz+' TB', 'เก็บ '+ST.days+' วัน ('+ST.cfg+')', ST.n],
-      ['CORE','Core switch ห้องนิติ', 'L2 managed, 8+ SFP, PoE 8 พอร์ต', 1], ['RACK','ตู้ Rack 9U + UPS 2 kVA', 'ห้องนิติ', 1],
-      ['GATE','ตู้ป้อมประตูหลัก', 'PoE switch 1 SFP + 4 PoE + ตู้กันน้ำ', 1],
-      ['BOX','โหนดที่เสา (H#)', 'Switch 1 SFP + 2 PoE, กล่อง IP66, กันฟ้าผ่า', boxes],
-      ['SFP','โมดูล SFP Single-mode', 'คู่ (ต้น–ปลาย) ต่อ 1 โหนด', links],
-      ['FIB','สาย Fiber Single-mode 2–4 core มีสลิง (ม.)', 'รวมเผื่อ 10% + 20 ม./โหนด', R.fibreCable],
+      ['HDD'+ST.sz,'HDD Surveillance '+ST.sz+' TB', 'เก็บ '+ST.days+' วัน ('+ST.cfg+')', ST.n],
+      ['CORE','Core switch ห้องนิติ', 'L2/L3 managed, 24 SFP + 4 RJ45 PoE+ (รองรับ '+links+' ลิงก์)', 1], ['RACK','ตู้ Rack 9U + UPS 2 kVA', 'ห้องนิติ', 1],
+      ['ODF','ODF/patch panel 24–48 core ห้องนิติ', 'รับสาย Fiber ทุกเส้น', 1],
+      ['GATE','ตู้ป้อมประตูหลัก', 'PoE+ switch 1 SFP + 4 PoE+ + ตู้กันน้ำ', 1],
+      ['BOX2','โหนดที่เสา 1–2 กล้อง', 'Switch 1 SFP + 2 PoE+, กล่อง IP66, กันฟ้าผ่า', nb(2)],
+      ['BOX4','โหนดที่เสา 3–4 กล้อง', 'Switch 1 SFP + 4 PoE+, กล่อง IP66, กันฟ้าผ่า', nb(4)],
+      ['BOX8','โหนดที่เสา 5–8 กล้อง', 'Switch 1 SFP + 8 PoE+, กล่อง IP66, กันฟ้าผ่า', nb(8)],
+      ['PWR','ไฟ 24 ชม. ต่อโหนด', 'เดินไฟ/มิเตอร์ย่อย + เบรกเกอร์ + กันฟ้าผ่า', R.hubs.length-1],
+      ['SFP','โมดูล SFP BiDi Single-mode (คู่)', '1 คู่ต่อ 1 ลิงก์ (1 core)', links],
+      ['F4','สาย Fiber 4 core (ม.)', 'ช่วงปลายทาง 1–2 ลิงก์', R.byCore[4]||0],
+      ['F12','สาย Fiber 12 core (ม.)', 'ช่วงที่ใช้ร่วม 3–10 ลิงก์', R.byCore[12]||0],
+      ['F24','สาย Fiber 24 core (ม.)', 'ช่วงต้นทางหน้านิติ ≤ 22 ลิงก์', R.byCore[24]||0],
+      ['CLO','กล่องต่อแยก Fiber (closure) ที่จุดแยก', 'จุดแยกสาย', R.splices],
+      ['XING','จุดข้ามซอย 4 (เสา 8–9 ม. หรือลอดท่อ)', 'รวมขออนุญาต', R.crossings],
       ['UTP','สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', f0(utp)+' ม. + เผื่อ 10%', utpBoxes],
       ['POLE','เสากล้อง 3–4 ม. / ขาจับกำแพง', 'รวมฐาน', c.length], ['RJ','หัว RJ45 + บูทกันน้ำ', '', c.length*2+10],
-      ['LAB','ค่าติดตั้งกล้อง', 'ต่อจุด', c.length], ['SPL','ค่าเชื่อม/เข้าหัว Fiber', 'ต่อโหนด', links],
+      ['LAB','ค่าติดตั้งกล้อง', 'ต่อจุด', c.length], ['SPL','ค่าเชื่อม/เข้าหัว Fiber', 'ต่อจุดต่อ (โหนด + จุดแยก)', links+R.splices],
       ['COM','ตั้งค่าระบบ ทดสอบ อบรม', 'เหมา', 1]
     ];
     let sub = 0;
-    document.getElementById('bom').innerHTML = rows.map(([k,a,m,q]) => { const t = q*PRICE[k]; sub += t;
-      return `<tr><td>${a}</td><td class="m">${m}</td><td class="n">${f0(q)}</td><td class="n"><input id="p_${k}" data-k="${k}" type="number" min="0" step="1" value="${PRICE[k]}" aria-label="ราคา ${a}"></td><td class="n">${f0(t)}</td></tr>`; }).join('');
+    document.getElementById('bom').innerHTML = rows.map(([k,a,m,q]) => { const t = q*(PRICE[k]||0); sub += t;
+      return `<tr><td>${a}</td><td class="m">${m}</td><td class="n">${f0(q)}</td><td class="n"><input id="p_${k}" data-k="${k}" type="number" min="0" step="1" value="${PRICE[k]||0}" aria-label="ราคา ${a}"></td><td class="n">${f0(t)}</td></tr>`; }).join('');
     const vat = sub*0.07;
     document.getElementById('qfoot').innerHTML = `<tr><td colspan="4">รวมก่อน VAT</td><td class="n">${f0(sub)}</td></tr><tr><td colspan="4">VAT 7%</td><td class="n">${f0(vat)}</td></tr><tr><td colspan="4"><b>รวมทั้งสิ้น</b></td><td class="n"><b>${f0(sub+vat)}</b></td></tr>`;
     document.getElementById('opt-smart').textContent = M.codec + ' – ~1.5 Mbps เฉลี่ย';
     document.getElementById('codecnote').textContent = 'Dahua เรียก H.265+ ว่า “Smart H.265+” ส่วน Uniview เรียกว่า “Ultra 265” ทั้งสองยี่ห้อรองรับ และใช้กับ NVR ยี่ห้อเดียวกันได้เต็มประสิทธิภาพ ' +
       '(ถ้าผสมยี่ห้อผ่าน ONVIF จะได้แค่ H.265 ปกติ) ใช้อยู่ตอนนี้: ' + M.codec + '.';
   }
-  document.getElementById('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0); if(k==='HDD') PRICE.HDD_user=1;
+  document.getElementById('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0);
     try{ localStorage.setItem('camprice', JSON.stringify(PRICE)); }catch(err){} run(); });
   document.getElementById('preset').addEventListener('click', () => { PRICE = Object.assign({}, PRICE0); try{ localStorage.removeItem('camprice'); }catch(e){} run(); });
   function storage(){
     const days = +document.getElementById('days').value, br = +document.getElementById('codec').value;
     const nL = R.cams.filter(x=>x.type==='LPR').length, nO = R.cams.length - nL;
     const mbps = nO*br + nL*Math.max(br,4); const gbDay = mbps*86400/8/1000; const tb = gbDay*days/1000*1.1;
-    let best=null; [4,8].forEach(b => [6,8,10,12,16].forEach(sz => { for (let n=2;n<=b;n+=2) if (n*sz>=tb) { const t=n*sz; if(!best||t<best.t||(t===best.t&&n<best.n)) best={n,sz,t,b}; break; } }));
-    const cfg = best ? best.n+' ลูก × '+best.sz+' TB' : 'เกิน 8 ลูก – ใช้ NVR 16 bay';
+    const raid = document.getElementById('raid').checked, maxSz = MODELS[document.getElementById('brand').value].maxHdd;
+    let best=null; [6,8,10,12,16].filter(sz=>sz<=maxSz).forEach(sz => { for (let n=raid?3:1;n<=8;n++) { const usable=(raid?n-1:n)*sz; if (usable>=tb) { if(!best||n*sz<best.t||(n*sz===best.t&&n<best.n)) best={n,sz,t:n*sz,b:8,usable}; break; } } });
+    const cfg = best ? best.n+' ลูก × '+best.sz+' TB'+(raid?' RAID 5':'') : 'เกิน 8 ลูก – ใช้ NVR 16 bay';
     document.getElementById('stor').innerHTML = [
       [mbps.toFixed(0)+' Mbps','บิตเรตรวมเข้า NVR'], [(gbDay/1000).toFixed(2)+' TB','ข้อมูลต่อวัน'],
-      [tb.toFixed(1)+' TB', 'ต้องการ '+days+' วัน (+10%)'], [cfg, best ? 'HDD (NVR '+best.b+' ช่อง)' : '']
+      [tb.toFixed(1)+' TB', 'ต้องการ '+days+' วัน (+10%)'], [cfg, best ? 'ใช้งานได้ '+best.usable+' TB (HDD สูงสุด '+maxSz+' TB/ลูก)' : '']
     ].map(([b,t])=>`<div class="tile"><b>${b}</b><span>${t}</span></div>`).join('');
     return { days, cfg, n: best ? best.n : 0, sz: best ? best.sz : 16 };
   }
@@ -318,7 +333,7 @@ tfoot td{font-weight:600}
     R.cams.forEach(x => s += `<g class="cam" data-id="${x.id}"><circle cx="${x.x}" cy="${x.y}" r="${sel===x.id?11:9}" fill="${COLORS[x.type]}"/><text x="${x.x}" y="${x.y+3}" text-anchor="middle">${x.id}</text><title>#${x.id} ${x.name} · UTP ${x.cable} ม.</title></g>`);
     svg.innerHTML = s;
     const sx = (+ew.value||defEW)/EW_PX, sy = (+ns.value||defNS)/NS_PX;
-    document.getElementById('vmap').innerHTML = window.SiteMap.render(R, P, { sx, sy, sel, colors: COLORS });
+    document.getElementById('vmap').innerHTML = window.SiteMap.render(R, P, { sx, sy, sel, colors: COLORS, poles: document.getElementById('showpoles').checked ? P.poles(sx, sy) : null });
   }
   function pick(id){ sel = sel===id ? null : id; run(); }
   ['svg','vmap'].forEach(id => document.getElementById(id).addEventListener('click', e => { const g=e.target.closest('.cam'); if (g) pick(+g.dataset.id); }));
@@ -327,7 +342,8 @@ tfoot td{font-weight:600}
   document.getElementById('v-new').addEventListener('click', () => view(false));
   document.getElementById('v-photo').addEventListener('click', () => view(true));
   document.getElementById('rows').addEventListener('click', e => { const r=e.target.closest('tr'); if (r) pick(+r.dataset.id); });
-  ['days','codec','brand'].forEach(id => document.getElementById(id).addEventListener('change', run));
+  document.getElementById('showpoles').addEventListener('change', () => draw());
+  ['days','codec','brand','raid'].forEach(id => document.getElementById(id).addEventListener('change', run));
   document.getElementById('apply').addEventListener('click', () => { save(); run(); });
   [ew,ns].forEach(i => i.addEventListener('keydown', e => { if (e.key==='Enter'){ save(); run(); } }));
   document.getElementById('reset').addEventListener('click', () => { ew.value=defEW; ns.value=defNS; save(); run(); });

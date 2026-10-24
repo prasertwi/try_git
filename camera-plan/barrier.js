@@ -8,9 +8,9 @@
   // G1 path: office -> main road -> west gate (same road nodes as the 30-camera plan)
   const pathG1 = [OFF, P.N.J2, P.N.C0, P.N.W6, P.N.W5, P.N.W4, P.N.W3, P.N.W2, P.N.P1, P.N.W1, P.N.W0];
   const GATES = [
-    { id:'G1', name:'ประตูหน้า (ต้นซอย 4 ฝั่งตะวันตก)', x:72, y:352, path:pathG1, media:'fibre' },
-    { id:'G2', name:'ไม้กั้นหลัง ฝั่งเหนือของซอย 4', x:1060, y:340, path:[OFF, P.N.J2, P.N.G, [1060,340]], media:'utp' },
-    { id:'G3', name:'ไม้กั้นหลัง ฝั่งใต้ของซอย 4 (เข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
+    { id:'G1', name:'ประตูหน้า (ฝั่งตะวันออก ทางไปทางหลวง 304)', x:72, y:352, path:pathG1, media:'fibre' },
+    { id:'G2', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งใต้ของซอย 4', x:1060, y:340, path:[OFF, P.N.J2, P.N.G, [1060,340]], media:'utp' },
+    { id:'G3', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งเหนือของซอย 4 (เข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
   ];
   const ROLE = {
     LPRI:{ t:'LPR ขาเข้า', m:'เสาเตี้ยเกาะกลาง สูง 1.2–1.5 ม. จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
@@ -20,10 +20,10 @@
   };
   const CAMS = []; GATES.forEach((g,i) => ['LPRI','LPRO','CHKI','CHKO'].forEach((r,j) => CAMS.push({ id:'B'+(i*4+j+1), g, r, cable: Math.ceil(ROLE[r].len*1.1+8) })));
   const MODELS = {
-    dahua:{ LPR:'Dahua ITC413-PW4D-IZ1 (ANPR 4MP, relay เปิดไม้กั้น)', CHK:'Dahua IPC-HFW2441T-ZS (4MP ซูม 2.7–13.5 มม.)', NVR:'Dahua NVR5416-EI (16CH, 4 SATA, AI/ANPR)', SW:'Dahua PoE switch 8 พอร์ต + 1 SFP (Hi-PoE)', SOFT:'Dahua DSS Express (จัดการ whitelist/ประวัติรถ)', codec:'Smart H.265+' },
+    dahua:{ LPR:'Dahua ITC413-PW4D-IZ1 (ANPR 4MP, 3–8 ม., PoE+, relay เปิดไม้กั้น)', CHK:'Dahua IPC-HFW2441T-ZS (4MP ซูม 2.7–13.5 มม.)', NVR:'Dahua NVR5416-EI (16CH, 4 SATA, AI/ANPR)', SW:'Dahua PoE switch 8 พอร์ต + 1 SFP (Hi-PoE)', SOFT:'Dahua DSS Express (จัดการ whitelist/ประวัติรถ)', codec:'Smart H.265+' },
     unv:{ LPR:'Uniview LPR 4MP (ซีรีส์ LPR/ANPR, relay เปิดไม้กั้น)', CHK:'Uniview 4MP Varifocal Bullet (2.8–12 มม.)', NVR:'Uniview NVR304-16X (16CH, 4 SATA)', SW:'Uniview PoE switch 8 พอร์ต + 1 SFP', SOFT:'Uniview LPR/Parking management software', codec:'Ultra 265' }
   };
-  const PRICE0 = { LPR:12000, CHK:3900, NVR:16000, HDD:0, SW:5500, CAB:3500, LPOLE:2500, CPOLE:1800, UTP:3800, FIB:9, SFP:1200, INT:3500, SOFT:15000, MON:4500, LAB:1500, COM:12000 };
+  const PRICE0 = { LPR:12000, CHK:3900, NVR:16000, HDD4:4200, HDD6:5600, HDD8:7200, HDD10:9200, HDD12:10500, HDD16:14500, SW:5500, CAB:3500, LPOLE:2500, CPOLE:1800, UTP:3800, FIB:9, SFP:1200, INT:3500, SOFT:15000, MON:4500, LAB:1500, COM:12000 };
   let PRICE = Object.assign({}, PRICE0);
   try { Object.assign(PRICE, JSON.parse(localStorage.getItem('bprice')||'{}')); } catch(e) {}
   const up0 = GATES.map(g => Math.round(route(g.path)));
@@ -51,12 +51,10 @@
       .map(([b,t])=>`<div class="tile"><b>${b}</b><span>${t}</span></div>`).join('');
     $('rows').innerHTML = CAMS.map(c => `<tr><td class="n">${c.id}</td><td>${c.g.id} · ${c.g.name}</td><td><span class="pill" style="background:${ROLE[c.r].lpr?'var(--lpr)':'var(--road)'}">${ROLE[c.r].t}</span></td><td>${ROLE[c.r].m}</td><td class="n">${c.cable}</td></tr>`).join('');
     // quote
-    const hddP = { 4:4200, 6:5600, 8:7200, 10:9200, 12:10500, 16:14500 }[best.sz];
-    if (!PRICE.HDD_user) PRICE.HDD = hddP;
     const rows = [
       ['LPR','กล้องอ่านป้ายทะเบียน', M.LPR, 6], ['CHK','กล้องเช็ครถเข้า–ออก', M.CHK, 6],
-      ['NVR','เครื่องบันทึก NVR งานไม้กั้น', M.NVR+' · '+M.codec, 1], ['HDD','HDD Surveillance '+best.sz+' TB', 'เก็บ '+days+' วัน', best.n],
-      ['SW','PoE switch ประจำจุด', M.SW, 3], ['CAB','ตู้กันน้ำ IP65 + กันฟ้าผ่า + ปลั๊กไฟ', 'ประจำจุด', 3],
+      ['NVR','เครื่องบันทึก NVR งานไม้กั้น', M.NVR+' · '+M.codec, 1], ['HDD'+best.sz,'HDD Surveillance '+best.sz+' TB', 'เก็บ '+days+' วัน', best.n],
+      ['SW','PoE+ switch ประจำจุด (802.3at)', M.SW, 3], ['CAB','ตู้กันน้ำ IP65 + กันฟ้าผ่า + ปลั๊กไฟ', 'ประจำจุด', 3],
       ['LPOLE','เสาเตี้ยกล้อง LPR 1.2–1.5 ม.', 'รวมฐาน', 6], ['CPOLE','เสา/ขาจับกล้องเช็ครถ', 'สูง 2.5–3 ม.', 6],
       ['UTP','สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', f0(utpM)+' ม. + เผื่อ 10%', Math.ceil(utpM*1.1/305)],
       ['FIB','สาย Fiber Single-mode มีสลิง (ม.)', share ? 'G1 ใช้ core สำรองของงาน 30 จุด' : 'G1 → นิติ', fibM],
@@ -91,7 +89,8 @@
     s += `<text class="l-dim" x="30" y="182">มาจากถนนนอก</text><text class="l-dim" x="545" y="92">มาจากในหมู่บ้าน</text>`;
     // barriers
     s += `<rect x="356" y="148" width="8" height="60" fill="var(--lpr)"/><rect x="296" y="58" width="8" height="60" fill="var(--lpr)"/>`;
-    s += `<text class="l-lbl" x="368" y="226">ไม้กั้นขาเข้า</text><text class="l-lbl" x="312" y="50">ไม้กั้นขาออก</text>`;
+    s += `<rect x="354" y="206" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="294" y="106" width="14" height="10" rx="2" fill="var(--ink)"/>`;
+    s += `<text class="l-lbl" x="300" y="226">ตู้ VAS117 · ไม้กั้นขาเข้า</text><text class="l-lbl" x="312" y="50">ตู้ VAS117 · ไม้กั้นขาออก</text>`;
     // guardhouse below IN lane (driver side)
     s += `<rect x="372" y="214" width="80" height="50" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/><text class="l-lbl" x="412" y="244" text-anchor="middle">ป้อม รปภ.</text>`;
     s += `<rect x="460" y="226" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="477" y="242" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
@@ -111,7 +110,7 @@
     $('lane').innerHTML = s;
   })();
   ['brand','days','codec','share','up1','up2','up3'].forEach(id => $(id).addEventListener('change', run));
-  $('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0); if(k==='HDD') PRICE.HDD_user=1;
+  $('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0);
     try{ localStorage.setItem('bprice', JSON.stringify(PRICE)); }catch(err){} run(); });
   $('preset').addEventListener('click', () => { PRICE=Object.assign({},PRICE0); try{localStorage.removeItem('bprice');}catch(e){} run(); });
   run();
