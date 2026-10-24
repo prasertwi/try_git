@@ -1,0 +1,220 @@
+<title>CCTV แลนด์แอนด์เฮ้าส์พาร์ค โคราช</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: site-survey sheet — summary strip, calibration, plan with overlay, schedule table, BOM */
+:root{
+  --bg:#f3f5f4; --panel:#ffffff; --ink:#18221f; --muted:#5b6964; --line:#d5ddda;
+  --accent:#0d6b5c; --fibre:#7a3fb8;
+  --lpr:#c8322b; --wall:#c07a00; --road:#1f63c4; --dome:#1d8a4a; --warn:#b3261e;
+  --f-display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Thai",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
+  --accent:#4cc3ad; --fibre:#b98af0; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
+  --accent:#4cc3ad; --fibre:#b98af0; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.25}
+h1{font-size:1.75rem} h2{font-size:1.2rem}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sub{color:var(--muted);margin:4px 0 0;max-width:70ch}
+a{color:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.tile b{display:block;font-family:var(--f-display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.tile span{color:var(--muted);font-size:.85rem}
+section{display:grid;gap:12px;min-width:0}
+.calib{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:12px}
+.calib .row{display:flex;flex-wrap:wrap;gap:14px}
+.calib label{display:grid;gap:4px;font-size:.88rem;color:var(--muted);flex:1 1 240px}
+.calib input{font:500 1rem var(--f-mono);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+.calib input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:500 .88rem var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--panel);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+.note{font-size:.85rem;color:var(--muted)}
+.mapbox{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.map{position:relative;width:100%;min-width:900px}
+.map img{display:block;width:100%;max-width:none;opacity:.55;filter:grayscale(1) contrast(1.15)}
+:root[data-theme="dark"] .map img{filter:grayscale(1) invert(.88) contrast(1.1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .map img{filter:grayscale(1) invert(.88) contrast(1.1)}}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.cam circle{stroke:var(--panel);stroke-width:1.5;cursor:pointer}
+.cam text{font:600 9px var(--f-mono);fill:#fff;pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend i.sq{border-radius:2px} .legend i.ln{height:3px;width:18px;border-radius:0;vertical-align:3px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:720px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.78rem;letter-spacing:.03em;background:var(--bg);position:sticky;top:0}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+tr.sel td{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+tbody tr{cursor:pointer}
+.pill{display:inline-block;font-size:.75rem;padding:1px 8px;border-radius:99px;color:#fff;white-space:nowrap}
+.ok{color:var(--accent);font-weight:600} .bad{color:var(--warn);font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.two>section{min-width:0}
+ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:75ch}
+tfoot td{font-weight:600}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง</div>
+    <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
+    <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ประมาณ 14.878° N, 102.061° E) ·
+      <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
+      ศูนย์ควบคุมและ NVR อยู่ที่สำนักงานนิติ (จุดสีฟ้าในผัง)</p>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section>
+    <h2>ปรับมาตราส่วนจาก Google Earth</h2>
+    <div class="calib">
+      <p class="note" style="margin:0">ผังที่ได้รับเป็นภาพถ่าย ไม่มีมาตราส่วน ค่าตั้งต้นประมาณจากขนาดแปลงบ้านเดี่ยว (หน้ากว้าง ~16 ม. ลึก ~20 ม.)
+        ใช้เครื่องมือไม้บรรทัด (Ruler) ใน Google Earth วัด 2 ระยะด้านล่าง แล้วใส่ค่า ระยะสายทุกจุดจะคำนวณใหม่ทันที</p>
+      <div class="row">
+        <label for="ew">① ถนนเมน: ประตูหลัก (แดงซ้าย) → ประตูตะวันออก (แดงขวา) เมตร
+          <input id="ew" type="number" min="100" max="3000" step="1"></label>
+        <label for="ns">② ถนนหน้านิติ → กำแพงใต้สุด (แปลง 443–451) เมตร
+          <input id="ns" type="number" min="50" max="1500" step="1"></label>
+      </div>
+      <div class="row" style="gap:8px"><button id="apply">คำนวณใหม่</button><button id="reset" class="ghost">กลับค่าตั้งต้น</button></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>ผังตำแหน่งกล้องและแนวสาย</h2>
+    <div class="legend">
+      <span><i style="background:var(--lpr)"></i>LPR อ่านป้ายทะเบียน</span>
+      <span><i style="background:var(--road)"></i>Bullet ถนน/แยก</span>
+      <span><i style="background:var(--wall)"></i>Bullet IR ริมกำแพง</span>
+      <span><i style="background:var(--dome)"></i>Turret ColorVu สวน/บึง</span>
+      <span><i class="sq" style="background:var(--accent)"></i>NVR / ตู้ / กล่อง PoE</span>
+      <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone</span>
+      <span><i class="ln" style="background:var(--ink)"></i>UTP กล้องที่เลือก</span>
+    </div>
+    <div class="mapbox"><div class="map">
+      <img src="plan.jpg" alt="ผังหมู่บ้าน">
+      <svg id="svg" viewBox="0 0 1264 757" aria-label="ตำแหน่งกล้อง"></svg>
+    </div></div>
+    <p class="note">แตะหมายเลขกล้องหรือแถวในตารางเพื่อดูแนวสาย UTP จากจุดจ่ายไฟถึงกล้อง (เลื่อนผังซ้าย–ขวาได้บนมือถือ)</p>
+  </section>
+
+  <section>
+    <h2>ตารางจุดติดตั้งและระยะสาย</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>#</th><th>ตำแหน่ง</th><th>ชนิดกล้อง</th><th style="text-align:right">ระยะจากนิติ<br>ตามแนวถนน (ม.)</th><th>ต่อจาก</th><th style="text-align:right">UTP (ม.)</th><th>สถานะ</th></tr></thead>
+      <tbody id="rows"></tbody>
+      <tfoot><tr id="foot"></tr></tfoot>
+    </table></div>
+    <p class="note">UTP = ระยะตามถนน × 1.10 (เผื่อโค้ง/หย่อน) + 8 ม. (ขึ้นเสา 3–4 ม. + เผื่อปลายสาย) · มาตรฐาน PoE/Cat6 ไม่เกิน 90 ม. ต่อเส้น</p>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2>จุดจ่ายสัญญาณ (Fiber → PoE)</h2>
+      <div class="tbl"><table style="min-width:420px">
+        <thead><tr><th>จุด</th><th>รายละเอียด</th><th style="text-align:right">กล้อง</th><th style="text-align:right">Fiber จากนิติ (ม.)</th></tr></thead>
+        <tbody id="hubs"></tbody>
+      </table></div>
+    </section>
+    <section>
+      <h2>รายการวัสดุโดยประมาณ</h2>
+      <div class="tbl"><table style="min-width:420px">
+        <thead><tr><th>รายการ</th><th style="text-align:right">จำนวน</th></tr></thead>
+        <tbody id="bom"></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>หลักการออกแบบ</h2>
+    <ul class="plain">
+      <li><b>ประตูทั้ง 2 จุด</b> ติดกล้อง LPR อ่านป้ายทะเบียนขาเข้า/ออก + กล้องภาพรวมป้อม (เสาสูง 2.5–3 ม. มุมเอียงไม่เกิน 30°)</li>
+      <li><b>ถนนเมน</b> ติดทุกแยกหลักตลอดแนว เพื่อติดตามรถตั้งแต่ประตูถึงซอย ถนนเมนวิ่งชิดกำแพงด้านใต้ จึงครอบคลุมกำแพงช่วงนั้นด้วย</li>
+      <li><b>ริมกำแพง</b> 13 ตัว ใช้ Bullet IR 50 ม. ยิงขนานแนวกำแพง ห่างกันไม่เกิน ~120 ม. ครอบคลุมด้านเหนือ ตะวันออก ตะวันตก และใต้</li>
+      <li><b>สวน/บึง/สโมสร</b> ใช้ Turret ภาพสีกลางคืน สำหรับพื้นที่ส่วนกลางที่มีคนใช้</li>
+      <li><b>ระบบสาย</b> ระยะเกิน 90 ม. ใช้ UTP ตรงไม่ได้ จึงเดิน Fiber จากห้องนิติไปตามแนวถนน แล้วใช้กล่อง Fiber+PoE (1 SFP + 2–4 PoE) ที่เสาใกล้กล้อง</li>
+      <li><b>ไฟเลี้ยง</b> กล่องที่เสาใช้ไฟจากเสาไฟถนนของหมู่บ้าน (ขออนุญาตนิติ) หรือเดินสายไฟ VCT แยก</li>
+    </ul>
+    <p class="note">ข้อจำกัด: ระยะทั้งหมดอ่านจากภาพผังและปรับด้วยมาตราส่วน 2 ค่า คลาดเคลื่อนได้ ±10–15% ควรเดินสำรวจหน้างานก่อนสั่งของ
+      และเผื่อสายเพิ่ม 10% · จุดกล้องริมกำแพงหลังบ้านต้องตรวจทางเดินสายจริง (ร่องระหว่างแปลง/ทางเดินหลังกำแพง)</p>
+  </section>
+</div>
+
+<script src="plan.js"></script>
+<script>
+(function(){
+  const P = window.CamPlan;
+  const COLORS = { LPR:'var(--lpr)', WALL:'var(--wall)', ROAD:'var(--road)', DOME:'var(--dome)' };
+  const EW_PX = P.REF.ew.b[0]-P.REF.ew.a[0], NS_PX = P.REF.ns.b[1]-P.REF.ns.a[1];
+  const ew = document.getElementById('ew'), ns = document.getElementById('ns');
+  const defEW = Math.round(EW_PX*P.DEFAULT.sx), defNS = Math.round(NS_PX*P.DEFAULT.sy);
+  let sel = null, R = null;
+  function load(){ let v=null; try{ v=JSON.parse(localStorage.getItem('camscale')||'null'); }catch(e){}
+    ew.value = v&&v.ew || defEW; ns.value = v&&v.ns || defNS; }
+  function save(){ try{ localStorage.setItem('camscale', JSON.stringify({ew:+ew.value, ns:+ns.value})); }catch(e){} }
+  const f0 = n => Math.round(n).toLocaleString('th-TH');
+  const pts = p => p.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
+
+  function run(){
+    const sx = (+ew.value||defEW)/EW_PX, sy = (+ns.value||defNS)/NS_PX;
+    R = P.compute(sx, sy);
+    const c = R.cams, n = t => c.filter(x=>x.type===t).length;
+    const utp = c.reduce((s,x)=>s+x.cable,0), bad = c.filter(x=>!x.ok).length;
+    document.getElementById('tiles').innerHTML = [
+      [c.length,'กล้องทั้งหมด'], [n('LPR')+' / '+n('ROAD'),'LPR / ถนน'], [n('WALL')+' / '+n('DOME'),'กำแพง / สวน'],
+      [f0(R.fibreCable)+' ม.','สาย Fiber (รวมเผื่อ)'], [f0(utp)+' ม.','สาย UTP Cat6 รวม'], [R.hubs.length-1,'ตู้/กล่อง PoE นอกนิติ'],
+      [bad ? bad+' จุด' : 'ผ่านทุกจุด', 'UTP ≤ 90 ม.']
+    ].map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join('');
+    const hubName = {}; R.hubs.forEach(h=>hubName[h.id]=h.name);
+    document.getElementById('rows').innerHTML = c.map(x=>`<tr data-id="${x.id}"${sel===x.id?' class="sel"':''}>
+      <td class="n">${x.id}</td><td>${x.name}</td><td><span class="pill" style="background:${COLORS[x.type]}">${P.T[x.type]}</span></td>
+      <td class="n">${f0(x.nvrDist)}</td><td>${x.hub} · ${hubName[x.hub]}</td><td class="n">${x.cable}</td>
+      <td>${x.ok?'<span class="ok">ผ่าน</span>':'<span class="bad">เกิน 90 ม.</span>'}</td></tr>`).join('');
+    document.getElementById('foot').innerHTML = `<td></td><td>รวม</td><td></td><td class="n">${f0(c.reduce((s,x)=>s+x.nvrDist,0))}</td><td></td><td class="n">${f0(utp)}</td><td></td>`;
+    document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
+      + `<tr><td></td><td><b>Fiber backbone รวม (แนวถนนไม่ซ้ำ +10% +20 ม./จุด)</b></td><td></td><td class="n"><b>${f0(R.fibreCable)}</b></td></tr>`;
+    const boxes = R.hubs.length-2, utpBoxes = Math.ceil(utp*1.1/305);
+    const bom = [
+      ['กล้อง LPR 2–4MP (เลนส์ varifocal)', n('LPR')], ['กล้อง Bullet 4MP IR 30–50 ม. (ถนน/แยก)', n('ROAD')],
+      ['กล้อง Bullet 4MP IR 50 ม. (ริมกำแพง)', n('WALL')], ['กล้อง Turret 4MP ColorVu (สวน/บึง/นิติ)', n('DOME')],
+      ['NVR 32 ช่อง 4K + HDD Surveillance 4 ลูก × 8 TB (เก็บ ~30 วัน)', 1],
+      ['Core switch ห้องนิติ (L2, 8+ SFP + PoE 8 พอร์ต)', 1], ['ตู้ Rack 9U + UPS 2 kVA (ห้องนิติ)', 1],
+      ['ตู้ป้อมประตูหลัก: PoE switch 1 SFP + 4 PoE + ตู้กันน้ำ', 1],
+      ['กล่องที่เสา: Switch 1 SFP + 2 PoE + กล่องกันน้ำ IP66 + กันฟ้าผ่า', boxes],
+      ['โมดูล SFP Single-mode (คู่ละ 2 ตัว)', (R.hubs.length-1)*2],
+      ['สาย Fiber Drop Single-mode 2 core (ม.)', f0(R.fibreCable)],
+      ['สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', utpBoxes + ' กล่อง (' + f0(utp) + ' ม.)'],
+      ['เสาเหล็กกล้อง 3–4 ม. / ขาจับติดกำแพง', c.length], ['หัว RJ45 + บูทกันน้ำ', c.length*2+10]
+    ];
+    document.getElementById('bom').innerHTML = bom.map(([a,b])=>`<tr><td>${a}</td><td class="n">${b}</td></tr>`).join('');
+    draw();
+  }
+
+  function draw(){
+    const svg = document.getElementById('svg'); let s = '';
+    R.fibrePaths.forEach(p => s += `<polyline points="${pts(p)}" fill="none" stroke="var(--fibre)" stroke-width="3" stroke-opacity=".7" stroke-linejoin="round"/>`);
+    if (sel){ const x = R.cams.find(c=>c.id===sel); s += `<polyline points="${pts(x.path)}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 3"/>`; }
+    R.hubs.forEach(h => s += `<rect x="${h.xy[0]-6}" y="${h.xy[1]-6}" width="12" height="12" rx="2" fill="var(--accent)" stroke="var(--panel)" stroke-width="1.5"><title>${h.id} ${h.name}</title></rect>`);
+    s += `<circle cx="${P.NVR.x}" cy="${P.NVR.y}" r="10" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="${P.NVR.x+13}" y="${P.NVR.y+16}" font-family="var(--f-mono)" font-size="11" font-weight="600" fill="var(--accent)">NVR</text>`;
+    R.cams.forEach(x => s += `<g class="cam" data-id="${x.id}"><circle cx="${x.x}" cy="${x.y}" r="${sel===x.id?11:9}" fill="${COLORS[x.type]}"/><text x="${x.x}" y="${x.y+3}" text-anchor="middle">${x.id}</text><title>#${x.id} ${x.name} · UTP ${x.cable} ม.</title></g>`);
+    svg.innerHTML = s;
+  }
+  function pick(id){ sel = sel===id ? null : id; run(); }
+  document.getElementById('svg').addEventListener('click', e => { const g=e.target.closest('.cam'); if (g) pick(+g.dataset.id); });
+  document.getElementById('rows').addEventListener('click', e => { const r=e.target.closest('tr'); if (r) pick(+r.dataset.id); });
+  document.getElementById('apply').addEventListener('click', () => { save(); run(); });
+  [ew,ns].forEach(i => i.addEventListener('keydown', e => { if (e.key==='Enter'){ save(); run(); } }));
+  document.getElementById('reset').addEventListener('click', () => { ew.value=defEW; ns.value=defNS; save(); run(); });
+  load(); run();
+})();
+</script>
