@@ -8,14 +8,14 @@
   // G1 path: office -> main road -> west gate (same road nodes as the 30-camera plan)
   const pathG1 = [OFF, P.N.J2, P.N.C0, P.N.W6, P.N.W5, P.N.W4, P.N.W3, P.N.W2, P.N.P1, P.N.W1, P.N.W0];
   const GATES = [
-    { id:'G1', name:'ประตูหน้า (ฝั่งตะวันออก ทางไปทางหลวง 304)', x:72, y:352, path:pathG1, media:'fibre' },
+    { id:'G1', name:'ประตูหน้า (ป้อมกลางถนน)', x:72, y:352, path:pathG1, media:'fibre' },
     { id:'G2', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งใต้ของซอย 4', x:1060, y:340, path:[OFF, P.N.J2, P.N.G, [1060,340]], media:'utp' },
     { id:'G3', name:'ไม้กั้นหลัง สี่แยกกลาง ฝั่งเหนือของซอย 4 (เข้าโซนนิติ)', x:1046, y:376, path:[OFF, [1040,384], [1046,376]], media:'utp' }
   ];
   const ROLE = {
-    LPRI:{ t:'LPR ขาเข้า', m:'เสาเตี้ย สูง 1.2–1.5 ม. (G1 เกาะกลาง / G2–G3 ริมถนนข้างตู้เดิม) จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
-    LPRO:{ t:'LPR ขาออก', m:'เสาเตี้ย สูง 1.2–1.5 ม. (G1 เกาะกลาง / G2–G3 ริมถนนข้างตู้เดิม) จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
-    CHKI:{ t:'เช็ครถขาเข้า (หน้ารถ+คนขับ)', m:'ป้อม/เสาข้างเลน สูง 2.5–3 ม. ระยะ 5–8 ม.', len:12 },
+    LPRI:{ t:'LPR ขาเข้า', m:'เสาเตี้ย สูง 1.2–1.5 ม. (G1 ข้างป้อมกลางถนน / G2–G3 ริมถนนข้างตู้เดิม) จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
+    LPRO:{ t:'LPR ขาออก', m:'เสาเตี้ย สูง 1.2–1.5 ม. (G1 ข้างป้อมกลางถนน / G2–G3 ริมถนนข้างตู้เดิม) จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
+    CHKI:{ t:'เช็ครถขาเข้า (หน้ารถ+คนขับ)', m:'G1 มุมป้อม / G2–G3 ป้อมหรือเสาข้างเลน สูง 2.5–3 ม. ระยะ 5–8 ม.', len:12 },
     CHKO:{ t:'เช็ครถขาออก (หน้ารถ+คนขับ)', m:'เสาข้างเลน สูง 2.5–3 ม. ระยะ 5–8 ม.', len:14 }
   };
   const CAMS = []; GATES.forEach((g,i) => ['LPRI','LPRO','CHKI','CHKO'].forEach((r,j) => CAMS.push({ id:'B'+(i*4+j+1), g, r, cable: Math.ceil(ROLE[r].len*1.1+8) })));
@@ -88,36 +88,39 @@
   function drawLane(id, mode){
     const U = 16; let s = '', t = '';
     const T = (x,y,txt,cls,anchor) => t += `<text class="${cls}" x="${x}" y="${y}"${anchor?` text-anchor="${anchor}"`:''}>${txt}</text>`;
-    const isl = mode==='island';
-    const top = isl ? 60 : 100, mid1 = isl ? 116 : 156, mid2 = isl ? 150 : 156, bot = isl ? 206 : 212;
-    s += `<rect x="0" y="0" width="660" height="300" fill="var(--panel)"/>`;
-    s += `<rect x="20" y="${top}" width="620" height="${bot-top}" fill="var(--m-road)" stroke="var(--line)"/>`;
-    if (isl) s += `<rect x="20" y="116" width="620" height="34" fill="var(--m-green)"/>`;
-    else s += `<path d="M20 156 H640" stroke="#e0b400" stroke-width="2" stroke-dasharray="14 10"/>`;
-    T(30,top+32,'มาจากถนนนอก (ซอย 4)','l-dim'); T(580,top+32,'ขาเข้า →','l-dim'); T(30,bot-22,'← ขาออก','l-dim'); T(530,bot-22,'มาจากในหมู่บ้าน','l-dim');
-    // barrier arms + VAS117 cabinets
-    const inCab = isl ? [353,112] : [353,top-12], outCab = isl ? [293,144] : [293,bot+2];
-    s += `<rect x="356" y="${isl?58:top}" width="8" height="${isl?60:56}" fill="var(--lpr)"/><rect x="296" y="${isl?148:156}" width="8" height="${isl?60:56}" fill="var(--lpr)"/>`;
-    s += `<rect x="${inCab[0]}" y="${inCab[1]}" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="${outCab[0]}" y="${outCab[1]}" width="14" height="10" rx="2" fill="var(--ink)"/>`;
-    if (isl) { T(372,110,'ตู้ VAS117 · ไม้กั้นขาเข้า','l-lbl'); T(290,200,'ตู้ VAS117 · ไม้กั้นขาออก','l-lbl','end'); }
-    else { T(372,top+18,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl'); T(288,bot-8,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl','end'); }
-    // guardhouse + PoE cabinet on the kerb beside the IN lane
-    s += `<rect x="440" y="4" width="80" height="${isl?44:40}" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(480,30,'ป้อม รปภ.','l-lbl','middle');
-    s += `<rect x="528" y="12" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="545" y="28" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
-    s += `<rect x="${360-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${300+5.5*U}" y="${mid2+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
     const cam = (x,y,deg,len,fov,col,lbl,tx,ty,anc) => { const h=deg*Math.PI/180, a=fov*Math.PI/360, L=len*U;
       s += `<path d="M${x} ${y} L${x+Math.cos(h-a)*L} ${y+Math.sin(h-a)*L} L${x+Math.cos(h+a)*L} ${y+Math.sin(h+a)*L}Z" fill="${col}" fill-opacity=".18"/>`;
-      s += `<circle cx="${x}" cy="${y}" r="11" fill="${col}" stroke="var(--panel)" stroke-width="2"/>`; T(x,y+4,lbl,'l-cam','middle');
+      s += `<circle cx="${x}" cy="${y}" r="10" fill="${col}" stroke="var(--panel)" stroke-width="2"/>`; T(x,y+4,lbl,'l-cam','middle');
       T(tx,ty,{L1:'LPR ขาเข้า',L2:'LPR ขาออก',C1:'เช็ครถขาเข้า',C2:'เช็ครถขาออก'}[lbl],'l-lbl',anc); };
-    if (isl) {
-      cam(330,126,195,5.5,24,'var(--lpr)','L1',200,128); cam(330,142,15,5.5,24,'var(--lpr)','L2',430,141);
-      cam(372,48,165,7,36,'var(--road)','C1',250,40); cam(240,214,-15,7,36,'var(--road)','C2',110,232);
+    s += `<rect x="0" y="0" width="660" height="300" fill="var(--panel)"/>`;
+    if (mode==='island') {
+      // G1 front gate: guardhouse in the middle of the road, barriers fixed to the booth, cameras beside the booth
+      const top=40, i1=96, i2=144, bot=200;
+      s += `<rect x="20" y="${top}" width="620" height="${bot-top}" fill="var(--m-road)" stroke="var(--line)"/><rect x="20" y="${i1}" width="620" height="${i2-i1}" fill="var(--m-green)"/>`;
+      s += `<rect x="296" y="${i1+4}" width="38" height="${i2-i1-8}" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(315,124,'ป้อม','l-lbl','middle');
+      s += `<rect x="284" y="${top}" width="7" height="${i1-top}" fill="var(--lpr)"/><rect x="339" y="${i2}" width="7" height="${bot-i2}" fill="var(--lpr)"/>`;
+      s += `<rect x="281" y="${i1-2}" width="13" height="10" rx="2" fill="var(--ink)"/><rect x="336" y="${i2-8}" width="13" height="10" rx="2" fill="var(--ink)"/>`;
+      T(30,top+30,'มาจากถนนนอก','l-dim'); T(585,top+30,'ขาเข้า →','l-dim'); T(30,bot-20,'← ขาออก','l-dim'); T(530,bot-20,'มาจากในหมู่บ้าน','l-dim');
+      s += `<rect x="${288-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${342+5.5*U}" y="${i2+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
+      cam(272,112,208,5.5,24,'var(--lpr)','L1',150,124); cam(296,100,200,7,36,'var(--road)','C1',150,30);
+      cam(358,128,16,5.5,24,'var(--lpr)','L2',380,124); cam(334,140,12,7,36,'var(--road)','C2',420,228);
+      T(298,24,'ตู้ VAS117 ติดป้อม · ไม้กั้นขาเข้า','l-lbl'); T(352,228,'ตู้ VAS117 ติดป้อม · ไม้กั้นขาออก','l-lbl','end');
+      T(20,292,'ของเดิม: ป้อมกลางถนน · ไม้กั้นติดป้อม · กล้องข้างป้อม · รถวิ่งชิดซ้าย · เลน 3.5 ม.','l-dim');
     } else {
+      // G2/G3 back gates: no island, VAS117 cabinets at each roadside, arms reach the centre line
+      const top=100, mid=156, bot=212;
+      s += `<rect x="20" y="${top}" width="620" height="${bot-top}" fill="var(--m-road)" stroke="var(--line)"/><path d="M20 ${mid} H640" stroke="#e0b400" stroke-width="2" stroke-dasharray="14 10"/>`;
+      T(30,top+32,'มาจากถนนนอก (ซอย 4)','l-dim'); T(580,top+32,'ขาเข้า →','l-dim'); T(30,bot-22,'← ขาออก','l-dim'); T(530,bot-22,'มาจากในหมู่บ้าน','l-dim');
+      s += `<rect x="356" y="${top}" width="8" height="56" fill="var(--lpr)"/><rect x="296" y="${mid}" width="8" height="56" fill="var(--lpr)"/>`;
+      s += `<rect x="353" y="${top-12}" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="293" y="${bot+2}" width="14" height="10" rx="2" fill="var(--ink)"/>`;
+      T(372,top+18,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl'); T(288,bot-8,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl','end');
+      s += `<rect x="440" y="4" width="80" height="40" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(480,30,'ป้อม รปภ.','l-lbl','middle');
+      s += `<rect x="528" y="12" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="545" y="28" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
+      s += `<rect x="${360-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${300+5.5*U}" y="${mid+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
       cam(338,top-14,170,5.5,24,'var(--lpr)','L1',220,top-30); cam(318,bot+16,-10,5.5,24,'var(--lpr)','L2',340,bot+42);
       cam(430,top-14,168,7,36,'var(--road)','C1',446,top-10); cam(240,bot+16,-15,7,36,'var(--road)','C2',120,bot+42);
+      T(20,292,'ของเดิม: ไม้กั้นติดข้างถนน · ไม่มีเกาะกลาง · รถวิ่งชิดซ้าย · เลน 3.5 ม.','l-dim');
     }
-    s += `<path d="M${360-6*U} ${top-8} V${top} M${360-6*U} ${top-4} H${360-4*U} M${360-4*U} ${top-8} V${top}" stroke="var(--lpr)" stroke-width="1.5"/>`;
-    T(20,292,'LPR จับป้ายที่ 4–6 ม. ก่อนไม้กั้น · รถวิ่งชิดซ้าย · เลน 3.5 ม.'+(isl?' · เกาะกลาง 2 ม.':' · ไม่มีเกาะกลาง'),'l-dim');
     $(id).innerHTML = s + t;
   }
   drawLane('lane','kerb'); drawLane('lane1','island');
