@@ -193,8 +193,31 @@ tfoot td{font-weight:600}
   </div>
 
   <section>
+    <h2>Network ร่วมกับงาน LPR</h2>
+    <pre class="mermaid">
+flowchart LR
+  subgraph OFF[ห้องนิติ]
+    CORE[Core switch 24 SFP<br/>VLAN 10 CCTV · VLAN 20 LPR]
+    NVR1[NVR CCTV 32CH]
+    NVR2[NVR LPR 16CH + โปรแกรม LPR]
+  end
+  CORE --- NVR1
+  CORE --- NVR2
+  CORE == Fiber ร่วม · core แยกต่อโหนด ==> H[โหนด CCTV H1–H19]
+  CORE == core สำรองในสายเดียวกัน ==> G1[ตู้ LPR G1 ประตูหน้า]
+  CORE -- UTP --> G2[ตู้ LPR G2]
+  CORE -- UTP --> G3[ตู้ LPR G3]
+    </pre>
+    <ul class="plain">
+      <li>สาย Fiber, ODF, core switch, rack/UPS อยู่ในงาน CCTV (ราคานี้) งาน LPR ใช้ร่วมโดยไม่คิดค่าสายซ้ำ</li>
+      <li>สายเส้นเดียวกันมี core แยกให้ LPR ที่ประตูหน้า 1 core (BiDi) แล้ว ช่วงต้นทางหน้านิติจึงใช้สาย 24 core</li>
+      <li>แยก VLAN: CCTV และ LPR เห็นกันไม่ได้ ยกเว้นเครื่องดูภาพที่นิติ ถ้าทำงาน LPR ก่อนหรือไม่ทำงาน CCTV ต้องคิดสาย Fiber ในงาน LPR เอง</li>
+    </ul>
+  </section>
+
+  <section>
     <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
-      <h2>ใบประมาณราคา</h2><button id="preset" class="ghost">คืนราคาตั้งต้น</button>
+      <h2>ใบประมาณราคา งาน CCTV หมู่บ้าน</h2><button id="preset" class="ghost">คืนราคาตั้งต้น</button>
     </div>
     <div class="tbl quote"><table>
       <thead><tr><th>รายการ</th><th>รุ่น / สเปก</th><th style="text-align:right">จำนวน</th><th style="text-align:right">ราคา/หน่วย (บาท)</th><th style="text-align:right">รวม (บาท)</th></tr></thead>
@@ -207,7 +230,7 @@ tfoot td{font-weight:600}
   <section>
     <h2>หลักการออกแบบ</h2>
     <ul class="plain">
-      <li><b>ประตูทั้ง 2 จุด (จุดแดง)</b> ติดกล้อง LPR อ่านป้ายทะเบียนขาเข้า/ออก + กล้องมุมกว้างส่องถนนหน้าประตู (เสาสูง 2.5–3 ม. มุมเอียงไม่เกิน 30°)</li>
+      <li><b>ประตู (จุดแดง)</b> งานนี้มีเฉพาะกล้องมุมกว้างส่องถนนหน้าประตู (#3, #22) ส่วนกล้องอ่านป้ายทะเบียนและกล้องเช็ครถอยู่ในงาน LPR ไม้กั้นซึ่งแยกราคาและอุปกรณ์</li>
       <li><b>ถนนเมน</b> ติดทุกแยกหลักตลอดแนว เพื่อติดตามรถตั้งแต่ประตูถึงซอย ถนนเมนวิ่งชิดกำแพงด้านใต้ จึงครอบคลุมกำแพงช่วงนั้นด้วย</li>
       <li><b>ริมกำแพง</b> 13 ตัว ติดที่ปลายถนน/ถนนที่ชนกำแพง ใช้ Bullet IR ยิงขนานแนวกำแพง ระยะ IR 50–60 ม. ใช้ "ตรวจจับ" คน/รถได้ แต่ "ระบุตัวบุคคล" ได้ในระยะ ~6–20 ม. เท่านั้น บางช่วงกำแพงยาวยังมีช่องว่างระหว่างกล้อง (เช่น #6–#8) ถ้าต้องการปิดทุกช่วงต้องเพิ่มกล้อง</li>
       <li><b>ทุกจุดอยู่ริมถนน</b> (ห่างแนวถนนไม่เกิน ~10 ม.) ติดบนเสาไฟหรือเสากล้อง ไม่ต้องเข้าพื้นที่หลังบ้าน</li>
@@ -240,11 +263,11 @@ tfoot td{font-weight:600}
   function run(){
     if (!(+ew.value>=100)) ew.value = defEW; if (!(+ns.value>=50)) ns.value = defNS;
     const sx = (+ew.value)/EW_PX, sy = (+ns.value)/NS_PX;
-    R = P.compute(sx, sy);
+    R = P.compute(sx, sy, { shared: ['W0'] });
     const c = R.cams, n = t => c.filter(x=>x.type===t).length;
     const utp = c.reduce((s,x)=>s+x.cable,0), bad = c.filter(x=>!x.ok).length;
     document.getElementById('tiles').innerHTML = [
-      [c.length,'กล้องทั้งหมด'], [n('LPR')+' / '+n('ROAD'),'LPR / ถนน'], [n('WALL')+' / '+n('DOME'),'กำแพง / สวน'],
+      [c.length,'กล้องทั้งหมด'], [n('ROAD')+' / '+n('WALL')+' / '+n('DOME'),'ถนน / กำแพง / สวน'],
       [f0(Object.values(R.byCore).reduce((a,b)=>a+b,0))+' ม.','สาย Fiber (รวมเผื่อ)'], [f0(utp)+' ม.','สาย UTP Cat6 รวม'], [R.hubs.length-1,'ตู้/กล่อง PoE นอกนิติ'],
       [bad ? bad+' จุด' : 'ผ่านทุกจุด', 'UTP ≤ 90 ม.'],
       [c.filter(x=>x.side!=='W').length+' กล้อง / '+R.hubs.filter(h=>h.side!=='W').length+' กล่อง', 'อยู่บน/ข้ามถนนสาธารณะ']
@@ -277,11 +300,11 @@ tfoot td{font-weight:600}
     const links = R.links, utpBoxes = Math.ceil(utp*1.1/305), remote = R.hubs.filter(h=>h.node!=='OF' && h.node!=='W0');
     const nb = k => remote.filter(h=>h.ports===k).length;
     const rows = [
-      ['LPR','กล้องอ่านป้ายทะเบียน (ประตู)', M.LPR, n('LPR')], ['ROAD','กล้อง Bullet ถนน/แยก', M.ROAD, n('ROAD')],
+      ['ROAD','กล้อง Bullet ถนน/แยก', M.ROAD, n('ROAD')],
       ['WALL','กล้อง Bullet IR ริมกำแพง', M.WALL, n('WALL')], ['DOME','กล้อง Turret ภาพสี สวน/บึง/นิติ', M.DOME, n('DOME')],
       ['NVR','เครื่องบันทึก NVR', M.NVR+' · '+M.codec, 1],
       ['HDD'+ST.sz,'HDD Surveillance '+ST.sz+' TB', 'เก็บ '+ST.days+' วัน ('+ST.cfg+')', ST.n],
-      ['CORE','Core switch ห้องนิติ', 'L2/L3 managed, 24 SFP + 4 RJ45 PoE+ (รองรับ '+links+' ลิงก์)', 1], ['RACK','ตู้ Rack 9U + UPS 2 kVA', 'ห้องนิติ', 1],
+      ['CORE','Core switch ห้องนิติ (ใช้ร่วมกับงาน LPR)', 'L2/L3 managed VLAN, 24 SFP + 4 RJ45 · CCTV '+links+' ลิงก์ + เผื่อ LPR '+R.sharedLinks+' SFP + 2 RJ45', 1], ['RACK','ตู้ Rack 9U + UPS 2 kVA', 'ห้องนิติ', 1],
       ['ODF','ODF/patch panel 24–48 core ห้องนิติ', 'รับสาย Fiber ทุกเส้น', 1],
       ['GATE','ตู้ป้อมประตูหลัก', 'PoE+ switch 1 SFP + 4 PoE+ + ตู้กันน้ำ', 1],
       ['BOX2','โหนดที่เสา 1–2 กล้อง', 'Switch 1 SFP + 2 PoE+, กล่อง IP66, กันฟ้าผ่า', nb(2)],
@@ -291,7 +314,7 @@ tfoot td{font-weight:600}
       ['SFP','โมดูล SFP BiDi Single-mode (คู่)', '1 คู่ต่อ 1 ลิงก์ (1 core)', links],
       ['F4','สาย Fiber 4 core (ม.)', 'ช่วงปลายทาง 1–2 ลิงก์', R.byCore[4]||0],
       ['F12','สาย Fiber 12 core (ม.)', 'ช่วงที่ใช้ร่วม 3–10 ลิงก์', R.byCore[12]||0],
-      ['F24','สาย Fiber 24 core (ม.)', 'ช่วงต้นทางหน้านิติ ≤ 22 ลิงก์', R.byCore[24]||0],
+      ['F24','สาย Fiber 24 core (ม.)', 'ช่วงต้นทางหน้านิติ (รวม core ของ LPR)', R.byCore[24]||0],
       ['CLO','กล่องต่อแยก Fiber (closure) ที่จุดแยก', 'จุดแยกสาย', R.splices],
       ['XING','จุดข้ามซอย 4 (เสา 8–9 ม. หรือลอดท่อ)', 'รวมขออนุญาต', R.crossings],
       ['UTP','สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', f0(utp)+' ม. + เผื่อ 10%', utpBoxes],
@@ -300,7 +323,7 @@ tfoot td{font-weight:600}
       ['COM','ตั้งค่าระบบ ทดสอบ อบรม', 'เหมา', 1]
     ];
     let sub = 0;
-    document.getElementById('bom').innerHTML = rows.map(([k,a,m,q]) => { const t = q*(PRICE[k]||0); sub += t;
+    document.getElementById('bom').innerHTML = rows.filter(r=>r[3]>0).map(([k,a,m,q]) => { const t = q*(PRICE[k]||0); sub += t;
       return `<tr><td>${a}</td><td class="m">${m}</td><td class="n">${f0(q)}</td><td class="n"><input id="p_${k}" data-k="${k}" type="number" min="0" step="1" value="${PRICE[k]||0}" aria-label="ราคา ${a}"></td><td class="n">${f0(t)}</td></tr>`; }).join('');
     const vat = sub*0.07;
     document.getElementById('qfoot').innerHTML = `<tr><td colspan="4">รวมก่อน VAT</td><td class="n">${f0(sub)}</td></tr><tr><td colspan="4">VAT 7%</td><td class="n">${f0(vat)}</td></tr><tr><td colspan="4"><b>รวมทั้งสิ้น</b></td><td class="n"><b>${f0(sub+vat)}</b></td></tr>`;

@@ -82,9 +82,9 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">งานที่ 2 · ระบบอ่านป้ายทะเบียน + กล้องเช็ครถ ที่ไม้กั้น 3 จุด · ฉบับร่าง 3</div>
+    <div class="eyebrow">งานที่ 2 · ระบบอ่านป้ายทะเบียน + กล้องเช็ครถ ที่ไม้กั้น 3 จุด · ฉบับร่าง 4</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
-    <p class="sub">งานนี้แยกจากงานกล้อง CCTV 30 จุด ใช้ใบเสนอราคาแยก กล้องในงานนี้ใช้รหัส B1–B12 เพื่อไม่ปนกับกล้อง 1–30 ·
+    <p class="sub">งานนี้แยกราคาและอุปกรณ์จากงานกล้อง CCTV 30 จุด แต่ใช้ network (สาย Fiber + Core switch ที่นิติ) ร่วมกัน กล้องในงานนี้ใช้รหัส B1–B12 เพื่อไม่ปนกับกล้อง 1–30 ·
       ศูนย์บันทึกอยู่ที่สำนักงานนิติ</p>
   </header>
 
@@ -124,7 +124,7 @@ tfoot td{font-weight:600}
   </section>
 
   <section>
-    <h2>การเชื่อมต่อแต่ละจุด</h2>
+    <h2>การเชื่อมต่อกลับนิติ (network ร่วม)</h2>
     <div class="calib">
       <p class="note" style="margin:0">แต่ละจุดมีตู้กันน้ำ + PoE switch 8 พอร์ต จ่ายไฟกล้อง 4 ตัวและต่อชุดควบคุมไม้กั้น แล้วส่งสัญญาณกลับนิติ ระยะตั้งต้นประมาณจากผัง แก้ได้หลังวัดจริง</p>
       <div class="row">
@@ -132,7 +132,8 @@ tfoot td{font-weight:600}
         <label for="up2">G2 หลังฝั่งเหนือ → นิติ (ม.)<input id="up2" type="number" min="0" step="1"></label>
         <label for="up3">G3 หลังฝั่งใต้ → นิติ (ม.)<input id="up3" type="number" min="0" step="1"></label>
       </div>
-      <label class="chk" for="share"><input id="share" type="checkbox" style="width:auto"> ใช้ core สำรองใน Fiber ของงาน 30 จุด สำหรับ G1 (ไม่ต้องลากสายใหม่ ถ้าทำงาน 30 จุดพร้อมกัน)</label>
+      <label class="chk" for="share"><input id="share" type="checkbox" checked style="width:auto"> ใช้ network ร่วมกับงาน CCTV หมู่บ้าน (แนะนำ)</label>
+      <p class="note" style="margin:0" id="netnote"></p>
       <div class="tiles" id="links"></div>
     </div>
   </section>

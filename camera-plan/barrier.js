@@ -23,7 +23,7 @@
     dahua:{ LPR:'Dahua ITC413-PW4D-IZ1 (ANPR 4MP, 3–8 ม., PoE+, relay เปิดไม้กั้น)', CHK:'Dahua IPC-HFW2441T-ZS (4MP ซูม 2.7–13.5 มม.)', NVR:'Dahua NVR5416-EI (16CH, 4 SATA, AI/ANPR)', SW:'Dahua PoE switch 8 พอร์ต + 1 SFP (Hi-PoE)', SOFT:'Dahua DSS Express (จัดการ whitelist/ประวัติรถ)', codec:'Smart H.265+' },
     unv:{ LPR:'Uniview LPR 4MP (ซีรีส์ LPR/ANPR, relay เปิดไม้กั้น)', CHK:'Uniview 4MP Varifocal Bullet (2.8–12 มม.)', NVR:'Uniview NVR304-16X (16CH, 4 SATA)', SW:'Uniview PoE switch 8 พอร์ต + 1 SFP', SOFT:'Uniview LPR/Parking management software', codec:'Ultra 265' }
   };
-  const PRICE0 = { LPR:12000, CHK:3900, NVR:16000, HDD4:4200, HDD6:5600, HDD8:7200, HDD10:9200, HDD12:10500, HDD16:14500, SW:5500, CAB:3500, LPOLE:2500, CPOLE:1800, UTP:3800, FIB:9, SFP:1200, INT:3500, SOFT:15000, MON:4500, LAB:1500, COM:12000 };
+  const PRICE0 = { NET:3500, LPR:12000, CHK:3900, NVR:16000, HDD4:4200, HDD6:5600, HDD8:7200, HDD10:9200, HDD12:10500, HDD16:14500, SW:5500, CAB:3500, LPOLE:2500, CPOLE:1800, UTP:3800, FIB:9, SFP:1200, INT:3500, SOFT:15000, MON:4500, LAB:1500, COM:12000 };
   let PRICE = Object.assign({}, PRICE0);
   try { Object.assign(PRICE, JSON.parse(localStorage.getItem('bprice')||'{}')); } catch(e) {}
   const up0 = GATES.map(g => Math.round(route(g.path)));
@@ -37,6 +37,8 @@
     const link = GATES.map((g,i) => { const cab = Math.ceil(ups[i]*1.1+8); const fibre = g.media==='fibre' || cab>90;
       return { g, fibre, len: fibre ? Math.ceil(ups[i]*1.1+20) : cab }; });
     const fibM = link.filter(l=>l.fibre && !(l.g.id==='G1' && share)).reduce((s,l)=>s+l.len,0);
+    $('netnote').textContent = share ? 'ใช้ network ร่วมกับงาน CCTV: G1 ใช้ core สำรองในสาย Fiber ของงาน CCTV, G2/G3 ต่อ UTP เข้า Core switch ที่นิติ (VLAN 20) งานนี้ไม่คิดค่าสาย Fiber และ core switch'
+      : 'ไม่ใช้ network ร่วม: งานนี้ต้องลากสาย Fiber ของตัวเองไป G1 และต้องมี switch ที่นิติเอง';
     const sfp = link.filter(l=>l.fibre).length;
     const utpM = CAMS.reduce((s,c)=>s+c.cable,0) + link.filter(l=>!l.fibre).reduce((s,l)=>s+l.len,0);
     $('links').innerHTML = link.map(l => `<div class="tile"><b>${l.fibre ? (l.g.id==='G1'&&share ? 'Fiber (core สำรอง)' : 'Fiber '+f0(l.len)+' ม.') : 'UTP '+l.len+' ม.'}</b><span>${l.g.id} → นิติ</span></div>`).join('');
@@ -58,13 +60,14 @@
       ['LPOLE','เสาเตี้ยกล้อง LPR 1.2–1.5 ม.', 'รวมฐาน', 6], ['CPOLE','เสา/ขาจับกล้องเช็ครถ', 'สูง 2.5–3 ม.', 6],
       ['UTP','สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', f0(utpM)+' ม. + เผื่อ 10%', Math.ceil(utpM*1.1/305)],
       ['FIB','สาย Fiber Single-mode มีสลิง (ม.)', share ? 'G1 ใช้ core สำรองของงาน 30 จุด' : 'G1 → นิติ', fibM],
-      ['SFP','โมดูล SFP Single-mode (คู่)', 'ต่อ 1 ลิงก์ Fiber', sfp],
+      ['SFP','โมดูล SFP BiDi Single-mode (คู่)', share ? 'G1 ใช้ core สำรองในสายงาน CCTV' : 'ต่อ 1 ลิงก์ Fiber', sfp],
+      ['NET','เชื่อมเข้า Core switch ร่วม + ตั้ง VLAN LPR', 'patch cord, ป้ายสาย, ตั้งค่า', share ? 1 : 0],
       ['INT','เชื่อมสั่งเปิดไม้กั้น (relay/Wiegand + เดินสายสัญญาณ)', 'ต่อจุด', 3],
       ['SOFT','โปรแกรมจัดการ LPR / whitelist ลูกบ้าน', M.SOFT, 1], ['MON','จอดูภาพที่ป้อม 22–24 นิ้ว', 'ต่อจุด', 3],
       ['LAB','ค่าติดตั้งกล้อง', 'ต่อจุด', 12], ['COM','ตั้งค่า LPR จูนมุมป้าย ทดสอบ อบรม รปภ.', 'เหมา', 1]
     ];
     let sub=0;
-    $('bom').innerHTML = rows.map(([k,a,m,q]) => { const t=q*PRICE[k]; sub+=t;
+    $('bom').innerHTML = rows.filter(r=>r[3]>0).map(([k,a,m,q]) => { const t=q*PRICE[k]; sub+=t;
       return `<tr><td>${a}</td><td class="m">${m}</td><td class="n">${f0(q)}</td><td class="n"><input id="p_${k}" data-k="${k}" type="number" min="0" step="1" value="${PRICE[k]}" aria-label="ราคา ${a}"></td><td class="n">${f0(t)}</td></tr>`; }).join('');
     $('qfoot').innerHTML = `<tr><td colspan="4">รวมก่อน VAT</td><td class="n">${f0(sub)}</td></tr><tr><td colspan="4">VAT 7%</td><td class="n">${f0(sub*.07)}</td></tr><tr><td colspan="4"><b>รวมทั้งสิ้น</b></td><td class="n"><b>${f0(sub*1.07)}</b></td></tr>`;
     drawLoc(link);

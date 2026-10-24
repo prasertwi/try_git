@@ -33,8 +33,8 @@
   const FIXED_HUBS = [ { node:'OF', name:'ห้องนิติ (NVR + PoE switch หลัก)' }, { node:'W0', name:'ป้อมประตูหลัก' } ];
   const T = { LPR:'กล้องอ่านป้ายทะเบียน (LPR)', WALL:'Bullet IR 4MP (กำแพง)', ROAD:'Bullet 4MP (ถนน/แยก)', DOME:'Turret 4MP ภาพสีกลางคืน' };
   const CAMS = [
-    [1,'ประตูหลัก – LPR ขาเข้า','LPR',84,352],
-    [2,'ประตูหลัก – LPR ขาออก','LPR',84,382],
+    [1,'กำแพงใต้ ระหว่าง #6–#8 (แปลง 25–31)','WALL',310,262],
+    [2,'กำแพงใต้ แนวแปลง 119–133 (ถนนในซอย)','WALL',560,228],
     [3,'ประตูหลัก – ถนนหน้าประตู (มุมกว้าง)','ROAD',100,366],
     [4,'ถนนเมน หน้าแปลง 15–19','ROAD',190,374],
     [5,'บึง/สวน แปลง 1–15 (ริมถนนวงรอบ)','DOME',117,305],
@@ -53,7 +53,7 @@
     [18,'กำแพงใต้ แปลง 203–209 (ริมถนน)','WALL',900,198],
     [19,'กำแพงใต้ แปลง 271–279 (ริมถนน)','WALL',1030,198],
     [20,'บึงใต้ (ริมถนน แปลง 239–259)','DOME',975,279],
-    [21,'ประตูสี่แยกกลาง – LPR','LPR',1063,348],
+    [21,'มุมกำแพงตะวันออกเฉียงเหนือ (แปลง 531–537)','WALL',795,505],
     [22,'ประตูสี่แยกกลาง – ถนนหน้าประตู (มุมกว้าง)','ROAD',1072,360],
     [23,'หน้าสำนักงานนิติ','DOME',1032,375],
     [24,'กำแพงใต้ โซน SW (ปลายถนน 301–311)','WALL',1110,120],
@@ -106,7 +106,8 @@
     HUBS.forEach(h => { if (!h.name) h.name='กล่อง Fiber+PoE ที่เสากล้อง #'+cams.filter(c=>c.hub===h.id).map(c=>c.id).join(', #'); });
     // 3) fibre backbone: star of point-to-point links (one BiDi SFP pair per node) sharing multi-core cable on common road segments
     const seg={}; const fibrePaths=[];
-    HUBS.slice(1).forEach(h => { const p=pathTo('OF',h.node); fibrePaths.push(p.map(k=>nodes[k]));
+    const sharedTargets = (opt.shared||[]).map(n=>({node:n, lpr:true}));
+    HUBS.slice(1).concat(sharedTargets).forEach(h => { const p=pathTo('OF',h.node); if (!h.lpr) fibrePaths.push(p.map(k=>nodes[k]));
       for (let i=1;i<p.length;i++){ const k=[p[i-1],p[i]].sort().join('|'); (seg[k]=seg[k]||{a:p[i-1],b:p[i],len:d(nodes[p[i-1]],nodes[p[i]]),links:0}).links++; } });
     const CORE=[4,12,24,48]; const byCore={}; let fibreRoute=0; const deg={};
     Object.values(seg).forEach(g => { g.cores = CORE.find(c => c >= g.links+2) || 48; byCore[g.cores]=(byCore[g.cores]||0)+g.len; fibreRoute+=g.len; deg[g.a]=(deg[g.a]||0)+1; deg[g.b]=(deg[g.b]||0)+1; });
@@ -117,7 +118,7 @@
     const portSize = n => n<=2 ? 2 : n<=4 ? 4 : 8;
     const hubs = HUBS.map(h => ({ id:h.id, name:h.name, node:h.node, xy:nodes[h.node], dist:sp('OF').dist[h.node],
       side: side(nodes[h.node][0],nodes[h.node][1]), fibre: h.node==='OF' ? 0 : Math.ceil(sp('OF').dist[h.node]*(1+opt.slack)+20), cams:cams.filter(c=>c.hub===h.id).length, ports: portSize(cams.filter(c=>c.hub===h.id).length) }));
-    return { cams, hubs, fibrePaths, fibreRoute, byCore, splices, crossings, links: HUBS.length-1, maxLinks: Math.max(0,...Object.values(seg).map(g=>g.links)), fibreCable: Math.ceil(fibreRoute*(1+opt.slack)+20*(HUBS.length-1)) };
+    return { cams, hubs, fibrePaths, fibreRoute, byCore, splices, crossings, links: HUBS.length-1, sharedLinks: sharedTargets.length, maxLinks: Math.max(0,...Object.values(seg).map(g=>g.links)), fibreCable: Math.ceil(fibreRoute*(1+opt.slack)+20*(HUBS.length-1)) };
   }
   // Estimated pole positions for field checking: village street lights every ~35 m on internal roads,
   // PEA concrete poles every ~40 m along ซอย 4 (seen in Street View on the real-north side = plan-south side)
