@@ -140,10 +140,11 @@ def build(gate):
         box("booth_win_a", (0.05, 1.4, 0.9), (-0.22, 0, 1.6), (0.56, 0.71, 0.79), 0.05)
         box("booth_win_b", (0.05, 1.4, 0.9), (2.22, 0, 1.6), (0.56, 0.71, 0.79), 0.05)
         box("poe_cabinet", (0.4, 0.22, 0.6), (1.0, -1.33, 0.6), (0.05, 0.42, 0.36))
-    else:
+    elif gate != "G3":  # Street View: G3 has no guardhouse
         hy = L["house"] - 1.2
         box("guardhouse", (3, 2.4, 2.6), (2.2, hy, 1.3), (0.91, 0.89, 0.85))
         box("guardhouse_roof", (3.4, 2.8, 0.15), (2.2, hy, 2.68), (0.48, 0.43, 0.38))
+    if not L.get("booth"):
         box("poe_cabinet", (0.5, 0.25, 0.7), (4.2, L["house"] + 0.4, 0.8), (0.05, 0.42, 0.36))
 
     # company sign (VAS colours)

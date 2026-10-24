@@ -124,7 +124,7 @@
       s += `<path d="M330 ${mid} H390" stroke="var(--lpr)" stroke-width="1.2" stroke-dasharray="2 2"/>`;
       T(372,top+18,'ตู้ VAS117 ขาเข้า · แขน '+armKerb().toFixed(2)+' ม.','l-lbl'); T(350,bot-8,'ตู้ VAS117 ขาออก · แขน '+armKerb().toFixed(2)+' ม.','l-lbl','end');
       T(372,mid-6,'ปลายไม้ชนกันกลางถนน','l-dim');
-      s += `<rect x="440" y="4" width="80" height="40" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(480,30,'ป้อม รปภ.','l-lbl','middle');
+      s += `<rect x="440" y="4" width="80" height="40" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(480,30,'ป้อม รปภ. (เฉพาะ G2)','l-lbl','middle'); T(440,58,'G3 ไม่มีป้อม · ตู้ PoE ติดเสาริมถนน','l-dim');
       s += `<rect x="528" y="12" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="545" y="28" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
       s += `<rect x="${360-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${360+5.5*U}" y="${mid+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
       cam(338,top-14,170,5.5,24,'var(--lpr)','L1',220,top-30); cam(382,bot+16,-10,5.5,24,'var(--lpr)','L2',400,bot+42);

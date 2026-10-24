@@ -349,13 +349,14 @@ def build(gate, imgs, args):
         bx, by, bw = 1.0, 0.0, 2.4
     else:
         bx, by, bw = 2.4, L["house"] - 1.0, 2.6
-    box("booth", (bw, bw * 0.95, 2.5), (bx, by, 1.35), mats["booth_wall"], bevel=0.03)
-    box("booth_roof", (bw + 0.6, bw + 0.5, 0.16), (bx, by, 2.72), mats["roof"], bevel=0.03)
-    box("booth_interior", (bw - 0.15, bw * 0.95 - 0.15, 2.3), (bx, by, 1.35), mats["interior"])
-    for sx in (-1, 1):
-        box("booth_glass", (0.04, bw * 0.6, 1.0), (bx + sx * bw / 2, by, 1.65), mats["glass"])
-    bpy.ops.object.light_add(type="POINT", location=(bx, by, 2.2)); bpy.context.active_object.data.energy = 300
-    bpy.context.active_object.data.color = (1, 0.8, 0.55)
+    if gate != "G3":  # Street View: G3 has no guardhouse
+        box("booth", (bw, bw * 0.95, 2.5), (bx, by, 1.35), mats["booth_wall"], bevel=0.03)
+        box("booth_roof", (bw + 0.6, bw + 0.5, 0.16), (bx, by, 2.72), mats["roof"], bevel=0.03)
+        box("booth_interior", (bw - 0.15, bw * 0.95 - 0.15, 2.3), (bx, by, 1.35), mats["interior"])
+        for sx in (-1, 1):
+            box("booth_glass", (0.04, bw * 0.6, 1.0), (bx + sx * bw / 2, by, 1.65), mats["glass"])
+        bpy.ops.object.light_add(type="POINT", location=(bx, by, 2.2)); bpy.context.active_object.data.energy = 300
+        bpy.context.active_object.data.color = (1, 0.8, 0.55)
     box("poe_cabinet", (0.42, 0.24, 0.62), (bx + bw / 2 + 0.4, by, 0.5), M("cab_green", (0.02, 0.32, 0.27), rough=0.35, coat=0.3), bevel=0.015)
 
     # cameras (LPR + vehicle check)
