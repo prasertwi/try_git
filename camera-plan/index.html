@@ -33,7 +33,7 @@ section{display:grid;gap:12px;min-width:0}
 .calib{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:12px}
 .calib .row{display:flex;flex-wrap:wrap;gap:14px}
 .calib label{display:grid;gap:4px;font-size:.88rem;color:var(--muted);flex:1 1 240px}
-.calib input{font:500 1rem var(--f-mono);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+.calib input,.calib select{font:500 1rem var(--f-mono);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
 .calib input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button{font:500 .88rem var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--panel);cursor:pointer}
 button.ghost{background:transparent;color:var(--accent)}
@@ -66,7 +66,7 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง</div>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 2</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
     <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ประมาณ 14.878° N, 102.061° E) ·
       <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
@@ -79,7 +79,13 @@ tfoot td{font-weight:600}
     <h2>ปรับมาตราส่วนจาก Google Earth</h2>
     <div class="calib">
       <p class="note" style="margin:0">ผังที่ได้รับเป็นภาพถ่าย ไม่มีมาตราส่วน ค่าตั้งต้นประมาณจากขนาดแปลงบ้านเดี่ยว (หน้ากว้าง ~16 ม. ลึก ~20 ม.)
-        ใช้เครื่องมือไม้บรรทัด (Ruler) ใน Google Earth วัด 2 ระยะด้านล่าง แล้วใส่ค่า ระยะสายทุกจุดจะคำนวณใหม่ทันที</p>
+        วัด 2 ระยะด้านล่างใน Google Maps แล้วใส่ค่า ระยะสายทุกจุดจะคำนวณใหม่ทันที</p>
+      <ol class="note" style="margin:0;padding-left:1.3em">
+        <li><b>Chrome บนคอม:</b> เปิด <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">Google Maps</a> → กด “เลเยอร์” มุมซ้ายล่าง → “ดาวเทียม”</li>
+        <li>คลิกขวาที่จุดเริ่ม → “วัดระยะทาง” → คลิกตามแนวถนน/แนวเสาไฟทีละจุด (ลากจุดแก้ได้) ระยะรวมแสดงที่กล่องด้านล่าง</li>
+        <li><b>มือถือ (แอป Google Maps):</b> กดค้างที่จุดเริ่มจนขึ้นหมุด → ปัดข้อมูลขึ้น → “วัดระยะทาง” → เลื่อนแผนที่ให้เป้าเล็งไปจุดถัดไป → กด “+” เพิ่มจุด</li>
+        <li>ระหว่างวัด ให้ซูมดูเสาไฟ (จุดเงาเล็กๆ ริมถนน) แล้ววัดแนวสายตามเสาจริง ใช้ Street View ยืนยันตำแหน่งเสาได้</li>
+      </ol>
       <div class="row">
         <label for="ew">① ถนนเมน: ประตูหลัก (แดงซ้าย) → ประตูตะวันออก (แดงขวา) เมตร
           <input id="ew" type="number" min="100" max="3000" step="1"></label>
@@ -118,6 +124,36 @@ tfoot td{font-weight:600}
     <p class="note">UTP = ระยะตามถนน × 1.10 (เผื่อโค้ง/หย่อน) + 8 ม. (ขึ้นเสา 3–4 ม. + เผื่อปลายสาย) · มาตรฐาน PoE/Cat6 ไม่เกิน 90 ม. ต่อเส้น</p>
   </section>
 
+  <section>
+    <h2>พื้นที่บันทึก NVR (กล้อง IP 4 ล้านพิกเซล, H.265)</h2>
+    <div class="calib">
+      <div class="row">
+        <label for="days">จำนวนวันที่เก็บ
+          <select id="days" class="sel"><option value="30">30 วัน</option><option value="60">60 วัน</option></select></label>
+        <label for="codec">การบีบอัด / บิตเรตเฉลี่ยต่อกล้อง
+          <select id="codec" class="sel">
+            <option value="3">H.265 ปกติ – 3 Mbps (4MP 20fps, บันทึก 24 ชม.)</option>
+            <option value="2">H.265 – 2 Mbps (4MP 15fps)</option>
+            <option value="1.5">H.265+ / Smart codec – ~1.5 Mbps เฉลี่ย</option>
+          </select></label>
+      </div>
+      <div class="tiles" id="stor"></div>
+      <p class="note" style="margin:0">สูตร: Mbps × 86,400 วินาที ÷ 8 = GB/วัน/กล้อง · กล้อง LPR คิด 4 Mbps (ต้องการภาพป้ายคมชัด) · เผื่อพื้นที่ 10% · 
+        H.265+ ประหยัดได้มากเฉพาะฉากนิ่ง ช่วงกลางคืน/ฝน/ต้นไม้ไหวบิตเรตจะสูงขึ้น ถ้าต้องการรับประกัน 60 วัน แนะนำคิดที่ H.265 ปกติ</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>เช็คแนวเสาไฟฟ้าก่อนเดินสาย</h2>
+    <ul class="plain">
+      <li>แนว Fiber สีม่วงในผังวิ่งตามถนน ต้องยืนยันว่ามีเสาไฟฟ้า/เสาไฟถนนตลอดแนว ระยะห่างเสาปกติ 30–40 ม. ถ้าช่วงไหนไม่มีเสา ต้องปักเสาเพิ่มหรือเดินท่อร้อยสายใต้ดิน (HDPE)</li>
+      <li>เสาของ กฟภ. ต้องขออนุญาตพาดสายสื่อสาร และต้องอยู่ระดับใต้สายไฟแรงต่ำ ห่างอย่างน้อย 1 ม. ถ้าเป็นเสาไฟถนนของหมู่บ้าน ขออนุญาตนิติ</li>
+      <li>การข้ามถนนสาธารณะ (เส้นที่แบ่งหมู่บ้าน 2 ส่วน) ต้องพาดสายสูงไม่ต่ำกว่า 5.5 ม. จากผิวถนน หรือลอดท่อใต้ถนน และต้องขออนุญาตหน่วยงานเจ้าของถนน</li>
+      <li>ใช้สาย Fiber แบบมีลวดสลิงในตัว (Figure-8 / ADSS) สำหรับพาดเสา และเผื่อม้วนสายสำรอง 10–20 ม. ที่ทุกกล่องพักสาย</li>
+      <li>กล้องทุกตัวในแบบนี้ติดบนเสาหรือกำแพงริมถนน เพื่อเข้าถึงซ่อมบำรุงได้ และเดินสายไม่ต้องผ่านพื้นที่หลังบ้าน</li>
+    </ul>
+  </section>
+
   <div class="two">
     <section>
       <h2>จุดจ่ายสัญญาณ (Fiber → PoE)</h2>
@@ -138,9 +174,10 @@ tfoot td{font-weight:600}
   <section>
     <h2>หลักการออกแบบ</h2>
     <ul class="plain">
-      <li><b>ประตูทั้ง 2 จุด</b> ติดกล้อง LPR อ่านป้ายทะเบียนขาเข้า/ออก + กล้องภาพรวมป้อม (เสาสูง 2.5–3 ม. มุมเอียงไม่เกิน 30°)</li>
+      <li><b>ประตูทั้ง 2 จุด (จุดแดง)</b> ติดกล้อง LPR อ่านป้ายทะเบียนขาเข้า/ออก + กล้องมุมกว้างส่องถนนหน้าประตู (เสาสูง 2.5–3 ม. มุมเอียงไม่เกิน 30°)</li>
       <li><b>ถนนเมน</b> ติดทุกแยกหลักตลอดแนว เพื่อติดตามรถตั้งแต่ประตูถึงซอย ถนนเมนวิ่งชิดกำแพงด้านใต้ จึงครอบคลุมกำแพงช่วงนั้นด้วย</li>
-      <li><b>ริมกำแพง</b> 13 ตัว ใช้ Bullet IR 50 ม. ยิงขนานแนวกำแพง ห่างกันไม่เกิน ~120 ม. ครอบคลุมด้านเหนือ ตะวันออก ตะวันตก และใต้</li>
+      <li><b>ริมกำแพง</b> 13 ตัว ติดที่ปลายถนน/ถนนที่ชนกำแพง ใช้ Bullet IR 50 ม. ยิงขนานแนวกำแพง ครอบคลุมด้านเหนือ ตะวันออก ตะวันตก และใต้</li>
+      <li><b>ทุกจุดอยู่ริมถนน</b> (ห่างแนวถนนไม่เกิน ~10 ม.) ติดบนเสาไฟหรือเสากล้อง ไม่ต้องเข้าพื้นที่หลังบ้าน</li>
       <li><b>สวน/บึง/สโมสร</b> ใช้ Turret ภาพสีกลางคืน สำหรับพื้นที่ส่วนกลางที่มีคนใช้</li>
       <li><b>ระบบสาย</b> ระยะเกิน 90 ม. ใช้ UTP ตรงไม่ได้ จึงเดิน Fiber จากห้องนิติไปตามแนวถนน แล้วใช้กล่อง Fiber+PoE (1 SFP + 2–4 PoE) ที่เสาใกล้กล้อง</li>
       <li><b>ไฟเลี้ยง</b> กล่องที่เสาใช้ไฟจากเสาไฟถนนของหมู่บ้าน (ขออนุญาตนิติ) หรือเดินสายไฟ VCT แยก</li>
@@ -183,11 +220,13 @@ tfoot td{font-weight:600}
     document.getElementById('foot').innerHTML = `<td></td><td>รวม</td><td></td><td class="n">${f0(c.reduce((s,x)=>s+x.nvrDist,0))}</td><td></td><td class="n">${f0(utp)}</td><td></td>`;
     document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
       + `<tr><td></td><td><b>Fiber backbone รวม (แนวถนนไม่ซ้ำ +10% +20 ม./จุด)</b></td><td></td><td class="n"><b>${f0(R.fibreCable)}</b></td></tr>`;
+    const ST = storage();
     const boxes = R.hubs.length-2, utpBoxes = Math.ceil(utp*1.1/305);
     const bom = [
       ['กล้อง LPR 2–4MP (เลนส์ varifocal)', n('LPR')], ['กล้อง Bullet 4MP IR 30–50 ม. (ถนน/แยก)', n('ROAD')],
       ['กล้อง Bullet 4MP IR 50 ม. (ริมกำแพง)', n('WALL')], ['กล้อง Turret 4MP ColorVu (สวน/บึง/นิติ)', n('DOME')],
-      ['NVR 32 ช่อง 4K + HDD Surveillance 4 ลูก × 8 TB (เก็บ ~30 วัน)', 1],
+      ['NVR 32 ช่อง 4K (รองรับ H.265, ขาเข้า ≥ 256 Mbps)', 1],
+      ['HDD Surveillance ' + ST.cfg + ' (' + ST.days + ' วัน)', ST.n],
       ['Core switch ห้องนิติ (L2, 8+ SFP + PoE 8 พอร์ต)', 1], ['ตู้ Rack 9U + UPS 2 kVA (ห้องนิติ)', 1],
       ['ตู้ป้อมประตูหลัก: PoE switch 1 SFP + 4 PoE + ตู้กันน้ำ', 1],
       ['กล่องที่เสา: Switch 1 SFP + 2 PoE + กล่องกันน้ำ IP66 + กันฟ้าผ่า', boxes],
@@ -200,6 +239,18 @@ tfoot td{font-weight:600}
     draw();
   }
 
+  function storage(){
+    const days = +document.getElementById('days').value, br = +document.getElementById('codec').value;
+    const nL = R.cams.filter(x=>x.type==='LPR').length, nO = R.cams.length - nL;
+    const mbps = nO*br + nL*Math.max(br,4); const gbDay = mbps*86400/8/1000; const tb = gbDay*days/1000*1.1;
+    let best=null; [4,8].forEach(b => [6,8,10,12,16].forEach(sz => { for (let n=2;n<=b;n+=2) if (n*sz>=tb) { const t=n*sz; if(!best||t<best.t||(t===best.t&&n<best.n)) best={n,sz,t,b}; break; } }));
+    const cfg = best ? best.n+' ลูก × '+best.sz+' TB' : 'เกิน 8 ลูก – ใช้ NVR 16 bay';
+    document.getElementById('stor').innerHTML = [
+      [mbps.toFixed(0)+' Mbps','บิตเรตรวมเข้า NVR'], [(gbDay/1000).toFixed(2)+' TB','ข้อมูลต่อวัน'],
+      [tb.toFixed(1)+' TB', 'ต้องการ '+days+' วัน (+10%)'], [cfg, best ? 'HDD (NVR '+best.b+' ช่อง)' : '']
+    ].map(([b,t])=>`<div class="tile"><b>${b}</b><span>${t}</span></div>`).join('');
+    return { days, cfg, n: best ? best.n : '–' };
+  }
   function draw(){
     const svg = document.getElementById('svg'); let s = '';
     R.fibrePaths.forEach(p => s += `<polyline points="${pts(p)}" fill="none" stroke="var(--fibre)" stroke-width="3" stroke-opacity=".7" stroke-linejoin="round"/>`);
@@ -212,6 +263,7 @@ tfoot td{font-weight:600}
   function pick(id){ sel = sel===id ? null : id; run(); }
   document.getElementById('svg').addEventListener('click', e => { const g=e.target.closest('.cam'); if (g) pick(+g.dataset.id); });
   document.getElementById('rows').addEventListener('click', e => { const r=e.target.closest('tr'); if (r) pick(+r.dataset.id); });
+  ['days','codec'].forEach(id => document.getElementById(id).addEventListener('change', run));
   document.getElementById('apply').addEventListener('click', () => { save(); run(); });
   [ew,ns].forEach(i => i.addEventListener('keydown', e => { if (e.key==='Enter'){ save(); run(); } }));
   document.getElementById('reset').addEventListener('click', () => { ew.value=defEW; ns.value=defNS; save(); run(); });
