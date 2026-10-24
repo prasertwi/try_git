@@ -15,8 +15,8 @@
   const ROLE = {
     LPRI:{ t:'LPR ขาเข้า', m:'เสาเตี้ยเกาะกลาง สูง 1.2–1.5 ม. จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
     LPRO:{ t:'LPR ขาออก', m:'เสาเตี้ยเกาะกลาง สูง 1.2–1.5 ม. จับป้ายที่ 4–6 ม.', len:10, lpr:1 },
-    CHKI:{ t:'เช็ครถขาเข้า (หน้ารถ+คนขับ)', m:'ป้อม/เสา ฝั่งคนขับ สูง 2.5–3 ม. ระยะ 5–8 ม.', len:12 },
-    CHKO:{ t:'เช็ครถขาออก (หน้ารถ+คนขับ)', m:'เสาฝั่งคนขับ สูง 2.5–3 ม. ระยะ 5–8 ม.', len:14 }
+    CHKI:{ t:'เช็ครถขาเข้า (หน้ารถ+คนขับ)', m:'ป้อม/เสาข้างเลน สูง 2.5–3 ม. ระยะ 5–8 ม.', len:12 },
+    CHKO:{ t:'เช็ครถขาออก (หน้ารถ+คนขับ)', m:'เสาข้างเลน สูง 2.5–3 ม. ระยะ 5–8 ม.', len:14 }
   };
   const CAMS = []; GATES.forEach((g,i) => ['LPRI','LPRO','CHKI','CHKO'].forEach((r,j) => CAMS.push({ id:'B'+(i*4+j+1), g, r, cable: Math.ceil(ROLE[r].len*1.1+8) })));
   const MODELS = {
@@ -83,34 +83,34 @@
     $('locmap').innerHTML = s;
   }
   // standard lane diagram, 1 m = 16 px
+  // standard lane diagram, 1 m = 16 px. Thai left-hand traffic: IN lane on top (→), OUT lane below (←).
   (function drawLane(){
-    const U = 16; let s = '';
+    const U = 16; let s = '', t = '';
+    const T = (x,y,txt,cls,anchor) => t += `<text class="${cls}" x="${x}" y="${y}"${anchor?` text-anchor="${anchor}"`:''}>${txt}</text>`;
     s += `<rect x="0" y="0" width="660" height="300" fill="var(--panel)"/>`;
     s += `<rect x="20" y="60" width="620" height="56" fill="var(--m-road)" stroke="var(--line)"/><rect x="20" y="150" width="620" height="56" fill="var(--m-road)" stroke="var(--line)"/>`;
     s += `<rect x="20" y="116" width="620" height="34" fill="var(--m-green)"/>`;
-    s += `<text class="l-dim" x="30" y="92">← ขาออก</text><text class="l-dim" x="580" y="182">ขาเข้า →</text>`;
-    s += `<text class="l-dim" x="30" y="182">มาจากถนนนอก</text><text class="l-dim" x="545" y="92">มาจากในหมู่บ้าน</text>`;
-    // barriers
-    s += `<rect x="356" y="148" width="8" height="60" fill="var(--lpr)"/><rect x="296" y="58" width="8" height="60" fill="var(--lpr)"/>`;
-    s += `<rect x="354" y="206" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="294" y="106" width="14" height="10" rx="2" fill="var(--ink)"/>`;
-    s += `<text class="l-lbl" x="300" y="226">ตู้ VAS117 · ไม้กั้นขาเข้า</text><text class="l-lbl" x="312" y="50">ตู้ VAS117 · ไม้กั้นขาออก</text>`;
-    // guardhouse below IN lane (driver side)
-    s += `<rect x="372" y="214" width="80" height="50" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/><text class="l-lbl" x="412" y="244" text-anchor="middle">ป้อม รปภ.</text>`;
-    s += `<rect x="460" y="226" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="477" y="242" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
-    // cars
-    s += `<rect x="${360-5.5*U-70}" y="160" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${300+5.5*U}" y="70" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
+    T(30,92,'มาจากถนนนอก','l-dim'); T(580,92,'ขาเข้า →','l-dim'); T(30,182,'← ขาออก','l-dim'); T(530,182,'มาจากในหมู่บ้าน','l-dim');
+    // IN barrier across the top lane at x=360, OUT barrier across the bottom lane at x=300; VAS117 cabinets on the island edge
+    s += `<rect x="356" y="58" width="8" height="60" fill="var(--lpr)"/><rect x="296" y="148" width="8" height="60" fill="var(--lpr)"/>`;
+    s += `<rect x="353" y="112" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="293" y="144" width="14" height="10" rx="2" fill="var(--ink)"/>`;
+    T(372,110,'ตู้ VAS117 · ไม้กั้นขาเข้า','l-lbl'); T(290,200,'ตู้ VAS117 · ไม้กั้นขาออก','l-lbl','end');
+    // guardhouse on the kerb beside the IN lane, outdoor PoE cabinet
+    s += `<rect x="372" y="4" width="80" height="44" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(412,31,'ป้อม รปภ.','l-lbl','middle');
+    s += `<rect x="460" y="14" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="477" y="30" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
+    // cars: IN car on top lane approaching from the left, OUT car on bottom lane approaching from the right
+    s += `<rect x="${360-5.5*U-70}" y="70" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${300+5.5*U}" y="160" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
     const cam = (x,y,deg,len,fov,col,lbl,tx,ty) => { const h=deg*Math.PI/180, a=fov*Math.PI/360, L=len*U;
       s += `<path d="M${x} ${y} L${x+Math.cos(h-a)*L} ${y+Math.sin(h-a)*L} L${x+Math.cos(h+a)*L} ${y+Math.sin(h+a)*L}Z" fill="${col}" fill-opacity=".18"/>`;
-      s += `<circle cx="${x}" cy="${y}" r="11" fill="${col}" stroke="var(--panel)" stroke-width="2"/><text class="l-cam" x="${x}" y="${y+4}" text-anchor="middle">${lbl}</text>`;
-      s += `<text class="l-lbl" x="${tx}" y="${ty}">${lbl==='L1'?'LPR ขาเข้า':lbl==='L2'?'LPR ขาออก':lbl==='C1'?'เช็ครถขาเข้า':'เช็ครถขาออก'}</text>`; };
-    cam(330,140,165,5.5,24,'var(--lpr)','L1',200,141);
-    cam(330,124,-15,5.5,24,'var(--lpr)','L2',430,133);
-    cam(372,218,195,7,36,'var(--road)','C1',260,232);
-    cam(240,52,15,7,36,'var(--road)','C2',120,40);
-    // dims
-    s += `<path d="M${360-6*U} 214 V222 M${360-6*U} 218 H${360-4*U} M${360-4*U} 214 V222" stroke="var(--lpr)" stroke-width="1.5"/><text class="l-dim" x="${360-6*U}" y="292">LPR จับป้ายที่ 4–6 ม. ก่อนไม้กั้น</text>`;
-    s += `<text class="l-dim" x="470" y="292">เลน 3.5 ม. · เกาะกลาง 2 ม.</text>`;
-    $('lane').innerHTML = s;
+      s += `<circle cx="${x}" cy="${y}" r="11" fill="${col}" stroke="var(--panel)" stroke-width="2"/>`; T(x,y+4,lbl,'l-cam','middle');
+      T(tx,ty,{L1:'LPR ขาเข้า',L2:'LPR ขาออก',C1:'เช็ครถขาเข้า',C2:'เช็ครถขาออก'}[lbl],'l-lbl'); };
+    cam(330,126,195,5.5,24,'var(--lpr)','L1',200,128);
+    cam(330,142,15,5.5,24,'var(--lpr)','L2',430,141);
+    cam(372,48,165,7,36,'var(--road)','C1',250,40);
+    cam(240,214,-15,7,36,'var(--road)','C2',110,232);
+    s += `<path d="M${360-6*U} 52 V60 M${360-6*U} 56 H${360-4*U} M${360-4*U} 52 V60" stroke="var(--lpr)" stroke-width="1.5"/>`;
+    T(360-6*U,292,'LPR จับป้ายที่ 4–6 ม. ก่อนไม้กั้น · รถวิ่งชิดซ้าย','l-dim'); T(470,272,'เลน 3.5 ม. · เกาะกลาง 2 ม.','l-dim');
+    $('lane').innerHTML = s + t;
   })();
   ['brand','days','codec','share','up1','up2','up3'].forEach(id => $(id).addEventListener('change', run));
   $('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0);
