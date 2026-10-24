@@ -62,7 +62,7 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   <section>
     <h2>ค่าที่ใช้ในแบบจำลอง</h2>
     <ul class="plain">
-      <li><b>G2, G3 (ของเดิมด้านหลัง):</b> ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง ถนน 2 เลน เลนละ 3.5 ม. ตู้ VAS117 ตั้งริมขอบถนนตำแหน่งเดิม แขนยาว 3.5 ม. ยื่นถึงเส้นกลางถนน LPR ติดเสาเตี้ยริมขอบถนนข้างตู้</li>
+      <li><b>G2, G3 (ของเดิมด้านหลัง):</b> ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง ถนน 2 เลน เลนละ 3.5 ม. ตู้ VAS117 ตั้งริมขอบถนนตำแหน่งเดิม ตู้ขาเข้าและขาออกอยู่แนวเดียวกันตรงข้ามกัน แขนยาว 3.5 ม. ยื่นถึงเส้นกลางถนน LPR ติดเสาเตี้ยริมขอบถนนข้างตู้</li>
       <li><b>G1 (ประตูหน้า ของเดิม):</b> ป้อม รปภ. ตั้งกลางถนน ตู้ VAS117 ติดข้างป้อมทั้งสองฝั่ง กล้อง LPR และกล้องเช็ครถติดข้างป้อม</li>
       <li>LPR สูง 1.3 ม. ห่างก่อนไม้กั้น ~0.5 ม. เล็งจุดจับป้ายที่ 5 ม. ก่อนไม้กั้น มุมนอนต้องไม่เกิน 30°</li>
       <li>รถวิ่งชิดซ้ายแบบไทย คนขับนั่งขวาติดเกาะกลาง กล้องเช็ครถติดเสาข้างเลน สูง 2.8 ม. เห็นหน้ารถ คนขับผ่านกระจกหน้า และป้าย</li>
@@ -102,8 +102,9 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
     // island = G1 front gate (existing): guardhouse in the middle of the road, barriers fixed to the booth, cameras beside the booth
     island: { inZ:-3.25, outZ:3.25, roadHalf:5.0, island:true, islandHalf:1.5, cabIn:[-.5,-1.35], cabOut:[2.5,1.35], armDirIn:-1, armDirOut:1, outX:2.5,
       lprIn:[-.95,1.3,-1.15], chkIn:[-.45,2.8,-1.25], lprOut:[2.95,1.3,1.15], chkOut:[2.45,2.8,1.25], booth:true, title:'ของเดิม: ป้อมกลางถนน ไม้กั้นติดป้อม กล้องข้างป้อม' },
-    kerb:   { inZ:-1.75, outZ:1.75, roadHalf:3.5, island:false, cabIn:[0,-3.75], cabOut:[-3.75,3.75], armDirIn:1, armDirOut:-1, outX:-3.75,
-      lprIn:[.6,1.3,-4.0], chkIn:[1.0,2.8,-4.4], lprOut:[-4.35,1.3,4.0], chkOut:[-4.8,2.8,4.4], house:-6.0, title:'ของเดิม: ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง' }
+    // kerb = G2/G3 back gates (existing): no island, IN and OUT cabinets face each other at the same point along the road
+    kerb:   { inZ:-1.75, outZ:1.75, roadHalf:3.5, island:false, cabIn:[0,-3.75], cabOut:[0,3.75], armDirIn:1, armDirOut:-1, outX:0,
+      lprIn:[.6,1.3,-4.0], chkIn:[1.0,2.8,-4.4], lprOut:[-.6,1.3,4.0], chkOut:[-1.0,2.8,4.4], house:-6.0, title:'ของเดิม: ไม้กั้นติดข้างถนน ตู้เข้า–ออกอยู่แนวเดียวกัน ไม่มีเกาะกลาง' }
   };
   const GATE_LAYOUT = { G1:'island', G2:'kerb', G3:'kerb' };
   let L, grp, armIn, armOut, cones, posLprIn, carIn, carOut, lprCam, chkCam;

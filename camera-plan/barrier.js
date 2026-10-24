@@ -111,15 +111,17 @@
       const top=100, mid=156, bot=212;
       s += `<rect x="20" y="${top}" width="620" height="${bot-top}" fill="var(--m-road)" stroke="var(--line)"/><path d="M20 ${mid} H640" stroke="#e0b400" stroke-width="2" stroke-dasharray="14 10"/>`;
       T(30,top+32,'มาจากถนนนอก (ซอย 4)','l-dim'); T(580,top+32,'ขาเข้า →','l-dim'); T(30,bot-22,'← ขาออก','l-dim'); T(530,bot-22,'มาจากในหมู่บ้าน','l-dim');
-      s += `<rect x="356" y="${top}" width="8" height="56" fill="var(--lpr)"/><rect x="296" y="${mid}" width="8" height="56" fill="var(--lpr)"/>`;
-      s += `<rect x="353" y="${top-12}" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="293" y="${bot+2}" width="14" height="10" rx="2" fill="var(--ink)"/>`;
-      T(372,top+18,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl'); T(288,bot-8,'ตู้ VAS117 ริมถนน (ตำแหน่งเดิม)','l-lbl','end');
+      // IN and OUT cabinets face each other at the same point along the road
+      s += `<rect x="356" y="${top}" width="8" height="56" fill="var(--lpr)"/><rect x="356" y="${mid}" width="8" height="56" fill="var(--lpr)"/>`;
+      s += `<rect x="353" y="${top-12}" width="14" height="10" rx="2" fill="var(--ink)"/><rect x="353" y="${bot+2}" width="14" height="10" rx="2" fill="var(--ink)"/>`;
+      s += `<path d="M360 ${top-16} V${bot+16}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+      T(372,top+18,'ตู้ VAS117 ขาเข้า (ตำแหน่งเดิม)','l-lbl'); T(350,bot-8,'ตู้ VAS117 ขาออก (แนวเดียวกัน)','l-lbl','end');
       s += `<rect x="440" y="4" width="80" height="40" rx="4" fill="var(--m-block)" stroke="var(--m-wall)"/>`; T(480,30,'ป้อม รปภ.','l-lbl','middle');
       s += `<rect x="528" y="12" width="34" height="26" rx="3" fill="var(--accent)"/><text class="m-node" x="545" y="28" text-anchor="middle" style="font-size:8px">ตู้ PoE</text>`;
-      s += `<rect x="${360-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${300+5.5*U}" y="${mid+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
-      cam(338,top-14,170,5.5,24,'var(--lpr)','L1',220,top-30); cam(318,bot+16,-10,5.5,24,'var(--lpr)','L2',340,bot+42);
-      cam(430,top-14,168,7,36,'var(--road)','C1',446,top-10); cam(240,bot+16,-15,7,36,'var(--road)','C2',120,bot+42);
-      T(20,292,'ของเดิม: ไม้กั้นติดข้างถนน · ไม่มีเกาะกลาง · รถวิ่งชิดซ้าย · เลน 3.5 ม.','l-dim');
+      s += `<rect x="${360-5.5*U-70}" y="${top+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/><rect x="${360+5.5*U}" y="${mid+10}" width="70" height="36" rx="9" fill="var(--muted)" opacity=".5"/>`;
+      cam(338,top-14,170,5.5,24,'var(--lpr)','L1',220,top-30); cam(382,bot+16,-10,5.5,24,'var(--lpr)','L2',400,bot+42);
+      cam(430,top-14,168,7,36,'var(--road)','C1',446,top-10); cam(300,bot+16,-15,7,36,'var(--road)','C2',180,bot+42);
+      T(20,292,'ของเดิม: ไม้กั้นติดข้างถนน · ตู้เข้า–ออกแนวเดียวกัน · ไม่มีเกาะกลาง · รถวิ่งชิดซ้าย','l-dim');
     }
     $(id).innerHTML = s + t;
   }
