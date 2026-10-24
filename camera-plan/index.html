@@ -7,6 +7,7 @@
 :root{
   --bg:#f3f5f4; --panel:#ffffff; --ink:#18221f; --muted:#5b6964; --line:#d5ddda;
   --accent:#0d6b5c; --fibre:#7a3fb8; --pub:#2e9b2e;
+  --m-site:#eef2ef; --m-wall:#3d4a45; --m-road:#ffffff; --m-block:#dfe6e2; --m-plotline:#b9c5bf; --m-water:#9cc6dd; --m-green:#cfe5c8;
   --lpr:#c8322b; --wall:#c07a00; --road:#1f63c4; --dome:#1d8a4a; --warn:#b3261e;
   --f-display:"Bai Jamjuree","IBM Plex Sans Thai",system-ui,sans-serif;
   --f-body:"IBM Plex Sans Thai",system-ui,sans-serif;
@@ -14,10 +15,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
-  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --m-site:#1c2623; --m-wall:#9fb0a9; --m-road:#2f3c37; --m-block:#26322e; --m-plotline:#3c4a45; --m-water:#24506a; --m-green:#244131; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111816; --panel:#18211e; --ink:#e4ece9; --muted:#9aaaa4; --line:#2c3833;
-  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
+  --accent:#4cc3ad; --fibre:#b98af0; --pub:#6fd66f; --m-site:#1c2623; --m-wall:#9fb0a9; --m-road:#2f3c37; --m-block:#26322e; --m-plotline:#3c4a45; --m-water:#24506a; --m-green:#244131; --lpr:#ff6b62; --wall:#f0a830; --road:#6aa5ff; --dome:#4fd086; --warn:#ff7a70; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
 .wrap{max-width:1180px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
 h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.25}
@@ -46,6 +47,16 @@ button.ghost{background:transparent;color:var(--accent)}
 .map svg{position:absolute;inset:0;width:100%;height:100%}
 .cam circle{stroke:var(--panel);stroke-width:1.5;cursor:pointer}
 .cam text{font:600 9px var(--f-mono);fill:#fff;pointer-events:none}
+.vmap{display:block;width:100%;min-width:900px;height:auto;background:var(--panel)}
+.m-lbl{font:600 9px var(--f-body);fill:var(--muted)} .m-pub{fill:var(--pub);font-size:10px}
+.m-blk{font:500 7.5px var(--f-mono);fill:var(--muted)} .m-gate{font:700 10px var(--f-display);fill:var(--lpr)}
+.m-node{font:700 7px var(--f-mono);fill:var(--panel)} .m-num{font:700 8px var(--f-mono);fill:#fff}
+.vmap .cam{cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;color:var(--accent)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--panel)}
+.quote input{font:500 .85rem var(--f-mono);width:7.5em;padding:4px 6px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);text-align:right}
+.quote td.m{font-size:.8rem;color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.85rem;color:var(--muted)}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .legend i.sq{border-radius:2px} .legend i.ln{height:3px;width:18px;border-radius:0;vertical-align:3px}
@@ -66,7 +77,7 @@ tfoot td{font-weight:600}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 3</div>
+    <div class="eyebrow">แบบติดตั้ง CCTV · 30 จุด · ฉบับร่าง 4</div>
     <h1>หมู่บ้านแลนด์แอนด์เฮ้าส์พาร์ค (โคราช)</h1>
     <p class="sub">V3M6+56J ถ.ราชสีมา–ปักธงชัย ต.หนองจะบก อ.เมือง จ.นครราชสีมา (ประมาณ 14.878° N, 102.061° E) ·
       <a href="https://www.google.com/maps/search/?api=1&query=V3M6%2B56J%20Nakhon%20Ratchasima" target="_blank" rel="noopener">เปิดใน Google Maps</a>.
@@ -97,22 +108,27 @@ tfoot td{font-weight:600}
   </section>
 
   <section>
-    <h2>ผังตำแหน่งกล้องและแนวสาย</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+      <h2>ผังตำแหน่งกล้องและแนวสาย</h2>
+      <div class="seg" role="group" aria-label="รูปแบบผัง"><button id="v-new" aria-pressed="true">ผังวาดใหม่</button><button id="v-photo" aria-pressed="false">ผังต้นฉบับ</button></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--lpr)"></i>LPR อ่านป้ายทะเบียน</span>
       <span><i style="background:var(--road)"></i>Bullet ถนน/แยก</span>
       <span><i style="background:var(--wall)"></i>Bullet IR ริมกำแพง</span>
-      <span><i style="background:var(--dome)"></i>Turret ColorVu สวน/บึง</span>
-      <span><i class="sq" style="background:var(--accent)"></i>NVR / ตู้ / กล่อง PoE</span>
-      <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone</span>
+      <span><i style="background:var(--dome)"></i>Turret ภาพสี สวน/บึง</span>
+      <span><i class="sq" style="background:var(--accent)"></i>นิติ (NVR) / โหนด H# (กล่อง Fiber+PoE)</span>
+      <span><i class="sq" style="background:var(--lpr);width:5px"></i>ประตู</span>
+      <span><i class="ln" style="background:var(--fibre)"></i>Fiber backbone (เส้นประ)</span>
       <span><i class="ln" style="background:var(--ink)"></i>UTP กล้องที่เลือก</span>
       <span><i class="ln" style="background:var(--pub);height:6px;vertical-align:1px"></i>ถนนสาธารณะ (แบ่งหมู่บ้าน)</span>
     </div>
-    <div class="mapbox"><div class="map">
+    <div class="mapbox" id="box-new"><svg id="vmap" class="vmap" viewBox="20 80 1235 535" aria-label="ผังหมู่บ้านวาดใหม่พร้อมตำแหน่งกล้อง"></svg></div>
+    <div class="mapbox" id="box-photo" hidden><div class="map">
       <img src="plan.jpg" alt="ผังหมู่บ้าน">
       <svg id="svg" viewBox="0 0 1264 757" aria-label="ตำแหน่งกล้อง"></svg>
     </div></div>
-    <p class="note">แตะหมายเลขกล้องหรือแถวในตารางเพื่อดูแนวสาย UTP จากจุดจ่ายไฟถึงกล้อง (เลื่อนผังซ้าย–ขวาได้บนมือถือ)</p>
+    <p class="note">ผังวาดใหม่เป็นผังโดยสังเขปจากผังโครงการ ใช้ประกอบการนำเสนอ กรวยสีแสดงทิศและระยะมองโดยประมาณของกล้องแต่ละตัว · แตะกล้องหรือแถวในตารางเพื่อดูแนวสาย UTP (เลื่อนผังซ้าย–ขวาได้บนมือถือ)</p>
   </section>
 
   <section>
@@ -126,19 +142,22 @@ tfoot td{font-weight:600}
   </section>
 
   <section>
-    <h2>พื้นที่บันทึก NVR (กล้อง IP 4 ล้านพิกเซล, H.265)</h2>
+    <h2>อุปกรณ์และพื้นที่บันทึก (กล้อง IP 4 ล้านพิกเซล)</h2>
     <div class="calib">
       <div class="row">
+        <label for="brand">ยี่ห้อ
+          <select id="brand" class="sel"><option value="dahua">Dahua (Smart H.265+)</option><option value="unv">Uniview / UNV (Ultra 265)</option></select></label>
         <label for="days">จำนวนวันที่เก็บ
           <select id="days" class="sel"><option value="30">30 วัน</option><option value="60">60 วัน</option></select></label>
         <label for="codec">การบีบอัด / บิตเรตเฉลี่ยต่อกล้อง
           <select id="codec" class="sel">
             <option value="3">H.265 ปกติ – 3 Mbps (4MP 20fps, บันทึก 24 ชม.)</option>
             <option value="2">H.265 – 2 Mbps (4MP 15fps)</option>
-            <option value="1.5">H.265+ / Smart codec – ~1.5 Mbps เฉลี่ย</option>
+            <option value="1.5" id="opt-smart">H.265+ / Smart codec – ~1.5 Mbps เฉลี่ย</option>
           </select></label>
       </div>
       <div class="tiles" id="stor"></div>
+      <p class="note" style="margin:0" id="codecnote"></p>
       <p class="note" style="margin:0">สูตร: Mbps × 86,400 วินาที ÷ 8 = GB/วัน/กล้อง · กล้อง LPR คิด 4 Mbps (ต้องการภาพป้ายคมชัด) · เผื่อพื้นที่ 10% · 
         H.265+ ประหยัดได้มากเฉพาะฉากนิ่ง ช่วงกลางคืน/ฝน/ต้นไม้ไหวบิตเรตจะสูงขึ้น ถ้าต้องการรับประกัน 60 วัน แนะนำคิดที่ H.265 ปกติ</p>
     </div>
@@ -164,14 +183,19 @@ tfoot td{font-weight:600}
         <tbody id="hubs"></tbody>
       </table></div>
     </section>
-    <section>
-      <h2>รายการวัสดุโดยประมาณ</h2>
-      <div class="tbl"><table style="min-width:420px">
-        <thead><tr><th>รายการ</th><th style="text-align:right">จำนวน</th></tr></thead>
-        <tbody id="bom"></tbody>
-      </table></div>
-    </section>
   </div>
+
+  <section>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+      <h2>ใบประมาณราคา</h2><button id="preset" class="ghost">คืนราคาตั้งต้น</button>
+    </div>
+    <div class="tbl quote"><table>
+      <thead><tr><th>รายการ</th><th>รุ่น / สเปก</th><th style="text-align:right">จำนวน</th><th style="text-align:right">ราคา/หน่วย (บาท)</th><th style="text-align:right">รวม (บาท)</th></tr></thead>
+      <tbody id="bom"></tbody>
+      <tfoot id="qfoot"></tfoot>
+    </table></div>
+    <p class="note">ราคาตั้งต้นเป็นราคาประมาณการตลาด ใช้เป็นจุดเริ่ม แก้ช่องราคาได้ทุกรายการ (จำไว้ในเครื่องนี้) · รุ่นกล้องเป็นรุ่นแนะนำ ต้องยืนยันรุ่น/สต็อก/ราคากับตัวแทนจำหน่ายก่อนออกใบเสนอราคาจริง · จำนวนสายและกล่องคำนวณจากมาตราส่วนด้านบน</p>
+  </section>
 
   <section>
     <h2>หลักการออกแบบ</h2>
@@ -190,6 +214,7 @@ tfoot td{font-weight:600}
 </div>
 
 <script src="plan.js"></script>
+<script src="sitemap.js"></script>
 <script>
 (function(){
   const P = window.CamPlan;
@@ -225,24 +250,51 @@ tfoot td{font-weight:600}
     document.getElementById('hubs').innerHTML = R.hubs.map(h=>`<tr><td class="n">${h.id}</td><td>${h.name}${h.side==='W'?'':SIDE[h.side]}</td><td class="n">${h.cams}</td><td class="n">${h.fibre?f0(h.fibre):'–'}</td></tr>`).join('')
       + `<tr><td></td><td><b>Fiber backbone รวม (แนวถนนไม่ซ้ำ +10% +20 ม./จุด)</b></td><td></td><td class="n"><b>${f0(R.fibreCable)}</b></td></tr>`;
     const ST = storage();
-    const boxes = R.hubs.length-2, utpBoxes = Math.ceil(utp*1.1/305);
-    const bom = [
-      ['กล้อง LPR 2–4MP (เลนส์ varifocal)', n('LPR')], ['กล้อง Bullet 4MP IR 30–50 ม. (ถนน/แยก)', n('ROAD')],
-      ['กล้อง Bullet 4MP IR 50 ม. (ริมกำแพง)', n('WALL')], ['กล้อง Turret 4MP ColorVu (สวน/บึง/นิติ)', n('DOME')],
-      ['NVR 32 ช่อง 4K (รองรับ H.265, ขาเข้า ≥ 256 Mbps)', 1],
-      ['HDD Surveillance ' + ST.cfg + ' (' + ST.days + ' วัน)', ST.n],
-      ['Core switch ห้องนิติ (L2, 8+ SFP + PoE 8 พอร์ต)', 1], ['ตู้ Rack 9U + UPS 2 kVA (ห้องนิติ)', 1],
-      ['ตู้ป้อมประตูหลัก: PoE switch 1 SFP + 4 PoE + ตู้กันน้ำ', 1],
-      ['กล่องที่เสา: Switch 1 SFP + 2 PoE + กล่องกันน้ำ IP66 + กันฟ้าผ่า', boxes],
-      ['โมดูล SFP Single-mode (คู่ละ 2 ตัว)', (R.hubs.length-1)*2],
-      ['สาย Fiber Drop Single-mode 2 core (ม.)', f0(R.fibreCable)],
-      ['สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', utpBoxes + ' กล่อง (' + f0(utp) + ' ม.)'],
-      ['เสาเหล็กกล้อง 3–4 ม. / ขาจับติดกำแพง', c.length], ['หัว RJ45 + บูทกันน้ำ', c.length*2+10]
-    ];
-    document.getElementById('bom').innerHTML = bom.map(([a,b])=>`<tr><td>${a}</td><td class="n">${b}</td></tr>`).join('');
+    quote(c, n, utp, ST);
     draw();
   }
 
+  const MODELS = {
+    dahua:{ LPR:'Dahua ITC413-PW4D (ANPR 4MP)', ROAD:'Dahua IPC-HFW2441S-S (WizSense 4MP Bullet)', WALL:'Dahua IPC-HFW2441T-ZS (4MP Varifocal IR 60 ม.)',
+      DOME:'Dahua IPC-HDW2449T-S-IL (4MP Smart Dual Light ภาพสี)', NVR:'Dahua NVR5832-EI (32CH, 8 SATA, AI)', codec:'Smart H.265+' },
+    unv:{ LPR:'Uniview LPR 4MP (ซีรีส์ LPR/ANPR)', ROAD:'Uniview IPC2124LE-ADF28KM-G (4MP Bullet)', WALL:'Uniview 4MP Varifocal Bullet IR 50 ม. (ซีรีส์ IPC2324)',
+      DOME:'Uniview ColorHunter 4MP Turret (ภาพสีกลางคืน)', NVR:'Uniview NVR308-32X (32CH, 8 SATA)', codec:'Ultra 265' }
+  };
+  const PRICE0 = { LPR:12000, ROAD:2200, WALL:3900, DOME:2800, NVR:18000, HDD:0, CORE:9500, RACK:14000, GATE:4500, BOX:3800, SFP:1200, FIB:9, UTP:3800, POLE:3500, RJ:15, LAB:1500, SPL:800, COM:15000 };
+  let PRICE = Object.assign({}, PRICE0);
+  try { Object.assign(PRICE, JSON.parse(localStorage.getItem('camprice')||'{}')); } catch(e) {}
+  function quote(c, n, utp, ST){
+    const M = MODELS[document.getElementById('brand').value];
+    const hddPrice = { 6:5600, 8:7200, 10:9200, 12:10500, 16:14500 }[ST.sz] || 9000;
+    if (!PRICE.HDD_user) PRICE.HDD = hddPrice;
+    const boxes = R.hubs.length-2, links = R.hubs.length-1, utpBoxes = Math.ceil(utp*1.1/305);
+    const rows = [
+      ['LPR','กล้องอ่านป้ายทะเบียน (ประตู)', M.LPR, n('LPR')], ['ROAD','กล้อง Bullet ถนน/แยก', M.ROAD, n('ROAD')],
+      ['WALL','กล้อง Bullet IR ริมกำแพง', M.WALL, n('WALL')], ['DOME','กล้อง Turret ภาพสี สวน/บึง/นิติ', M.DOME, n('DOME')],
+      ['NVR','เครื่องบันทึก NVR', M.NVR+' · '+M.codec, 1],
+      ['HDD','HDD Surveillance '+ST.sz+' TB', 'เก็บ '+ST.days+' วัน ('+ST.cfg+')', ST.n],
+      ['CORE','Core switch ห้องนิติ', 'L2 managed, 8+ SFP, PoE 8 พอร์ต', 1], ['RACK','ตู้ Rack 9U + UPS 2 kVA', 'ห้องนิติ', 1],
+      ['GATE','ตู้ป้อมประตูหลัก', 'PoE switch 1 SFP + 4 PoE + ตู้กันน้ำ', 1],
+      ['BOX','โหนดที่เสา (H#)', 'Switch 1 SFP + 2 PoE, กล่อง IP66, กันฟ้าผ่า', boxes],
+      ['SFP','โมดูล SFP Single-mode', 'คู่ (ต้น–ปลาย) ต่อ 1 โหนด', links],
+      ['FIB','สาย Fiber Single-mode 2–4 core มีสลิง (ม.)', 'รวมเผื่อ 10% + 20 ม./โหนด', R.fibreCable],
+      ['UTP','สาย UTP Cat6 Outdoor (กล่อง 305 ม.)', f0(utp)+' ม. + เผื่อ 10%', utpBoxes],
+      ['POLE','เสากล้อง 3–4 ม. / ขาจับกำแพง', 'รวมฐาน', c.length], ['RJ','หัว RJ45 + บูทกันน้ำ', '', c.length*2+10],
+      ['LAB','ค่าติดตั้งกล้อง', 'ต่อจุด', c.length], ['SPL','ค่าเชื่อม/เข้าหัว Fiber', 'ต่อโหนด', links],
+      ['COM','ตั้งค่าระบบ ทดสอบ อบรม', 'เหมา', 1]
+    ];
+    let sub = 0;
+    document.getElementById('bom').innerHTML = rows.map(([k,a,m,q]) => { const t = q*PRICE[k]; sub += t;
+      return `<tr><td>${a}</td><td class="m">${m}</td><td class="n">${f0(q)}</td><td class="n"><input id="p_${k}" data-k="${k}" type="number" min="0" step="1" value="${PRICE[k]}" aria-label="ราคา ${a}"></td><td class="n">${f0(t)}</td></tr>`; }).join('');
+    const vat = sub*0.07;
+    document.getElementById('qfoot').innerHTML = `<tr><td colspan="4">รวมก่อน VAT</td><td class="n">${f0(sub)}</td></tr><tr><td colspan="4">VAT 7%</td><td class="n">${f0(vat)}</td></tr><tr><td colspan="4"><b>รวมทั้งสิ้น</b></td><td class="n"><b>${f0(sub+vat)}</b></td></tr>`;
+    document.getElementById('opt-smart').textContent = M.codec + ' – ~1.5 Mbps เฉลี่ย';
+    document.getElementById('codecnote').textContent = 'Dahua เรียก H.265+ ว่า “Smart H.265+” ส่วน Uniview เรียกว่า “Ultra 265” ทั้งสองยี่ห้อรองรับ และใช้กับ NVR ยี่ห้อเดียวกันได้เต็มประสิทธิภาพ ' +
+      '(ถ้าผสมยี่ห้อผ่าน ONVIF จะได้แค่ H.265 ปกติ) ใช้อยู่ตอนนี้: ' + M.codec + '.';
+  }
+  document.getElementById('bom').addEventListener('change', e => { const k=e.target.dataset.k; if(!k) return; PRICE[k]=Math.max(0,+e.target.value||0); if(k==='HDD') PRICE.HDD_user=1;
+    try{ localStorage.setItem('camprice', JSON.stringify(PRICE)); }catch(err){} run(); });
+  document.getElementById('preset').addEventListener('click', () => { PRICE = Object.assign({}, PRICE0); try{ localStorage.removeItem('camprice'); }catch(e){} run(); });
   function storage(){
     const days = +document.getElementById('days').value, br = +document.getElementById('codec').value;
     const nL = R.cams.filter(x=>x.type==='LPR').length, nO = R.cams.length - nL;
@@ -253,7 +305,7 @@ tfoot td{font-weight:600}
       [mbps.toFixed(0)+' Mbps','บิตเรตรวมเข้า NVR'], [(gbDay/1000).toFixed(2)+' TB','ข้อมูลต่อวัน'],
       [tb.toFixed(1)+' TB', 'ต้องการ '+days+' วัน (+10%)'], [cfg, best ? 'HDD (NVR '+best.b+' ช่อง)' : '']
     ].map(([b,t])=>`<div class="tile"><b>${b}</b><span>${t}</span></div>`).join('');
-    return { days, cfg, n: best ? best.n : '–' };
+    return { days, cfg, n: best ? best.n : 0, sz: best ? best.sz : 16 };
   }
   function draw(){
     const svg = document.getElementById('svg'); let s = `<polyline points="${pts(P.PUBLIC_ROAD)}" fill="none" stroke="var(--pub)" stroke-width="9" stroke-opacity=".45" stroke-linecap="round" stroke-linejoin="round"/>`;
@@ -263,11 +315,17 @@ tfoot td{font-weight:600}
     s += `<circle cx="${P.NVR.x}" cy="${P.NVR.y}" r="10" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="${P.NVR.x+13}" y="${P.NVR.y+16}" font-family="var(--f-mono)" font-size="11" font-weight="600" fill="var(--accent)">NVR</text>`;
     R.cams.forEach(x => s += `<g class="cam" data-id="${x.id}"><circle cx="${x.x}" cy="${x.y}" r="${sel===x.id?11:9}" fill="${COLORS[x.type]}"/><text x="${x.x}" y="${x.y+3}" text-anchor="middle">${x.id}</text><title>#${x.id} ${x.name} · UTP ${x.cable} ม.</title></g>`);
     svg.innerHTML = s;
+    const sx = (+ew.value||defEW)/EW_PX, sy = (+ns.value||defNS)/NS_PX;
+    document.getElementById('vmap').innerHTML = window.SiteMap.render(R, P, { sx, sy, sel, colors: COLORS });
   }
   function pick(id){ sel = sel===id ? null : id; run(); }
-  document.getElementById('svg').addEventListener('click', e => { const g=e.target.closest('.cam'); if (g) pick(+g.dataset.id); });
+  ['svg','vmap'].forEach(id => document.getElementById(id).addEventListener('click', e => { const g=e.target.closest('.cam'); if (g) pick(+g.dataset.id); }));
+  function view(photo){ document.getElementById('box-photo').hidden=!photo; document.getElementById('box-new').hidden=photo;
+    document.getElementById('v-photo').setAttribute('aria-pressed', photo); document.getElementById('v-new').setAttribute('aria-pressed', !photo); }
+  document.getElementById('v-new').addEventListener('click', () => view(false));
+  document.getElementById('v-photo').addEventListener('click', () => view(true));
   document.getElementById('rows').addEventListener('click', e => { const r=e.target.closest('tr'); if (r) pick(+r.dataset.id); });
-  ['days','codec'].forEach(id => document.getElementById(id).addEventListener('change', run));
+  ['days','codec','brand'].forEach(id => document.getElementById(id).addEventListener('change', run));
   document.getElementById('apply').addEventListener('click', () => { save(); run(); });
   [ew,ns].forEach(i => i.addEventListener('keydown', e => { if (e.key==='Enter'){ save(); run(); } }));
   document.getElementById('reset').addEventListener('click', () => { ew.value=defEW; ns.value=defNS; save(); run(); });

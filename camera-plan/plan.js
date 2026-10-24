@@ -30,7 +30,7 @@
   ];
   // Fixed hubs: NVR room and the guardhouse (both have power). Extra PoE cabinets are placed automatically.
   const FIXED_HUBS = [ { node:'J2', name:'ห้องนิติ (NVR + PoE switch หลัก)' }, { node:'W0', name:'ป้อมประตูหลัก' } ];
-  const T = { LPR:'กล้องอ่านป้ายทะเบียน (LPR)', WALL:'Bullet IR 4MP (กำแพง)', ROAD:'Bullet 4MP (ถนน/แยก)', DOME:'Turret/Dome 4MP ColorVu' };
+  const T = { LPR:'กล้องอ่านป้ายทะเบียน (LPR)', WALL:'Bullet IR 4MP (กำแพง)', ROAD:'Bullet 4MP (ถนน/แยก)', DOME:'Turret 4MP ภาพสีกลางคืน' };
   const CAMS = [
     [1,'ประตูหลัก – LPR ขาเข้า','LPR',84,352],
     [2,'ประตูหลัก – LPR ขาออก','LPR',84,382],
