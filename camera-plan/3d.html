@@ -41,7 +41,7 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   <header>
     <div class="eyebrow">งาน LPR ไม้กั้น · จำลอง 3D จุดติดตั้ง</div>
     <h1>จุดไม้กั้น + กล้องอ่านป้ายทะเบียน</h1>
-    <p class="sub">ผังมาตรฐานที่ใช้กับ G1–G3 หมุนและซูมฉากได้ (ลากเพื่อหมุน, สองนิ้ว/ล้อเมาส์เพื่อซูม) กรอบขวาล่างคือภาพจากกล้อง LPR ขาเข้าแบบเรียลไทม์ ใช้ตรวจมุมและขนาดป้ายก่อนติดตั้งจริง</p>
+    <p class="sub">เลือกจุด G1–G3 แต่ละจุดวางตามรูปแบบหน้างาน หมุนและซูมฉากได้ (ลากเพื่อหมุน, สองนิ้ว/ล้อเมาส์เพื่อซูม) กรอบขวาล่างคือภาพจากกล้อง LPR ขาเข้าแบบเรียลไทม์ ใช้ตรวจมุมและขนาดป้ายก่อนติดตั้งจริง</p>
   </header>
 
   <div class="bar">
@@ -53,6 +53,7 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
 
   <div class="stage" id="stage">
     <div class="hud" id="hud"></div>
+    <span id="layout" hidden></span>
     <div class="inset" id="inset"><span>ภาพจากกล้อง LPR ขาเข้า</span></div>
   </div>
 
@@ -61,11 +62,12 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   <section>
     <h2>ค่าที่ใช้ในแบบจำลอง</h2>
     <ul class="plain">
-      <li>เลนกว้าง 3.5 ม. 2 เลน (เข้า/ออก) เกาะกลาง 2 ม. ตู้ไม้กั้น VAS117 วางที่ขอบเกาะกลาง แขนยาว 3.5 ม. สูงแขน 0.9 ม.</li>
-      <li>LPR ติดเสาเตี้ยบนเกาะกลาง สูง 1.3 ม. ห่างก่อนไม้กั้น 0.5 ม. เล็งจุดจับป้ายที่ 5 ม. ก่อนไม้กั้น มุมนอน ~25° (เกณฑ์ ≤ 30°)</li>
+      <li><b>G2, G3 (ของเดิมด้านหลัง):</b> ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง ถนน 2 เลน เลนละ 3.5 ม. ตู้ VAS117 ตั้งริมขอบถนนตำแหน่งเดิม แขนยาว 3.5 ม. ยื่นถึงเส้นกลางถนน LPR ติดเสาเตี้ยริมขอบถนนข้างตู้</li>
+      <li><b>G1 (ประตูหน้า):</b> ยังใช้ผังมาตรฐานแบบมีเกาะกลางจนกว่าจะยืนยันตำแหน่งและภาพหน้างาน</li>
+      <li>LPR สูง 1.3 ม. ห่างก่อนไม้กั้น ~0.5 ม. เล็งจุดจับป้ายที่ 5 ม. ก่อนไม้กั้น มุมนอนต้องไม่เกิน 30°</li>
       <li>รถวิ่งชิดซ้ายแบบไทย คนขับนั่งขวาติดเกาะกลาง กล้องเช็ครถติดเสาข้างเลน สูง 2.8 ม. เห็นหน้ารถ คนขับผ่านกระจกหน้า และป้าย</li>
       <li>ป้ายทะเบียนรถยนต์ไทย 34 × 15 ซม. สูงจากพื้น ~0.5 ม. · ขนาดป้ายในภาพคำนวณจากความกว้างภาพ 2560 พิกเซล (4MP) และมุมเลนส์ที่ตั้ง</li>
-      <li>ขนาดตู้ VAS117 และป้ายบริษัทในฉากเป็นสัดส่วนประมาณ รอสเปกและรูปจริงเพื่อปรับให้ตรง · G1–G3 ใช้ผังเลนเดียวกัน ต่างกันที่ชื่อจุด</li>
+      <li>ขนาดตู้ VAS117 และป้ายบริษัทในฉากเป็นสัดส่วนประมาณ ตำแหน่งตู้ G2/G3 จะปรับให้ตรงภาพ Street View เมื่อได้รับภาพ</li>
     </ul>
     <p class="note">ถ้าต้องการภาพนำเสนอแบบเหมือนจริง (photoreal) แนะนำส่งต่อโมเดลนี้ไปเรนเดอร์ใน Blender หรือวาดใน SketchUp ภายหลัง ส่วนหน้านี้ใช้ตรวจมุมกล้องและคุยงานกับลูกค้า</p>
   </section>
@@ -88,139 +90,122 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   scene.add(new THREE.HemisphereLight(0xffffff, 0x556b55, .75));
   const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(-12, 20, 10); sun.castShadow = true;
   sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera, { left:-25, right:25, top:25, bottom:-25 }); scene.add(sun);
-
   const M = c => new THREE.MeshStandardMaterial({ color:c, roughness:.8 });
-  const box = (w,h,d,c,x,y,z,parent) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), M(c)); m.position.set(x,y,z); m.castShadow = m.receiveShadow = true; (parent||scene).add(m); return m; };
+  const box = (w,h,d,c,x,y,z,parent) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), M(c)); m.position.set(x,y,z); m.castShadow = m.receiveShadow = true; parent.add(m); return m; };
   const texText = (w,h,draw) => { const cv = document.createElement('canvas'); cv.width=w; cv.height=h; const g=cv.getContext('2d'); draw(g,w,h); const t=new THREE.CanvasTexture(cv); t.anisotropy=4; return t; };
+  box(120,.02,60,0x8fae7a,0,-.01,0,scene);
 
-  // ground, lanes, island, kerbs, markings  (x = along road, z = across, y = up; vehicles enter along +x)
-  box(80,.02,40,0x8fae7a,0,-.01,0);
-  box(80,.02,7,0x50565a,0,0,2.75+0.75*0); // IN lane z 1..4.5 and OUT lane z -1..-4.5 drawn as two strips
-  box(80,.02,3.5,0x50565a,0,.001,2.75); box(80,.02,3.5,0x50565a,0,.001,-2.75);
-  box(80,.15,2,0xb9c2bd,0,.075,0); // island
-  [4.5,-4.5].forEach(z=>box(80,.18,.2,0xdfe4e1,0,.09,z+(z>0?.1:-.1)));
-  for (let x=-38;x<38;x+=4) { box(2,.005,.12,0xffffff,x,.012,4.3); box(2,.005,.12,0xffffff,x,.012,-4.3); }
-  box(.4,.006,3.5,0xffffff,-.6,.013,-2.75); // stop line IN
-  box(.4,.006,3.5,0xffffff,-3.15,.013,2.75); // stop line OUT
-  // walls of the village on both sides of the gate
-  box(30,2,.25,0xd8d2c4,-20,1,9); box(30,2,.25,0xd8d2c4,-20,1,-9);
+  // Layouts (x = along road, z = across, y = up). Thai left-hand traffic: IN cars drive +x on the -z side.
+  //  island: 2 lanes + 2 m centre island, cabinets on the island (standard design, G1 until confirmed)
+  //  kerb:   existing back gates G2/G3 — no island, cabinets at each roadside, arms reach the centre line
+  const LAYOUT = {
+    island: { inZ:-2.75, outZ:2.75, roadHalf:4.5, island:true, cabIn:[0,-1.0], cabOut:[-3.75,1.0], armDirIn:-1, armDirOut:1,
+      lprIn:[.5,1.3,-.6], chkIn:[.8,2.8,-4.85], lprOut:[-4.25,1.3,.6], chkOut:[-4.6,2.8,4.85], house:-6.2, title:'ผังมาตรฐาน มีเกาะกลาง (รอยืนยันหน้างาน)' },
+    kerb:   { inZ:-1.75, outZ:1.75, roadHalf:3.5, island:false, cabIn:[0,-3.75], cabOut:[-3.75,3.75], armDirIn:1, armDirOut:-1,
+      lprIn:[.6,1.3,-4.0], chkIn:[1.0,2.8,-4.4], lprOut:[-4.35,1.3,4.0], chkOut:[-4.8,2.8,4.4], house:-6.0, title:'ของเดิม: ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง' }
+  };
+  const GATE_LAYOUT = { G1:'island', G2:'kerb', G3:'kerb' };
+  let L, grp, armIn, armOut, cones, posLprIn, carIn, carOut, lprCam, chkCam;
+  const W = () => stage.clientWidth, H = () => stage.clientHeight;
+  const vfov = h => 2*Math.atan(Math.tan(THREE.MathUtils.degToRad(h/2))*9/16)*180/Math.PI;
+  lprCam = new THREE.PerspectiveCamera(vfov(30), 16/9, .05, 200);
+  chkCam = new THREE.PerspectiveCamera(vfov(45), 16/9, .05, 200);
 
-  // VAS117 barrier: cabinet + arm (pivot), one per lane
-  function barrier(x,z,dir){ const g=new THREE.Group(); g.position.set(x,.15,z); scene.add(g);
-    box(.38,1.0,.32,0xeef1f2,0,.5,0,g); box(.3,.12,.33,0xc8322b,0,.85,0,g);
-    const lab = new THREE.Mesh(new THREE.PlaneGeometry(.3,.1), new THREE.MeshBasicMaterial({ map: texText(256,86,(c,w,h)=>{ c.fillStyle='#c8322b'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.font='bold 54px monospace'; c.textAlign='center'; c.fillText('VAS117',w/2,62); }) }));
-    lab.position.set(-.191,.85,0); lab.rotation.y=-Math.PI/2; g.add(lab);
-    const piv=new THREE.Group(); piv.position.set(0,.75,0); g.add(piv);
-    const arm=new THREE.Group(); piv.add(arm);
-    for (let i=0;i<7;i++) box(.07,.07,.5,i%2?0xffffff:0xc8322b,0,0,dir*(.25+i*.5),arm);
-    return piv; }
-  const armIn = barrier(0, -1.0, -1), armOut = barrier(-3.75, 1.0, 1);
-
-  // guardhouse on the driver side of the IN lane
-  box(3,2.6,2.4,0xe9e4da,2.2,1.3,-6.2); box(3.4,.15,2.8,0x7b6f62,2.2,2.68,-6.2);
-  box(1.4,.9,.05,0x8fb6c9,2.2,1.55,-4.98);
-  // outdoor PoE cabinet
-  box(.5,.7,.25,0x0d6b5c,4.2,.8,-5.0);
-
-  // company sign board
-  const sign = new THREE.Group(); sign.position.set(-9,0,-5.6); scene.add(sign);
-  box(.1,2.4,.1,0x7a8386,-1.1,1.2,0,sign); box(.1,2.4,.1,0x7a8386,1.1,1.2,0,sign);
-  const sb = new THREE.Mesh(new THREE.BoxGeometry(2.6,1.1,.08), [M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),
-    new THREE.MeshStandardMaterial({ map: texText(512,216,(c,w,h)=>{ c.fillStyle='#0d6b5c'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.textAlign='center'; c.font='bold 64px sans-serif'; c.fillText('ป้ายบริษัท',w/2,96); c.font='38px sans-serif'; c.fillText('ระบบไม้กั้น + LPR',w/2,160); }) }), M(0x0d6b5c)]);
-  sb.position.set(0,2.6,0); sb.rotation.y = 0; sign.add(sb); sign.rotation.y = -(Math.PI - Math.PI/2.6);
-
-  // cameras on poles
-  function camRig(x,z,h,target,col){ box(.08,h,.08,0x6b7477,x,h/2,z); const body=new THREE.Group(); body.position.set(x,h+.08,z); scene.add(body);
-    box(.12,.1,.26,0xf4f6f7,0,0,0,body); box(.14,.03,.3,0x30383b,0,.065,0,body); body.lookAt(target); return body; }
-  const tgtLprIn = new THREE.Vector3(-5.5,.5,-2.75), tgtChkIn = new THREE.Vector3(-6,1.0,-2.75);
-  const tgtLprOut = new THREE.Vector3(1.75,.5,2.75), tgtChkOut = new THREE.Vector3(2.5,1.0,2.75);
-  const posLprIn = new THREE.Vector3(.5,1.3,-.6), posChkIn = new THREE.Vector3(.8,2.8,-4.85), posLprOut = new THREE.Vector3(-4.25,1.3,.6), posChkOut = new THREE.Vector3(-4.6,2.8,4.85);
-  camRig(posLprIn.x,posLprIn.z,posLprIn.y,tgtLprIn); camRig(posChkIn.x,posChkIn.z,posChkIn.y,tgtChkIn);
-  camRig(posLprOut.x,posLprOut.z,posLprOut.y,tgtLprOut); camRig(posChkOut.x,posChkOut.z,posChkOut.y,tgtChkOut);
-
-  // FOV cones (frustum wedges)
-  const cones = new THREE.Group(); scene.add(cones);
-  function cone(pos,tgt,hfov,len,col){ const dir=tgt.clone().sub(pos).normalize(); const a=THREE.MathUtils.degToRad(hfov/2);
-    const g=new THREE.ConeGeometry(Math.tan(a)*len, len, 24, 1, true); g.translate(0,-len/2,0); g.rotateX(-Math.PI/2);
-    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({ color:col, transparent:true, opacity:.16, side:THREE.DoubleSide, depthWrite:false }));
-    m.position.copy(pos); m.lookAt(pos.clone().add(dir)); cones.add(m); }
-  cone(posLprIn,tgtLprIn,30,7,0xc8322b); cone(posLprOut,tgtLprOut,30,7,0xc8322b);
-  cone(posChkIn,tgtChkIn,45,9,0x1f63c4); cone(posChkOut,tgtChkOut,45,9,0x1f63c4);
-  // capture-zone marking on the IN lane (4–6 m before barrier)
-  const zone = new THREE.Mesh(new THREE.PlaneGeometry(2,3.3), new THREE.MeshBasicMaterial({ color:0xffd400, transparent:true, opacity:.28 }));
-  zone.rotation.x=-Math.PI/2; zone.position.set(-5,.02,-2.75); scene.add(zone);
-
-  // cars with Thai plates
-  function car(color, plate){ const g=new THREE.Group(); scene.add(g);
+  function car(parent, color, plate){ const g=new THREE.Group(); parent.add(g);
     box(4.4,.7,1.8,color,0,.55,0,g); box(2.4,.6,1.6,color,-.2,1.15,0,g); box(2.2,.5,1.62,0x223038,-.2,1.17,0,g);
     [[1.4,.85],[1.4,-.85],[-1.4,.85],[-1.4,-.85]].forEach(([x,z])=>{ const w=new THREE.Mesh(new THREE.CylinderGeometry(.33,.33,.22,20),M(0x1b1f21)); w.rotation.x=Math.PI/2; w.position.set(x,.33,z); g.add(w); });
     const pl=new THREE.Mesh(new THREE.PlaneGeometry(.34,.15), new THREE.MeshBasicMaterial({ map: texText(340,150,(c,w,h)=>{ c.fillStyle='#fff'; c.fillRect(0,0,w,h); c.strokeStyle='#000'; c.lineWidth=6; c.strokeRect(3,3,w-6,h-6);
       c.fillStyle='#000'; c.textAlign='center'; c.font='bold 64px sans-serif'; c.fillText(plate,w/2,78); c.font='30px sans-serif'; c.fillText('นครราชสีมา',w/2,128); }) }));
-    pl.position.set(2.205,.5,0); pl.rotation.y=Math.PI/2; g.add(pl);
-    return g; }
-  const carIn = car(0xb8c4cc,'กข 1234'); carIn.position.set(-26,0,-2.75);
-  const carOut = car(0x8a2b2b,'1กก 999'); carOut.position.set(24,0,2.75); carOut.rotation.y=Math.PI;
+    pl.position.set(2.205,.5,0); pl.rotation.y=Math.PI/2; g.add(pl); return g; }
+  function barrier(parent,x,z,dir){ const g=new THREE.Group(); g.position.set(x,L.island?.15:0,z); parent.add(g);
+    box(.38,1.0,.32,0xeef1f2,0,.5,0,g); box(.3,.12,.33,0xc8322b,0,.85,0,g);
+    const lab = new THREE.Mesh(new THREE.PlaneGeometry(.3,.1), new THREE.MeshBasicMaterial({ map: texText(256,86,(c,w,h)=>{ c.fillStyle='#c8322b'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.font='bold 54px monospace'; c.textAlign='center'; c.fillText('VAS117',w/2,62); }) }));
+    lab.position.set(-.191,.85,0); lab.rotation.y=-Math.PI/2; g.add(lab);
+    const piv=new THREE.Group(); piv.position.set(0,.75,0); g.add(piv);
+    for (let i=0;i<7;i++) box(.07,.07,.5,i%2?0xffffff:0xc8322b,0,0,dir*(.25+i*.5),piv);
+    return piv; }
+  function camRig(parent,p,target){ box(.08,p.y,.08,0x6b7477,p.x,p.y/2,p.z,parent); const b=new THREE.Group(); b.position.set(p.x,p.y+.08,p.z); parent.add(b);
+    box(.12,.1,.26,0xf4f6f7,0,0,0,b); box(.14,.03,.3,0x30383b,0,.065,0,b); b.lookAt(target); }
+  function cone(parent,pos,tgt,hfov,len,col){ const dir=tgt.clone().sub(pos).normalize(); const a=THREE.MathUtils.degToRad(hfov/2);
+    const g=new THREE.ConeGeometry(Math.tan(a)*len, len, 24, 1, true); g.translate(0,-len/2,0); g.rotateX(-Math.PI/2);
+    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({ color:col, transparent:true, opacity:.16, side:THREE.DoubleSide, depthWrite:false }));
+    m.position.copy(pos); m.lookAt(pos.clone().add(dir)); parent.add(m); }
 
-  // cameras for viewing
-  const W = () => stage.clientWidth, H = () => stage.clientHeight;
+  function build(gate){
+    if (grp) scene.remove(grp);
+    L = LAYOUT[GATE_LAYOUT[gate]]; grp = new THREE.Group(); scene.add(grp);
+    const R = L.roadHalf;
+    box(80,.02,2*R,0x50565a,0,0,0,grp);
+    if (L.island) box(80,.15,2,0xb9c2bd,0,.075,0,grp);
+    else for (let x=-38;x<38;x+=3) box(1.6,.005,.12,0xf2d34a,x,.012,0,grp); // centre line
+    [R,-R].forEach(z=>box(80,.18,.2,0xdfe4e1,0,.09,z+(z>0?.1:-.1),grp));
+    box(.4,.006,3.5,0xffffff,-.6,.013,L.inZ,grp); box(.4,.006,3.5,0xffffff,-3.15,.013,L.outZ,grp);
+    box(30,2,.25,0xd8d2c4,-20,1,R+4.5,grp); box(30,2,.25,0xd8d2c4,-20,1,-R-4.5,grp);
+    armIn = barrier(grp,L.cabIn[0],L.cabIn[1],L.armDirIn); armOut = barrier(grp,L.cabOut[0],L.cabOut[1],L.armDirOut);
+    box(3,2.6,2.4,0xe9e4da,2.2,1.3,L.house-1.2,grp); box(3.4,.15,2.8,0x7b6f62,2.2,2.68,L.house-1.2,grp); box(.5,.7,.25,0x0d6b5c,4.2,.8,L.house+.4,grp);
+    const sign = new THREE.Group(); sign.position.set(-9,0,-R-2); grp.add(sign);
+    box(.1,2.4,.1,0x7a8386,-1.1,1.2,0,sign); box(.1,2.4,.1,0x7a8386,1.1,1.2,0,sign);
+    const sb = new THREE.Mesh(new THREE.BoxGeometry(2.6,1.1,.08), [M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),M(0x0d6b5c),
+      new THREE.MeshStandardMaterial({ map: texText(512,216,(c,w,h)=>{ c.fillStyle='#0d6b5c'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.textAlign='center'; c.font='bold 64px sans-serif'; c.fillText('ป้ายบริษัท',w/2,96); c.font='38px sans-serif'; c.fillText('ระบบไม้กั้น + LPR',w/2,160); }) }), M(0x0d6b5c)]);
+    sb.position.set(0,2.6,0); sign.add(sb); sign.rotation.y = -(Math.PI - Math.PI/2.6);
+    const V = a => new THREE.Vector3(a[0],a[1],a[2]);
+    posLprIn = V(L.lprIn); const pChkIn=V(L.chkIn), pLprOut=V(L.lprOut), pChkOut=V(L.chkOut);
+    const tLprIn = new THREE.Vector3(-5.5,.5,L.inZ), tChkIn = new THREE.Vector3(-6,1.0,L.inZ), tLprOut = new THREE.Vector3(1.75,.5,L.outZ), tChkOut = new THREE.Vector3(2.5,1.0,L.outZ);
+    camRig(grp,posLprIn,tLprIn); camRig(grp,pChkIn,tChkIn); camRig(grp,pLprOut,tLprOut); camRig(grp,pChkOut,tChkOut);
+    cones = new THREE.Group(); grp.add(cones);
+    cone(cones,posLprIn,tLprIn,30,7,0xc8322b); cone(cones,pLprOut,tLprOut,30,7,0xc8322b); cone(cones,pChkIn,tChkIn,45,9,0x1f63c4); cone(cones,pChkOut,tChkOut,45,9,0x1f63c4);
+    const zone = new THREE.Mesh(new THREE.PlaneGeometry(2,3.3), new THREE.MeshBasicMaterial({ color:0xffd400, transparent:true, opacity:.28 }));
+    zone.rotation.x=-Math.PI/2; zone.position.set(-5,.02,L.inZ); grp.add(zone);
+    carIn = car(grp,0xb8c4cc,'กข 1234'); carIn.position.set(-26,0,L.inZ);
+    carOut = car(grp,0x8a2b2b,'1กก 999'); carOut.position.set(24,0,L.outZ); carOut.rotation.y=Math.PI;
+    lprCam.position.copy(posLprIn); lprCam.lookAt(tLprIn); chkCam.position.copy(pChkIn); chkCam.lookAt(tChkIn);
+    $('#layout').textContent = gate+' · '+L.title;
+    summary();
+  }
+
   const orbitCam = new THREE.PerspectiveCamera(45, 16/9, .1, 300); orbitCam.position.set(-14,11,16);
   const controls = new THREE.OrbitControls(orbitCam, renderer.domElement); controls.target.set(-2,0,0); controls.enableDamping = true; controls.maxPolarAngle = Math.PI/2.05;
-  const vfov = h => 2*Math.atan(Math.tan(THREE.MathUtils.degToRad(h/2))*9/16)*180/Math.PI;
-  const lprCam = new THREE.PerspectiveCamera(vfov(30), 16/9, .05, 200); lprCam.position.copy(posLprIn); lprCam.lookAt(tgtLprIn);
-  const chkCam = new THREE.PerspectiveCamera(vfov(45), 16/9, .05, 200); chkCam.position.copy(posChkIn); chkCam.lookAt(tgtChkIn);
   const drvCam = new THREE.PerspectiveCamera(60, 16/9, .05, 200);
   let view = 'orbit', playing = true, t = 0;
+  function resize(){ renderer.setSize(W(), H(), false); [orbitCam,lprCam,chkCam,drvCam].forEach(c=>{ c.aspect = W()/H(); c.updateProjectionMatrix(); }); }
+  new ResizeObserver(resize).observe(stage);
 
-  function resize(){ renderer.setSize(W(), H(), false); orbitCam.aspect = W()/H(); orbitCam.updateProjectionMatrix(); [lprCam,chkCam,drvCam].forEach(c=>{ c.aspect = W()/H(); c.updateProjectionMatrix(); }); }
-  new ResizeObserver(resize).observe(stage); resize();
-
-  // plate pixel width estimate for the LPR IN camera (4MP = 2560 px wide, 30° HFOV)
-  function plateInfo(){ const front = new THREE.Vector3(carIn.position.x+2.2, .5, -2.75); const d = front.distanceTo(posLprIn);
-    const to = front.clone().sub(posLprIn); const horiz = Math.abs(THREE.MathUtils.radToDeg(Math.atan2(to.z, -to.x)));
-    const vert = THREE.MathUtils.radToDeg(Math.atan2(posLprIn.y-.5, Math.hypot(to.x,to.z)));
-    const px = 2560*.34*Math.cos(THREE.MathUtils.degToRad(horiz))/(2*d*Math.tan(THREE.MathUtils.degToRad(15)));
-    return { d, horiz, vert, px }; }
+  function geom(frontX){ const front=new THREE.Vector3(frontX,.5,L.inZ), d=front.distanceTo(posLprIn), to=front.clone().sub(posLprIn);
+    const horiz=Math.abs(THREE.MathUtils.radToDeg(Math.atan2(to.z,-to.x))), vert=THREE.MathUtils.radToDeg(Math.atan2(posLprIn.y-.5,Math.hypot(to.x,to.z)));
+    const px=2560*.34*Math.cos(THREE.MathUtils.degToRad(horiz))/(2*d*Math.tan(THREE.MathUtils.degToRad(15))); return { d, horiz, vert, px }; }
+  function summary(){ const g=geom(-5);
+    $('#tiles').innerHTML = [[g.d.toFixed(1)+' ม.','ระยะกล้อง → ป้าย ที่จุดจับ'],[g.horiz.toFixed(0)+'°','มุมนอน (เกณฑ์ ≤ 30°)'],[g.vert.toFixed(0)+'°','มุมก้ม (เกณฑ์ ≤ 30°)'],[g.px.toFixed(0)+' px','ความกว้างป้ายในภาพ (เกณฑ์ ≥ 130)'],[L.island?'มีเกาะกลาง':'ติดข้างถนน','ตำแหน่งตู้ VAS117']]
+      .map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join(''); }
 
   function step(dt){
-    if (playing) { t = (t + dt) % 16; }
-    // IN car: approach 0–6 s, stop/read 6–8 s, pass 8–13 s
-    const xs = t<6 ? -26+ (t/6)*(26-2.8) : t<8 ? -2.8 : -2.8 + (t-8)*4.5;
-    carIn.position.x = Math.min(xs, 30);
+    if (playing) t = (t + dt) % 16;
+    const xs = t<6 ? -26+(t/6)*(26-2.8) : t<8 ? -2.8 : -2.8+(t-8)*4.5; carIn.position.x = Math.min(xs,30);
     const up = t<6.6 ? 0 : t<7.4 ? (t-6.6)/.8 : t<10.5 ? 1 : t<11.3 ? 1-(t-10.5)/.8 : 0;
-    armIn.rotation.x = -up*Math.PI/2*0.98;
-    const xo = t<6 ? 24 - (t/6)*(24-(-3.75+0.6+2.2)) : t<8 ? (-3.75+0.6+2.2) : (-3.75+0.6+2.2) - (t-8)*4.5;
-    carOut.position.x = Math.max(xo,-30);
-    armOut.rotation.x = up*Math.PI/2*0.98;
-    drvCam.position.set(carIn.position.x+.3, 1.25, -2.75+.4); drvCam.lookAt(carIn.position.x+12, 1.0, -2.75);
+    // arm swings up around the road axis; sign of rotation follows the arm direction
+    armIn.rotation.x = L.armDirIn*up*Math.PI/2*.98; armOut.rotation.x = L.armDirOut*up*Math.PI/2*.98;
+    const stopO = -3.75+.6+2.2, xo = t<6 ? 24-(t/6)*(24-stopO) : t<8 ? stopO : stopO-(t-8)*4.5; carOut.position.x = Math.max(xo,-30);
+    drvCam.position.set(carIn.position.x+.3, 1.25, L.inZ+.4); drvCam.lookAt(carIn.position.x+12, 1.0, L.inZ);
   }
   let last = performance.now();
-  function frame(now){ const dt = Math.min(.05,(now-last)/1000); last = now; step(dt); controls.update();
+  function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; step(dt); controls.update();
     const w=W(), h=H(); renderer.setScissorTest(true);
     const main = view==='lpr'?lprCam:view==='chk'?chkCam:view==='driver'?drvCam:orbitCam;
     cones.visible = $('#cones').checked && view==='orbit';
     renderer.setViewport(0,0,w,h); renderer.setScissor(0,0,w,h); renderer.render(scene, main);
-    const ib = $('#inset').getBoundingClientRect(), sbx = stage.getBoundingClientRect();
-    const iw = ib.width, ih = ib.height, ix = ib.left-sbx.left, iy = sbx.bottom-ib.bottom;
+    const ib=$('#inset').getBoundingClientRect(), sbx=stage.getBoundingClientRect(), iw=ib.width, ih=ib.height, ix=ib.left-sbx.left, iy=sbx.bottom-ib.bottom;
     $('#inset').style.display = view==='lpr' ? 'none' : '';
-    if (view!=='lpr') { const cv=cones.visible; cones.visible=false; lprCam.aspect = iw/ih; lprCam.updateProjectionMatrix();
+    if (view!=='lpr') { const cv=cones.visible; cones.visible=false; lprCam.aspect=iw/ih; lprCam.updateProjectionMatrix();
       renderer.setViewport(ix,iy,iw,ih); renderer.setScissor(ix,iy,iw,ih); renderer.render(scene, lprCam); lprCam.aspect=w/h; lprCam.updateProjectionMatrix(); cones.visible=cv; }
     renderer.setScissorTest(false);
-    const p = plateInfo(), inRange = carIn.position.x+2.2 > -6.5 && carIn.position.x+2.2 < -3;
-    $('#hud').innerHTML = `<div>รถขาเข้า ห่างกล้อง ${p.d.toFixed(1)} ม.</div><div>มุมนอน ${p.horiz.toFixed(0)}° · มุมก้ม ${p.vert.toFixed(0)}°</div><div style="color:${p.px>=130?'#8ff0c8':'#ffb0a8'}">ป้ายในภาพ ~${p.px.toFixed(0)} px ${inRange?'· อยู่ในโซนจับป้าย':''}</div>`;
+    const p=geom(carIn.position.x+2.2), inRange=carIn.position.x+2.2>-6.5 && carIn.position.x+2.2<-3;
+    $('#hud').innerHTML = `<div>${$('#layout').textContent}</div><div>รถขาเข้า ห่างกล้อง ${p.d.toFixed(1)} ม. · มุมนอน ${p.horiz.toFixed(0)}° · มุมก้ม ${p.vert.toFixed(0)}°</div><div style="color:${p.px>=130?'#8ff0c8':'#ffb0a8'}">ป้ายในภาพ ~${p.px.toFixed(0)} px ${inRange?'· อยู่ในโซนจับป้าย':''}</div>`;
     requestAnimationFrame(frame); }
-  requestAnimationFrame(frame);
-
-  // summary at the capture point (plate 5 m before the barrier)
-  (function(){ const front=new THREE.Vector3(-5,.5,-2.75), d=front.distanceTo(posLprIn), to=front.clone().sub(posLprIn);
-    const horiz=Math.abs(THREE.MathUtils.radToDeg(Math.atan2(to.z,-to.x))), vert=THREE.MathUtils.radToDeg(Math.atan2(posLprIn.y-.5,Math.hypot(to.x,to.z)));
-    const px=2560*.34*Math.cos(THREE.MathUtils.degToRad(horiz))/(2*d*Math.tan(THREE.MathUtils.degToRad(15)));
-    $('#tiles').innerHTML = [[d.toFixed(1)+' ม.','ระยะกล้อง → ป้าย ที่จุดจับ'],[horiz.toFixed(0)+'°','มุมนอน (เกณฑ์ ≤ 30°)'],[vert.toFixed(0)+'°','มุมก้ม (เกณฑ์ ≤ 30°)'],[px.toFixed(0)+' px','ความกว้างป้ายในภาพ (เกณฑ์ ≥ 130)'],['3.5 ม.','แขนไม้กั้น VAS117 (ประมาณ)']]
-      .map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join(''); })();
 
   document.querySelectorAll('[data-v]').forEach(b=>b.addEventListener('click',()=>{ view=b.dataset.v; document.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed', x===b)); }));
-  document.querySelectorAll('[data-g]').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('[data-g]').forEach(x=>x.setAttribute('aria-pressed', x===b)); $('#inset span').textContent='ภาพจากกล้อง LPR ขาเข้า · '+b.textContent; }));
+  document.querySelectorAll('[data-g]').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('[data-g]').forEach(x=>x.setAttribute('aria-pressed', x===b)); build(b.dataset.g); t=0; }));
   $('#play').addEventListener('click',()=>{ playing=!playing; $('#play').textContent = playing?'หยุดรถ':'เล่นต่อ'; });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sky);
   new MutationObserver(sky).observe(document.documentElement,{ attributes:true, attributeFilter:['data-theme'] });
+  build(location.hash==='#G2'?'G2':location.hash==='#G3'?'G3':'G1'); resize(); requestAnimationFrame(frame);
 })();
 </script>
