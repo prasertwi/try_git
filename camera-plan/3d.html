@@ -29,6 +29,8 @@ label.chk{display:flex;gap:6px;align-items:center;font-size:.88rem}
 .inset span{position:absolute;left:0;top:-22px;font:600 .75rem var(--f-body);color:#fff;background:rgba(0,0,0,.6);padding:1px 6px;border-radius:4px;white-space:nowrap}
 .hud{position:absolute;left:10px;top:10px;display:grid;gap:4px;font:500 .78rem var(--f-mono);color:#fff;pointer-events:none}
 .hud div{background:rgba(0,0,0,.55);padding:2px 8px;border-radius:4px;width:max-content;max-width:60vw}
+.dims label{display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted)}
+.dims input{width:5.5em;font:500 .9rem var(--f-mono);padding:4px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
 .tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
 .tile b{display:block;font-family:var(--f-display);font-size:1.25rem;font-variant-numeric:tabular-nums}
@@ -50,6 +52,12 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
     <button id="play" class="solid">หยุดรถ</button>
     <label class="chk" for="cones"><input id="cones" type="checkbox" checked> แสดงกรวยมุมกล้อง</label>
   </div>
+  <div class="bar dims">
+    <label for="kerbW" id="lk">ถนน G2/G3 กว้าง (ม.) <input id="kerbW" type="number" min="4" max="14" step="0.1"></label>
+    <label for="laneW" id="ll">เลน G1 กว้าง (ม.) <input id="laneW" type="number" min="2.5" max="7" step="0.1"></label>
+    <label for="islandW" id="li">เกาะกลาง/ป้อม G1 (ม.) <input id="islandW" type="number" min="1.5" max="6" step="0.1"></label>
+    <button id="dimreset">ค่าตั้งต้น</button>
+  </div>
 
   <div class="stage" id="stage">
     <div class="hud" id="hud"></div>
@@ -62,8 +70,9 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   <section>
     <h2>ค่าที่ใช้ในแบบจำลอง</h2>
     <ul class="plain">
-      <li><b>G2, G3 (ของเดิมด้านหลัง):</b> ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง ถนน 2 เลน เลนละ 3.5 ม. ตู้ VAS117 ตั้งริมขอบถนนตำแหน่งเดิม ตู้ขาเข้าและขาออกอยู่แนวเดียวกันตรงข้ามกัน แขนยาว 3.5 ม. ยื่นถึงเส้นกลางถนน LPR ติดเสาเตี้ยริมขอบถนนข้างตู้</li>
-      <li><b>G1 (ประตูหน้า ของเดิม):</b> ป้อม รปภ. ตั้งกลางถนน ตู้ VAS117 ติดข้างป้อมทั้งสองฝั่ง กล้อง LPR และกล้องเช็ครถติดข้างป้อม</li>
+      <li><b>G2, G3 (ของเดิมด้านหลัง):</b> ไม้กั้นติดข้างถนน ไม่มีเกาะกลาง ตู้ VAS117 ขาเข้า–ขาออกตั้งริมถนนแนวเดียวกัน แขนสองข้างปลายชนกันกลางถนน (เว้น 5 ซม.) ความยาวแขน = ครึ่งความกว้างถนน + ระยะตู้จากขอบ 0.25 ม. LPR ติดเสาเตี้ยริมขอบถนนข้างตู้</li>
+      <li><b>G1 (ประตูหน้า ของเดิม):</b> ป้อม รปภ. ตั้งกลางถนน ตู้ VAS117 ติดข้างป้อมทั้งสองฝั่ง แขนยาวเท่าความกว้างเลน (+ระยะตู้ 0.15 ม.) กล้อง LPR และกล้องเช็ครถติดข้างป้อม</li>
+      <li><b>ขนาด:</b> ค่าตั้งต้นเป็นค่าประมาณ (ถนน G2/G3 7.0 ม., เลน G1 3.5 ม., เกาะ/ป้อม 3.0 ม.) แก้ช่องด้านบนตามที่วัดหน้างานได้ ความยาวแขนจะคำนวณใหม่ทันที</li>
       <li>LPR สูง 1.3 ม. ห่างก่อนไม้กั้น ~0.5 ม. เล็งจุดจับป้ายที่ 5 ม. ก่อนไม้กั้น มุมนอนต้องไม่เกิน 30°</li>
       <li>รถวิ่งชิดซ้ายแบบไทย คนขับนั่งขวาติดเกาะกลาง กล้องเช็ครถติดเสาข้างเลน สูง 2.8 ม. เห็นหน้ารถ คนขับผ่านกระจกหน้า และป้าย</li>
       <li>ป้ายทะเบียนรถยนต์ไทย 34 × 15 ซม. สูงจากพื้น ~0.5 ม. · ขนาดป้ายในภาพคำนวณจากความกว้างภาพ 2560 พิกเซล (4MP) และมุมเลนส์ที่ตั้ง</li>
@@ -98,16 +107,21 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   // Layouts (x = along road, z = across, y = up). Thai left-hand traffic: IN cars drive +x on the -z side.
   //  island: 2 lanes + 2 m centre island, cabinets on the island (standard design, G1 until confirmed)
   //  kerb:   existing back gates G2/G3 — no island, cabinets at each roadside, arms reach the centre line
-  const LAYOUT = {
-    // island = G1 front gate (existing): guardhouse in the middle of the road, barriers fixed to the booth, cameras beside the booth
-    island: { inZ:-3.25, outZ:3.25, roadHalf:5.0, island:true, islandHalf:1.5, cabIn:[-.5,-1.35], cabOut:[2.5,1.35], armDirIn:-1, armDirOut:1, outX:2.5,
-      lprIn:[-.95,1.3,-1.15], chkIn:[-.45,2.8,-1.25], lprOut:[2.95,1.3,1.15], chkOut:[2.45,2.8,1.25], booth:true, title:'ของเดิม: ป้อมกลางถนน ไม้กั้นติดป้อม กล้องข้างป้อม' },
-    // kerb = G2/G3 back gates (existing): no island, IN and OUT cabinets face each other at the same point along the road
-    kerb:   { inZ:-1.75, outZ:1.75, roadHalf:3.5, island:false, cabIn:[0,-3.75], cabOut:[0,3.75], armDirIn:1, armDirOut:-1, outX:0,
-      lprIn:[.6,1.3,-4.0], chkIn:[1.0,2.8,-4.4], lprOut:[-.6,1.3,4.0], chkOut:[-1.0,2.8,4.4], house:-6.0, title:'ของเดิม: ไม้กั้นติดข้างถนน ตู้เข้า–ออกอยู่แนวเดียวกัน ไม่มีเกาะกลาง' }
-  };
-  const GATE_LAYOUT = { G1:'island', G2:'kerb', G3:'kerb' };
-  let L, grp, armIn, armOut, cones, posLprIn, carIn, carOut, lprCam, chkCam;
+  // Layout geometry from editable dimensions. Arms meet tip to tip on one line across the road (5 cm gap).
+  const DIM0 = { kerbW:7.0, laneW:3.5, islandW:3.0 };
+  let DIM = Object.assign({}, DIM0); try { Object.assign(DIM, JSON.parse(localStorage.getItem('gatedims')||'{}')); } catch(e) {}
+  function makeLayout(kind){
+    if (kind==='kerb') { const W=DIM.kerbW, h=W/2, c=h+.25;
+      return { kind, inZ:-h/2, outZ:h/2, roadHalf:h, island:false, cabIn:[0,-c], cabOut:[0,c], armDirIn:1, armDirOut:-1, outX:0, armLen:c-.05,
+        lprIn:[.6,1.3,-(c+.25)], chkIn:[1.0,2.8,-(c+.65)], lprOut:[-.6,1.3,c+.25], chkOut:[-1.0,2.8,c+.65], house:-(c+2.25),
+        title:'ของเดิม: ไม้กั้นติดข้างถนน ตู้เข้า–ออกแนวเดียวกัน ปลายไม้ชนกันกลางถนน' }; }
+    const Lw=DIM.laneW, ih=DIM.islandW/2, c=ih-.15;
+    return { kind, inZ:-(ih+Lw/2), outZ:ih+Lw/2, roadHalf:ih+Lw, island:true, islandHalf:ih, cabIn:[-.5,-c], cabOut:[2.5,c], armDirIn:-1, armDirOut:1, outX:2.5, armLen:Lw+.15-.05,
+      lprIn:[-.95,1.3,-(ih-.35)], chkIn:[-.45,2.8,-(ih-.25)], lprOut:[2.95,1.3,ih-.35], chkOut:[2.45,2.8,ih-.25], booth:true,
+      title:'ของเดิม: ป้อมกลางถนน ไม้กั้นติดป้อม กล้องข้างป้อม' };
+  }
+  const GATE_LAYOUT = { G1:'island', G2:'kerb', G3:'kerb' }; let GATE='G1';
+  let dims, L, grp, armIn, armOut, cones, posLprIn, carIn, carOut, lprCam, chkCam;
   const W = () => stage.clientWidth, H = () => stage.clientHeight;
   const vfov = h => 2*Math.atan(Math.tan(THREE.MathUtils.degToRad(h/2))*9/16)*180/Math.PI;
   lprCam = new THREE.PerspectiveCamera(vfov(30), 16/9, .05, 200);
@@ -124,7 +138,7 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
     const lab = new THREE.Mesh(new THREE.PlaneGeometry(.3,.1), new THREE.MeshBasicMaterial({ map: texText(256,86,(c,w,h)=>{ c.fillStyle='#c8322b'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.font='bold 54px monospace'; c.textAlign='center'; c.fillText('VAS117',w/2,62); }) }));
     lab.position.set(-.191,.85,0); lab.rotation.y=-Math.PI/2; g.add(lab);
     const piv=new THREE.Group(); piv.position.set(0,.75,0); g.add(piv);
-    for (let i=0;i<7;i++) box(.07,.07,.5,i%2?0xffffff:0xc8322b,0,0,dir*(.25+i*.5),piv);
+    const n=Math.max(1,Math.round(L.armLen/.5)), seg=L.armLen/n; for (let i=0;i<n;i++) box(.07,.07,seg,i%2?0xffffff:0xc8322b,0,0,dir*(seg/2+i*seg),piv);
     return piv; }
   function camRig(parent,p,target){ box(.08,p.y,.08,0x6b7477,p.x,p.y/2,p.z,parent); const b=new THREE.Group(); b.position.set(p.x,p.y+.08,p.z); parent.add(b);
     box(.12,.1,.26,0xf4f6f7,0,0,0,b); box(.14,.03,.3,0x30383b,0,.065,0,b); b.lookAt(target); }
@@ -135,13 +149,13 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
 
   function build(gate){
     if (grp) scene.remove(grp);
-    L = LAYOUT[GATE_LAYOUT[gate]]; grp = new THREE.Group(); scene.add(grp);
+    GATE = gate; L = makeLayout(GATE_LAYOUT[gate]); grp = new THREE.Group(); scene.add(grp);
     const R = L.roadHalf;
     box(80,.02,2*R,0x50565a,0,0,0,grp);
     if (L.island) box(80,.15,2*L.islandHalf,0xb9c2bd,0,.075,0,grp);
     else for (let x=-38;x<38;x+=3) box(1.6,.005,.12,0xf2d34a,x,.012,0,grp); // centre line
     [R,-R].forEach(z=>box(80,.18,.2,0xdfe4e1,0,.09,z+(z>0?.1:-.1),grp));
-    box(.4,.006,3.5,0xffffff,L.cabIn[0]-.6,.013,L.inZ,grp); box(.4,.006,3.5,0xffffff,L.outX+.6,.013,L.outZ,grp);
+    const lw=L.island?DIM.laneW:DIM.kerbW/2; box(.4,.006,lw,0xffffff,L.cabIn[0]-.6,.013,L.inZ,grp); box(.4,.006,lw,0xffffff,L.outX+.6,.013,L.outZ,grp);
     box(30,2,.25,0xd8d2c4,-20,1,R+4.5,grp); box(30,2,.25,0xd8d2c4,-20,1,-R-4.5,grp);
     armIn = barrier(grp,L.cabIn[0],L.cabIn[1],L.armDirIn); armOut = barrier(grp,L.cabOut[0],L.cabOut[1],L.armDirOut);
     if (L.booth) { box(2.4,2.5,2.4,0xe9e4da,1.0,1.4,0,grp); box(2.9,.15,2.9,0x7b6f62,1.0,2.72,0,grp);
@@ -153,6 +167,16 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
       new THREE.MeshStandardMaterial({ map: texText(512,216,(c,w,h)=>{ c.fillStyle='#283891'; c.fillRect(0,0,w,h); c.fillStyle='#ED1C24'; c.fillRect(0,h-34,w,34);
         c.fillStyle='#fff'; c.textAlign='center'; c.font='bold 96px sans-serif'; c.fillText('VAS',w/2,104); c.font='36px sans-serif'; c.fillText('ระบบไม้กั้น + กล้องอ่านทะเบียน',w/2,156); }) }), M(0x283891)]);
     sb.position.set(0,2.6,0); sign.add(sb); sign.rotation.y = -(Math.PI - Math.PI/2.6);
+    // dimensions: road width across the road, arm length on each arm
+    const sprite = (txt, x,y,z, sc) => { const tx=texText(512,128,(c,w,h)=>{ c.fillStyle='rgba(255,255,255,.92)'; c.fillRect(0,0,w,h); c.strokeStyle='#18221f'; c.lineWidth=4; c.strokeRect(2,2,w-4,h-4);
+        c.fillStyle='#18221f'; c.font='bold 54px sans-serif'; c.textAlign='center'; c.fillText(txt,w/2,84); });
+      const sp=new THREE.Sprite(new THREE.SpriteMaterial({ map:tx, depthTest:false })); sp.scale.set(2.4*(sc||1),.6*(sc||1),1); sp.position.set(x,y,z); sp.renderOrder=10; dims.add(sp); };
+    dims = new THREE.Group(); grp.add(dims);
+    const dx=-9, R2=L.roadHalf*2; box(.06,.06,R2,0x18221f,dx,.08,0,dims); box(.06,.4,.06,0x18221f,dx,.2,-L.roadHalf,dims); box(.06,.4,.06,0x18221f,dx,.2,L.roadHalf,dims);
+    sprite('ถนนกว้าง '+R2.toFixed(1)+' ม.', dx, .9, 0);
+    if (L.island) { sprite('เลน '+DIM.laneW.toFixed(1)+' ม.', dx, .9, L.inZ, .8); sprite('เกาะ '+DIM.islandW.toFixed(1)+' ม.', dx-2.6, .9, 0, .8); }
+    sprite('แขน '+L.armLen.toFixed(2)+' ม.', L.cabIn[0], 1.55, L.cabIn[1]+L.armDirIn*L.armLen/2, 1.0);
+    sprite('แขน '+L.armLen.toFixed(2)+' ม.', L.cabOut[0], 1.55, L.cabOut[1]+L.armDirOut*L.armLen/2, 1.0);
     const V = a => new THREE.Vector3(a[0],a[1],a[2]);
     posLprIn = V(L.lprIn); const pChkIn=V(L.chkIn), pLprOut=V(L.lprOut), pChkOut=V(L.chkOut);
     const bx=L.cabIn[0], tLprIn = new THREE.Vector3(bx-5.5,.5,L.inZ), tChkIn = new THREE.Vector3(bx-6,1.0,L.inZ), tLprOut = new THREE.Vector3(L.outX+5.5,.5,L.outZ), tChkOut = new THREE.Vector3(L.outX+6.25,1.0,L.outZ);
@@ -179,7 +203,7 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
     const horiz=Math.abs(THREE.MathUtils.radToDeg(Math.atan2(to.z,-to.x))), vert=THREE.MathUtils.radToDeg(Math.atan2(posLprIn.y-.5,Math.hypot(to.x,to.z)));
     const px=2560*.34*Math.cos(THREE.MathUtils.degToRad(horiz))/(2*d*Math.tan(THREE.MathUtils.degToRad(15))); return { d, horiz, vert, px }; }
   function summary(){ const g=geom(L.cabIn[0]-5);
-    $('#tiles').innerHTML = [[g.d.toFixed(1)+' ม.','ระยะกล้อง → ป้าย ที่จุดจับ'],[g.horiz.toFixed(0)+'°','มุมนอน (เกณฑ์ ≤ 30°)'],[g.vert.toFixed(0)+'°','มุมก้ม (เกณฑ์ ≤ 30°)'],[g.px.toFixed(0)+' px','ความกว้างป้ายในภาพ (เกณฑ์ ≥ 130)'],[L.booth?'ติดป้อมกลางถนน':'ติดข้างถนน','ตำแหน่งตู้ VAS117']]
+    $('#tiles').innerHTML = [[g.d.toFixed(1)+' ม.','ระยะกล้อง → ป้าย ที่จุดจับ'],[g.horiz.toFixed(0)+'°','มุมนอน (เกณฑ์ ≤ 30°)'],[g.vert.toFixed(0)+'°','มุมก้ม (เกณฑ์ ≤ 30°)'],[g.px.toFixed(0)+' px','ความกว้างป้ายในภาพ (เกณฑ์ ≥ 130)'],[(L.roadHalf*2).toFixed(1)+' ม.','ความกว้างถนนรวม'],[L.armLen.toFixed(2)+' ม. × 2','ความยาวแขนที่ใช้งาน (สั่งแขน '+(Math.ceil(L.armLen*2)/2).toFixed(1)+' ม.)']]
       .map(([b,s])=>`<div class="tile"><b>${b}</b><span>${s}</span></div>`).join(''); }
 
   function step(dt){
@@ -195,12 +219,12 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; step(dt); controls.update();
     const w=W(), h=H(); renderer.setScissorTest(true);
     const main = view==='lpr'?lprCam:view==='chk'?chkCam:view==='driver'?drvCam:orbitCam;
-    cones.visible = $('#cones').checked && view==='orbit';
+    cones.visible = $('#cones').checked && view==='orbit'; dims.visible = view==='orbit';
     renderer.setViewport(0,0,w,h); renderer.setScissor(0,0,w,h); renderer.render(scene, main);
     const ib=$('#inset').getBoundingClientRect(), sbx=stage.getBoundingClientRect(), iw=ib.width, ih=ib.height, ix=ib.left-sbx.left, iy=sbx.bottom-ib.bottom;
     $('#inset').style.display = view==='lpr' ? 'none' : '';
-    if (view!=='lpr') { const cv=cones.visible; cones.visible=false; lprCam.aspect=iw/ih; lprCam.updateProjectionMatrix();
-      renderer.setViewport(ix,iy,iw,ih); renderer.setScissor(ix,iy,iw,ih); renderer.render(scene, lprCam); lprCam.aspect=w/h; lprCam.updateProjectionMatrix(); cones.visible=cv; }
+    if (view!=='lpr') { const cv=cones.visible, dv=dims.visible; cones.visible=false; dims.visible=false; lprCam.aspect=iw/ih; lprCam.updateProjectionMatrix();
+      renderer.setViewport(ix,iy,iw,ih); renderer.setScissor(ix,iy,iw,ih); renderer.render(scene, lprCam); lprCam.aspect=w/h; lprCam.updateProjectionMatrix(); cones.visible=cv; dims.visible=dv; }
     renderer.setScissorTest(false);
     const p=geom(carIn.position.x+2.2), fx=carIn.position.x+2.2-L.cabIn[0], inRange=fx>-6.5 && fx<-3;
     const passed = carIn.position.x+2.2 > posLprIn.x-1;
@@ -213,6 +237,9 @@ ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px;max-width:78ch}
   $('#play').addEventListener('click',()=>{ playing=!playing; $('#play').textContent = playing?'หยุดรถ':'เล่นต่อ'; });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sky);
   new MutationObserver(sky).observe(document.documentElement,{ attributes:true, attributeFilter:['data-theme'] });
+  ['kerbW','laneW','islandW'].forEach(k => { const el=$('#'+k); el.value=DIM[k]; el.addEventListener('change', () => { const v=+el.value; if (v>0) DIM[k]=v; else el.value=DIM[k];
+    try{ localStorage.setItem('gatedims', JSON.stringify(DIM)); }catch(e){} build(GATE); }); });
+  $('#dimreset').addEventListener('click', () => { DIM=Object.assign({},DIM0); ['kerbW','laneW','islandW'].forEach(k=>$('#'+k).value=DIM[k]); try{ localStorage.removeItem('gatedims'); }catch(e){} build(GATE); });
   build(location.hash==='#G2'?'G2':location.hash==='#G3'?'G3':'G1'); resize(); requestAnimationFrame(frame);
 })();
 </script>

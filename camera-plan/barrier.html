@@ -78,6 +78,8 @@ tfoot td{font-weight:600}
 .l-lbl{paint-order:stroke;stroke:var(--panel);stroke-width:3px;font:600 11px var(--f-body);fill:var(--ink)} .l-dim{font:500 10px var(--f-mono);fill:var(--muted)} .l-cam{font:700 10px var(--f-mono);fill:#fff}
 .gatecard{display:grid;gap:6px}
 .chk{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--ink)}
+.dims label{display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted)}
+.dims input{width:5.5em;font:500 .9rem var(--f-mono);padding:4px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink)}
 </style>
 
 <div class="wrap">
@@ -105,6 +107,12 @@ tfoot td{font-weight:600}
 
   <section>
     <h2>ผังจุดไม้กั้น</h2>
+    <div class="row dims" style="display:flex;flex-wrap:wrap;gap:12px">
+      <label for="kerbW">ถนน G2/G3 กว้าง (ม.) <input id="kerbW" type="number" min="4" max="12" step="0.1"></label>
+      <label for="laneW">เลน G1 กว้าง (ม.) <input id="laneW" type="number" min="2.5" max="6" step="0.1"></label>
+      <label for="islandW">เกาะกลาง/ป้อม G1 (ม.) <input id="islandW" type="number" min="1.5" max="6" step="0.1"></label>
+    </div>
+    <p class="note" style="margin:0">ค่าตั้งต้นเป็นค่าประมาณ ใส่ขนาดที่วัดหน้างานได้ ผังและความยาวแขนไม้กั้นจะคำนวณใหม่ทันที · แขนสองข้างปลายชนกันบนแนวเดียวกัน (เว้น 5 ซม.)</p>
     <h3 style="margin:0;font:600 1rem var(--f-display)">G2, G3 ด้านหลัง (ของเดิม): ไม้กั้นติดข้างถนน ตู้ขาเข้า–ขาออกอยู่แนวเดียวกัน ไม่มีเกาะกลาง</h3>
     <div class="mapbox"><svg id="lane" class="lane" viewBox="0 0 660 300" aria-label="ผังเลน G2 G3 ไม้กั้นติดข้างถนน"></svg></div>
     <h3 style="margin:0;font:600 1rem var(--f-display)">G1 ประตูหน้า (ของเดิม): ป้อมกลางถนน ไม้กั้นติดป้อม กล้องข้างป้อม</h3>
