@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_gates import DIM, GATES, layout  # noqa: E402  (shared design geometry)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ARGS_PLATE_PACK = ""
 VAS_RED, VAS_NAVY = (0.80, 0.03, 0.04), (0.035, 0.06, 0.28)
 THAI_FONT = "/usr/share/fonts/opentype/tlwg/Loma-Bold.otf"
 LATIN_FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
@@ -50,13 +51,28 @@ def make_images(out):
     for i, ch in enumerate("VAS"):
         d.text((150, 330 + i * 230), ch, font=font(LATIN_FONT, 210), fill="white", anchor="mm")
     save("flag", im)
-    # Thai licence plates
-    for name, plate in (("plate_in", "กข 1234"), ("plate_out", "1กก 999")):
-        im = Image.new("RGB", (680, 300), "white"); d = ImageDraw.Draw(im)
-        d.rectangle([6, 6, 674, 294], outline="black", width=10)
-        d.text((340, 120), plate, font=font(THAI_FONT, 150), fill="black", anchor="mm")
-        d.text((340, 245), "นครราชสีมา", font=font(THAI_FONT, 70), fill="black", anchor="mm")
-        save(name, im)
+    # Thai licence plates. With --plate-pack (an Assetto Corsa/CSP "Thailand" plate style folder: bg.png, nm.png,
+    # ThangLuang.ttf, number.ttf) follow that style's layout: 724x320, letters at (-205,-100) size 230,
+    # number at (130,-45) size 150, province at (0,80) size 80, measured from the plate centre.
+    pack = ARGS_PLATE_PACK
+    for name, letters, number in (("plate_in", "กข", "1234"), ("plate_out", "1กก", "999")):
+        if pack and os.path.exists(os.path.join(pack, "bg.png")):
+            im = Image.open(os.path.join(pack, "bg.png")).convert("RGB").resize((724, 320)); d = ImageDraw.Draw(im)
+            thai = os.path.join(pack, "ThangLuang.ttf"); num = os.path.join(pack, "number.ttf")
+            if not (os.path.exists(num) and os.path.getsize(num) > 1000): num = LATIN_FONT
+            cx, cy, ink = 362, 160, (15, 15, 15)
+            d.text((cx - 205, cy - 100 + 30), letters, font=font(thai, 230), fill=ink, anchor="mm")
+            d.text((cx + 130, cy - 45), number, font=font(num, 150), fill=ink, anchor="mm")
+            d.text((cx, cy + 80), "นครราชสีมา", font=font(thai, 80), fill=ink, anchor="mm")
+            save(name, im)
+            nm = os.path.join(pack, "nm.png")
+            if os.path.exists(nm): imgs["plate_normal"] = nm
+        else:
+            im = Image.new("RGB", (680, 300), "white"); d = ImageDraw.Draw(im)
+            d.rectangle([6, 6, 674, 294], outline="black", width=10)
+            d.text((340, 120), letters + " " + number, font=font(THAI_FONT, 150), fill="black", anchor="mm")
+            d.text((340, 245), "นครราชสีมา", font=font(THAI_FONT, 70), fill="black", anchor="mm")
+            save(name, im)
     # VAS117 label
     im = Image.new("RGB", (400, 140), (205, 10, 14)); d = ImageDraw.Draw(im)
     d.text((200, 70), "VAS117", font=font(LATIN_FONT, 96), fill="white", anchor="mm"); save("vas117", im)
@@ -109,11 +125,15 @@ def textured(name, c1, c2, scale=8.0, rough=(0.6, 0.85), bump=0.25, fine=80.0, s
     b.inputs["Metallic"].default_value = metal; b.inputs["Coat Weight"].default_value = coat
     MATS[name] = m; return m
 
-def image_mat(name, path, rough=0.4, emit=0.0):
+def image_mat(name, path, rough=0.4, emit=0.0, normal=None):
     if name in MATS: return MATS[name]
     m = bpy.data.materials.new(name); nt, n, l, b = _nt(m)
     tx = n.new("ShaderNodeTexImage"); tx.image = bpy.data.images.load(path)
     l.new(tx.outputs["Color"], b.inputs["Base Color"]); b.inputs["Roughness"].default_value = rough
+    if normal:  # embossed plate: tangent-space normal map from the plate pack
+        nx = n.new("ShaderNodeTexImage"); nx.image = bpy.data.images.load(normal); nx.image.colorspace_settings.name = "Non-Color"
+        nmn = n.new("ShaderNodeNormalMap"); nmn.inputs["Strength"].default_value = 1.0
+        l.new(nx.outputs["Color"], nmn.inputs["Color"]); l.new(nmn.outputs["Normal"], b.inputs["Normal"])
     b.inputs["Coat Weight"].default_value = 0.2
     if emit:
         l.new(tx.outputs["Color"], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = emit
@@ -308,8 +328,8 @@ def build(gate, imgs, args):
         "sign": image_mat("sign", imgs["sign"], rough=0.35, emit=0.6),
         "banner": image_mat("banner", imgs["banner"], rough=0.6, emit=0.3),
         "flag": image_mat("flagmat", imgs["flag"], rough=0.7),
-        "plate_in": image_mat("plate_in", imgs["plate_in"], rough=0.35),
-        "plate_out": image_mat("plate_out", imgs["plate_out"], rough=0.35),
+        "plate_in": image_mat("plate_in", imgs["plate_in"], rough=0.35, normal=imgs.get("plate_normal")),
+        "plate_out": image_mat("plate_out", imgs["plate_out"], rough=0.35, normal=imgs.get("plate_normal")),
         "vas117": image_mat("vas117", imgs["vas117"], rough=0.3),
         "vaslogo": image_mat("vaslogo", imgs["vaslogo"], rough=0.3),
     }
@@ -481,8 +501,10 @@ if __name__ == "__main__":
     p.add_argument("--sun-energy", type=float, default=4.5); p.add_argument("--sky-strength", type=float, default=0.4)
     p.add_argument("--exposure", type=float, default=0.0); p.add_argument("--sky", default="ms")
     p.add_argument("--grass", type=int, default=60000, help="grass blades per verge (0 = off)")
+    p.add_argument("--plate-pack", default="", help="folder of a CSP 'Thailand' number-plate style (bg.png, nm.png, fonts)")
     a = p.parse_args(argv)
     os.makedirs(a.out, exist_ok=True)
+    ARGS_PLATE_PACK = a.plate_pack
     images = make_images(a.out)
     for g in a.gates:
         build(g, images, a)
